@@ -179,16 +179,38 @@ function renderScenes(sceneHtmlPaths, outputDir, dimensions, fps, suffix = '') {
  * @param {string} outputPath     - Where to write the silence WAV
  * @param {number} durationSec    - Duration in seconds
  */
-function generateSilence(outputPath, durationSec) {
+function generateSilence(outputPath, durationSec, sampleRate = 44100) {
   const cmd = [
     'ffmpeg -y',
-    `-f lavfi -i anullsrc=r=44100:cl=mono`,
+    `-f lavfi -i anullsrc=r=${sampleRate}:cl=mono`,
     `-t ${durationSec}`,
     `-c:a pcm_s16le`,
     `"${outputPath}"`,
   ].join(' ');
 
   run(cmd, { step: 'audio-concat', silent: true });
+}
+
+/**
+ * Probe a WAV file's sample rate via ffprobe.
+ * Returns the sample rate as a number (e.g. 24000, 44100).
+ */
+function probeSampleRate(wavPath) {
+  try {
+    const result = run(
+      `ffprobe -v error -select_streams a:0 -show_entries stream=sample_rate -of csv=p=0 "${wavPath}"`,
+      { step: 'audio-concat', silent: true }
+    );
+    const rate = parseInt(result, 10);
+    if (isNaN(rate) || rate <= 0) {
+      log('audio-concat', `Could not parse sample rate from ${wavPath}, defaulting to 44100`);
+      return 44100;
+    }
+    return rate;
+  } catch {
+    log('audio-concat', `ffprobe failed for ${wavPath}, defaulting to 44100`);
+    return 44100;
+  }
 }
 
 /**
@@ -204,11 +226,15 @@ function concatenateAudio(wavPaths, outputPath, silenceDuration = INTER_SCENE_SI
 
   ensureDir(path.dirname(outputPath));
 
+  // Probe sample rate from first WAV to match silence segments
+  const sampleRate = probeSampleRate(wavPaths[0]);
+  log('audio-concat', `Detected sample rate: ${sampleRate} Hz`);
+
   // Generate a silence segment in a temp location
   const tempDir = path.join(path.dirname(outputPath), '.render-temp');
   ensureDir(tempDir);
   const silencePath = path.join(tempDir, 'silence.wav');
-  generateSilence(silencePath, silenceDuration);
+  generateSilence(silencePath, silenceDuration, sampleRate);
 
   // Build the concat list file
   // Format: file 'path' for each segment, with silence between them
@@ -282,7 +308,8 @@ function mixMusic(narrationPath, musicPath, outputPath) {
     `-i "${narrationPath}"`,
     `-i "${musicPath}"`,
     `-filter_complex`,
-    `"[1:a]volume=${MUSIC_DUCK_DB}dB[music];[0:a][music]amix=inputs=2:duration=first"`,
+    `"[1:a]volume=${MUSIC_DUCK_DB}dB[music];[0:a][music]amix=inputs=2:duration=first:normalize=0"`,
+    `-c:a pcm_s16le`,
     `"${outputPath}"`,
   ].join(' ');
 
@@ -616,9 +643,6 @@ export async function renderPipeline(options) {
       log('pipeline', `=== Vertical render complete: ${verticalPath} ===`);
     }
 
-    // ---- Cleanup temp files ----
-    cleanupTemp(resolvedProjectDir);
-
     // ---- Update project status ----
     const result = {
       landscapePath,
@@ -649,6 +673,8 @@ export async function renderPipeline(options) {
       error: err.message,
     });
     throw err;
+  } finally {
+    cleanupTemp(resolvedProjectDir);
   }
 }
 
