@@ -729,7 +729,7 @@ gsap.registerPlugin();
 
 // Init: set stroke-dashoffset on character body paths (NOT hidden expressions)
 // Only target structural parts — expression paths are handled by expression-change events
-document.querySelectorAll("${charSelectors}").forEach(function(charEl) {
+document.querySelectorAll("${charSelectors || ':not(*)'}").forEach(function(charEl) {
   // Body structure paths (everything except hidden expression groups)
   charEl.querySelectorAll('[data-part]:not([data-expression]) path').forEach(function(path) {
     try {
