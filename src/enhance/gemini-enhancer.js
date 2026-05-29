@@ -295,6 +295,72 @@ export async function enhance(options) {
   }
 }
 
+/**
+ * Update the status of a specific item (music or thumbnail) in the enhance plan.
+ * @param {object} options
+ * @param {string} options.projectDir  - Absolute path to the project directory
+ * @param {string} options.item        - 'music' or 'thumbnail'
+ * @param {string} options.status      - 'pending' | 'in-progress' | 'complete' | 'skipped' | 'error'
+ * @param {string} [options.error]     - Error message if status is 'error'
+ */
+const VALID_PLAN_STATUSES = ['pending', 'in-progress', 'complete', 'skipped', 'error'];
+
+export function updatePlanStatus(options) {
+  const { projectDir, item, status, error } = options;
+  const resolvedDir = path.resolve(projectDir);
+  const planPath = path.join(resolvedDir, 'enhance', 'enhance-plan.json');
+
+  if (!fs.existsSync(planPath)) {
+    log('status', `Enhance plan not found: ${planPath}`);
+    return;
+  }
+
+  if (!VALID_PLAN_STATUSES.includes(status)) {
+    log('status', `Invalid status "${status}" — must be one of: ${VALID_PLAN_STATUSES.join(', ')}`);
+    return;
+  }
+
+  const plan = readJSON(planPath);
+  if (!plan[item]) {
+    log('status', `Unknown enhance item: ${item}`);
+    return;
+  }
+
+  plan[item].status = status;
+  plan[item].updatedAt = new Date().toISOString();
+  if (error) plan[item].error = error;
+
+  writeJSON(planPath, plan);
+  log('status', `Updated ${item} status to: ${status}`);
+}
+
+/**
+ * Mark the enhance step as complete in video-project.json.
+ * Reads the enhance plan to determine final status of each item.
+ * @param {object} options
+ * @param {string} options.projectDir  - Absolute path to the project directory
+ */
+export function completePlan(options) {
+  const { projectDir } = options;
+  const resolvedDir = path.resolve(projectDir);
+  const projectJsonPath = path.join(resolvedDir, 'video-project.json');
+  const planPath = path.join(resolvedDir, 'enhance', 'enhance-plan.json');
+
+  let plan = null;
+  if (fs.existsSync(planPath)) {
+    plan = readJSON(planPath);
+  }
+
+  const extras = {};
+  if (plan) {
+    extras.music = plan.music?.status || 'skipped';
+    extras.thumbnail = plan.thumbnail?.status || 'skipped';
+  }
+
+  updateStepStatus(projectJsonPath, 'enhance', 'complete', extras);
+  log('complete', `Enhance step marked complete (music: ${extras.music || 'n/a'}, thumbnail: ${extras.thumbnail || 'n/a'})`);
+}
+
 // ---------------------------------------------------------------------------
 // CLI entry point
 // ---------------------------------------------------------------------------
@@ -306,6 +372,8 @@ async function main() {
       template: { type: 'string', short: 't', default: 'whiteboard' },
       'music-only': { type: 'boolean', default: false },
       'thumbnail-only': { type: 'boolean', default: false },
+      'update-status': { type: 'string' },
+      complete: { type: 'boolean', default: false },
       help: { type: 'boolean', short: 'h', default: false },
     },
     strict: true,
@@ -326,6 +394,8 @@ Options:
   --template, -t      Template name override (default: whiteboard)
   --music-only        Generate only the music prompt
   --thumbnail-only    Generate only the thumbnail prompt
+  --update-status     Update plan item status: "music complete" or "thumbnail skipped"
+  --complete          Mark enhance step as complete in video-project.json
   --help, -h          Show this help message
 
 Outputs:
@@ -338,6 +408,23 @@ Outputs:
 
   try {
     const opts = { projectDir: values.project, template: values.template };
+
+    if (values.complete) {
+      completePlan({ projectDir: values.project });
+      console.log('\nEnhance step marked complete.');
+      process.exit(0);
+    }
+
+    if (values['update-status']) {
+      const parts = values['update-status'].split(/\s+/);
+      if (parts.length < 2) {
+        console.error('Usage: --update-status "music complete" or --update-status "thumbnail skipped"');
+        process.exit(1);
+      }
+      updatePlanStatus({ projectDir: values.project, item: parts[0], status: parts[1] });
+      console.log(`\n${parts[0]} status updated to: ${parts[1]}`);
+      process.exit(0);
+    }
 
     if (values['music-only']) {
       const result = await generateMusic(opts);

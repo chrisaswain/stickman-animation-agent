@@ -404,6 +404,8 @@ test('5. Gemini enhancer module loading — verify exports', async () => {
   assert.ok(typeof mod.generateMusic === 'function', 'Must export generateMusic function');
   assert.ok(typeof mod.generateThumbnail === 'function', 'Must export generateThumbnail function');
   assert.ok(typeof mod.enhance === 'function', 'Must export enhance function');
+  assert.ok(typeof mod.updatePlanStatus === 'function', 'Must export updatePlanStatus function');
+  assert.ok(typeof mod.completePlan === 'function', 'Must export completePlan function');
   assert.ok(typeof mod.default === 'function', 'Must have default export (function)');
 
   console.log('  [PASS] gemini-enhancer.js imports and exports verified');
