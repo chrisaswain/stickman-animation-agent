@@ -1,0 +1,13 @@
+{
+  "name": "@stickman/render-pipeline",
+  "version": "0.1.0",
+  "description": "Render and assembly pipeline — HyperFrames scene rendering + FFmpeg audio/video assembly",
+  "type": "module",
+  "main": "pipeline.js",
+  "scripts": {
+    "render": "node pipeline.js"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
