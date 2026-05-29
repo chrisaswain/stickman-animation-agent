@@ -39,7 +39,8 @@
     "gsapCdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
     "drawSpeed": 1.0,
     "drawEasing": "power1.inOut",
-    "handDrawnFilter": true
+    "handDrawnFilter": true,
+    "backgroundStyle": "ruled-lines"
   },
   "layout": {
     "landscape": {

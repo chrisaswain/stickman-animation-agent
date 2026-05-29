@@ -916,8 +916,12 @@ function generateSVGDefs(template, characters) {
   defs.push(`    <circle cx="5" cy="5" r="1" fill="${inkLight}" opacity="0.3"/>`);
   defs.push(`  </pattern>`);
 
-  // Vignette gradient for classic-stickman template
-  if (template.name === 'classic-stickman') {
+  // Scanline + vignette defs for scanline-vignette background style
+  if (template.animation?.backgroundStyle === 'scanline-vignette') {
+    const gridColor = template.palette?.inkLight || '#888888';
+    defs.push(`  <pattern id="scanline-pattern" width="1" height="4" patternUnits="userSpaceOnUse">`);
+    defs.push(`    <line x1="0" y1="0" x2="1" y2="0" stroke="${gridColor}" stroke-width="0.5" />`);
+    defs.push(`  </pattern>`);
     defs.push(`  <radialGradient id="vignette-grad" cx="50%" cy="50%" r="70%">`);
     defs.push(`    <stop offset="0%" stop-color="transparent" />`);
     defs.push(`    <stop offset="100%" stop-color="#000000" />`);
@@ -1040,10 +1044,9 @@ function generateBackgroundDetails(sceneDef, template, width, height) {
   const bg = sceneDef.background || template.palette?.background || '#FFFFFF';
   const lines = [];
 
-  // For whiteboard template: add subtle parchment texture lines
-  if (template.name === 'whiteboard') {
+  // Ruled lines background (whiteboard template)
+  if (template.animation?.backgroundStyle === 'ruled-lines') {
     const inkLight = template.palette?.inkLight || '#4A4A4A';
-    // Subtle ruled lines
     for (let y = 200; y < height; y += 200) {
       lines.push(
         `    <line x1="80" y1="${y}" x2="${width - 80}" y2="${y}" ` +
@@ -1052,17 +1055,11 @@ function generateBackgroundDetails(sceneDef, template, width, height) {
     }
   }
 
-  // For classic-stickman template: subtle grid/scanline pattern
-  if (template.name === 'classic-stickman') {
-    const gridColor = template.palette?.inkLight || '#888888';
-    // Horizontal scanlines
-    for (let y = 0; y < height; y += 4) {
-      lines.push(
-        `    <line x1="0" y1="${y}" x2="${width}" y2="${y}" ` +
-        `stroke="${gridColor}" stroke-width="0.5" opacity="0.03" />`
-      );
-    }
-    // Corner vignette
+  // Scanline + vignette background (classic-stickman template)
+  if (template.animation?.backgroundStyle === 'scanline-vignette') {
+    lines.push(
+      `    <rect width="${width}" height="${height}" fill="url(#scanline-pattern)" opacity="0.03" />`
+    );
     lines.push(
       `    <rect width="${width}" height="${height}" fill="url(#vignette-grad)" opacity="0.4" />`
     );

@@ -529,6 +529,7 @@ test('8. Classic-stickman compositor — produces HTML with correct styling', ()
   assert.ok(html.includes('#0A0A0A'), 'Output must use dark background color');
   assert.ok(html.includes('Space Mono'), 'Output must reference Space Mono font');
   assert.ok(html.includes('g[id^="char-"]'), 'Output must include characterStroke CSS override');
+  assert.ok(html.includes('scanline-pattern'), 'Output must include scanline pattern');
   assert.ok(html.includes('vignette-grad'), 'Output must include vignette gradient');
   assert.ok(!html.includes('filter="url(#hand-drawn)"'), 'Output must NOT include hand-drawn filter');
 
