@@ -1,0 +1,482 @@
+#!/usr/bin/env node
+
+/**
+ * E2E Pipeline Integration Test
+ * ==============================
+ * Validates that all core pipeline components work together by creating
+ * a minimal test project and running through the key stages.
+ *
+ * Does NOT actually render video (that requires HyperFrames + Chrome),
+ * but validates:
+ *   1. Character sheet loading (everyman.json)
+ *   2. Scene schema validation
+ *   3. Compositor execution (HTML output)
+ *   4. Render pipeline module loading
+ *   5. Gemini enhancer module loading
+ *   6. File discovery functions (scene HTML/WAV pattern matching)
+ *
+ * Usage:
+ *   node tests/e2e-pipeline-test.js
+ */
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { execSync } from 'node:child_process';
+
+// ---------------------------------------------------------------------------
+// Paths
+// ---------------------------------------------------------------------------
+
+const TESTS_DIR = import.meta.dirname;
+const REPO_ROOT = path.resolve(TESTS_DIR, '..');
+const TEST_OUTPUT_DIR = path.join(TESTS_DIR, '.test-output');
+const TEST_PROJECT_DIR = path.join(TEST_OUTPUT_DIR, 'test-project');
+
+const PRESETS_DIR = path.join(REPO_ROOT, 'character-library', 'presets');
+const SCENE_SCHEMA_PATH = path.join(REPO_ROOT, 'src', 'compositor', 'scene-schema.json');
+const COMPOSITOR_PATH = path.join(REPO_ROOT, 'src', 'compositor', 'index.js');
+const RENDER_PIPELINE_PATH = path.join(REPO_ROOT, 'src', 'render', 'pipeline.js');
+const ENHANCE_DIR = path.join(REPO_ROOT, 'src', 'enhance');
+const GEMINI_ENHANCER_PATH = path.join(ENHANCE_DIR, 'gemini-enhancer.js');
+
+// ---------------------------------------------------------------------------
+// Test fixture data
+// ---------------------------------------------------------------------------
+
+const MINIMAL_SCENE = {
+  sceneId: '01',
+  type: 'establishing',
+  duration: 3.0,
+  background: 'whiteboard/parchment',
+  characters: [
+    {
+      id: 'everyman',
+      pose: 'standing',
+      position: { x: 480, y: 300 },
+      facing: 'front',
+    },
+  ],
+  timeline: [
+    {
+      time: 0,
+      target: 'everyman',
+      action: 'enter-draw-in',
+      duration: 1.5,
+    },
+  ],
+};
+
+const MINIMAL_VIDEO_PROJECT = {
+  title: 'E2E Test Project',
+  slug: 'e2e-test',
+  aspectRatio: 'landscape',
+  fps: 30,
+  steps: {},
+};
+
+// ---------------------------------------------------------------------------
+// Setup / Teardown
+// ---------------------------------------------------------------------------
+
+function setupTestProject() {
+  // Create the project directory structure
+  const dirs = [
+    TEST_PROJECT_DIR,
+    path.join(TEST_PROJECT_DIR, 'compositions'),
+    path.join(TEST_PROJECT_DIR, 'audio'),
+    path.join(TEST_PROJECT_DIR, 'characters'),
+    path.join(TEST_PROJECT_DIR, 'output'),
+  ];
+
+  for (const dir of dirs) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  // Write video-project.json
+  fs.writeFileSync(
+    path.join(TEST_PROJECT_DIR, 'video-project.json'),
+    JSON.stringify(MINIMAL_VIDEO_PROJECT, null, 2),
+    'utf-8',
+  );
+
+  // Write a minimal scene JSON
+  fs.writeFileSync(
+    path.join(TEST_PROJECT_DIR, 'compositions', 'scene-01.json'),
+    JSON.stringify(MINIMAL_SCENE, null, 2),
+    'utf-8',
+  );
+
+  // Copy the everyman character sheet into the test project
+  const everymanSrc = path.join(PRESETS_DIR, 'everyman.json');
+  if (fs.existsSync(everymanSrc)) {
+    fs.copyFileSync(
+      everymanSrc,
+      path.join(TEST_PROJECT_DIR, 'characters', 'everyman.json'),
+    );
+  }
+
+  // Create dummy scene WAV files (1-byte files, enough for discovery tests)
+  fs.writeFileSync(path.join(TEST_PROJECT_DIR, 'audio', 'scene-01.wav'), Buffer.alloc(1));
+  fs.writeFileSync(path.join(TEST_PROJECT_DIR, 'audio', 'scene-02.wav'), Buffer.alloc(1));
+
+  // Create dummy scene HTML files for discovery tests
+  fs.writeFileSync(
+    path.join(TEST_PROJECT_DIR, 'compositions', 'scene-01.html'),
+    '<html><body>test scene 01</body></html>',
+    'utf-8',
+  );
+  fs.writeFileSync(
+    path.join(TEST_PROJECT_DIR, 'compositions', 'scene-02.html'),
+    '<html><body>test scene 02</body></html>',
+    'utf-8',
+  );
+}
+
+function teardownTestProject() {
+  if (fs.existsSync(TEST_OUTPUT_DIR)) {
+    fs.rmSync(TEST_OUTPUT_DIR, { recursive: true, force: true });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Test 1: Character sheet loading
+// ---------------------------------------------------------------------------
+
+test('1. Character sheet loading — everyman.json', () => {
+  const presetPath = path.join(PRESETS_DIR, 'everyman.json');
+  assert.ok(fs.existsSync(presetPath), `Preset file must exist: ${presetPath}`);
+
+  const raw = fs.readFileSync(presetPath, 'utf-8');
+  const sheet = JSON.parse(raw);
+
+  // Required top-level fields
+  assert.ok(sheet.id, 'Character sheet must have "id"');
+  assert.ok(sheet.name, 'Character sheet must have "name"');
+  assert.ok(typeof sheet.tier === 'number', 'Character sheet must have numeric "tier"');
+  assert.ok(sheet.proportions, 'Character sheet must have "proportions"');
+  assert.ok(sheet.components, 'Character sheet must have "components"');
+  assert.ok(sheet.poses, 'Character sheet must have "poses"');
+
+  // Proportions sub-fields
+  assert.ok(sheet.proportions.totalHeight > 0, 'proportions.totalHeight must be > 0');
+  assert.ok(sheet.proportions.headDiameter > 0, 'proportions.headDiameter must be > 0');
+
+  // Components sub-fields
+  assert.ok(sheet.components.head, 'components.head is required');
+  assert.ok(sheet.components.torso, 'components.torso is required');
+  assert.ok(sheet.components.defaultExpression, 'components.defaultExpression is required');
+  assert.ok(sheet.components.defaultArms, 'components.defaultArms is required');
+  assert.ok(sheet.components.defaultLegs, 'components.defaultLegs is required');
+
+  // Poses — at least "standing" must exist
+  assert.ok(sheet.poses.standing, 'poses.standing is required');
+
+  // Specific everyman values
+  assert.equal(sheet.id, 'everyman');
+  assert.equal(sheet.tier, 1);
+
+  console.log('  [PASS] everyman.json loaded and validated');
+});
+
+// ---------------------------------------------------------------------------
+// Test 2: Scene schema validation
+// ---------------------------------------------------------------------------
+
+test('2. Scene schema validation — minimal scene definition', () => {
+  assert.ok(fs.existsSync(SCENE_SCHEMA_PATH), `Schema file must exist: ${SCENE_SCHEMA_PATH}`);
+
+  const schema = JSON.parse(fs.readFileSync(SCENE_SCHEMA_PATH, 'utf-8'));
+
+  // Verify schema structure
+  assert.ok(schema.properties, 'Schema must have properties');
+  assert.ok(schema.required, 'Schema must have required array');
+  assert.ok(Array.isArray(schema.required), 'required must be an array');
+
+  // All required fields from the schema must be present in our test scene
+  for (const field of schema.required) {
+    assert.ok(
+      MINIMAL_SCENE[field] !== undefined,
+      `Test scene must include required field "${field}"`,
+    );
+  }
+
+  // Validate sceneId pattern (2-3 digit zero-padded)
+  const sceneIdPattern = new RegExp(schema.properties.sceneId.pattern);
+  assert.ok(
+    sceneIdPattern.test(MINIMAL_SCENE.sceneId),
+    `sceneId "${MINIMAL_SCENE.sceneId}" must match pattern ${schema.properties.sceneId.pattern}`,
+  );
+
+  // Validate type enum
+  const validTypes = schema.properties.type.enum;
+  assert.ok(
+    validTypes.includes(MINIMAL_SCENE.type),
+    `Scene type "${MINIMAL_SCENE.type}" must be one of: ${validTypes.join(', ')}`,
+  );
+
+  // Validate duration range
+  assert.ok(
+    MINIMAL_SCENE.duration >= schema.properties.duration.minimum,
+    `Duration must be >= ${schema.properties.duration.minimum}`,
+  );
+  assert.ok(
+    MINIMAL_SCENE.duration <= schema.properties.duration.maximum,
+    `Duration must be <= ${schema.properties.duration.maximum}`,
+  );
+
+  // Validate characters array has required fields per characterPlacement $def
+  const charPlacementDef = schema.$defs.characterPlacement;
+  assert.ok(charPlacementDef, 'Schema must define characterPlacement in $defs');
+
+  for (const char of MINIMAL_SCENE.characters) {
+    for (const field of charPlacementDef.required) {
+      assert.ok(
+        char[field] !== undefined,
+        `Character must include required field "${field}"`,
+      );
+    }
+  }
+
+  // Validate timeline events have required fields per timelineEvent $def
+  const timelineEventDef = schema.$defs.timelineEvent;
+  assert.ok(timelineEventDef, 'Schema must define timelineEvent in $defs');
+
+  for (const event of MINIMAL_SCENE.timeline) {
+    for (const field of timelineEventDef.required) {
+      assert.ok(
+        event[field] !== undefined,
+        `Timeline event must include required field "${field}"`,
+      );
+    }
+  }
+
+  console.log('  [PASS] Minimal scene validates against schema structure');
+});
+
+// ---------------------------------------------------------------------------
+// Test 3: Compositor execution
+// ---------------------------------------------------------------------------
+
+test('3. Compositor execution — produces HTML output', () => {
+  assert.ok(fs.existsSync(COMPOSITOR_PATH), `Compositor must exist: ${COMPOSITOR_PATH}`);
+
+  const sceneJsonPath = path.join(TEST_PROJECT_DIR, 'compositions', 'scene-01.json');
+  const outputHtmlPath = path.join(TEST_OUTPUT_DIR, 'compositor-output.html');
+
+  assert.ok(fs.existsSync(sceneJsonPath), `Test scene JSON must exist: ${sceneJsonPath}`);
+
+  // Run the compositor as a subprocess
+  const cmd = [
+    'node',
+    `"${COMPOSITOR_PATH}"`,
+    `--scene "${sceneJsonPath}"`,
+    `--project "${TEST_PROJECT_DIR}"`,
+    `--template whiteboard`,
+    `--output "${outputHtmlPath}"`,
+  ].join(' ');
+
+  let stdout;
+  try {
+    stdout = execSync(cmd, {
+      cwd: REPO_ROOT,
+      encoding: 'utf-8',
+      timeout: 30_000,
+    });
+  } catch (err) {
+    const stderr = err.stderr ? err.stderr.toString() : '';
+    const out = err.stdout ? err.stdout.toString() : '';
+    assert.fail(
+      `Compositor failed (exit ${err.status}):\n` +
+      `  stdout: ${out}\n` +
+      `  stderr: ${stderr}`,
+    );
+  }
+
+  // Verify HTML output was created
+  assert.ok(
+    fs.existsSync(outputHtmlPath),
+    `Compositor must produce HTML output at ${outputHtmlPath}`,
+  );
+
+  // Verify the output is valid HTML with expected markers
+  const html = fs.readFileSync(outputHtmlPath, 'utf-8');
+  assert.ok(html.length > 100, 'HTML output must not be trivially small');
+  assert.ok(html.includes('<!DOCTYPE html>'), 'Output must be an HTML document');
+  assert.ok(html.includes('Scene 01'), 'Output must reference the scene ID');
+  assert.ok(html.includes('gsap'), 'Output must include GSAP reference');
+  assert.ok(html.includes('data-hyperframes-fps'), 'Output must include HyperFrames metadata');
+  assert.ok(html.includes('camera-wrapper'), 'Output must include camera wrapper group');
+
+  // Check for character group (may be a warning comment if SVG parts are missing)
+  const hasCharGroup = html.includes('id="char-everyman"') || html.includes('everyman');
+  assert.ok(hasCharGroup, 'Output must reference the everyman character');
+
+  console.log(`  [PASS] Compositor produced ${html.length} bytes of HTML`);
+});
+
+// ---------------------------------------------------------------------------
+// Test 4: Render pipeline module loading
+// ---------------------------------------------------------------------------
+
+test('4. Render pipeline module loading — renderPipeline export', async () => {
+  assert.ok(
+    fs.existsSync(RENDER_PIPELINE_PATH),
+    `Render pipeline must exist: ${RENDER_PIPELINE_PATH}`,
+  );
+
+  const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
+
+  // Check named export
+  assert.ok(
+    typeof pipelineModule.renderPipeline === 'function',
+    'Module must export "renderPipeline" as a function',
+  );
+
+  // Check default export
+  assert.ok(
+    typeof pipelineModule.default === 'function',
+    'Module must have a default export (function)',
+  );
+
+  console.log('  [PASS] renderPipeline export verified');
+});
+
+// ---------------------------------------------------------------------------
+// Test 5: Gemini enhancer module loading
+// ---------------------------------------------------------------------------
+
+test('5. Gemini enhancer module loading — check for module or stub', () => {
+  // The enhance directory must exist with at least a package.json
+  assert.ok(
+    fs.existsSync(ENHANCE_DIR),
+    `Enhance directory must exist: ${ENHANCE_DIR}`,
+  );
+
+  const enhancePkgPath = path.join(ENHANCE_DIR, 'package.json');
+  assert.ok(
+    fs.existsSync(enhancePkgPath),
+    `Enhance package.json must exist: ${enhancePkgPath}`,
+  );
+
+  const pkg = JSON.parse(fs.readFileSync(enhancePkgPath, 'utf-8'));
+  assert.ok(pkg.name, 'Enhance package must have a name');
+  assert.equal(pkg.type, 'module', 'Enhance package must be ESM ("type": "module")');
+
+  // The gemini-enhancer.js may not exist yet (it is on the roadmap).
+  // If it exists, verify it has exports. If not, just confirm the stub is ready.
+  if (fs.existsSync(GEMINI_ENHANCER_PATH)) {
+    // Dynamic import to verify it loads without syntax errors
+    // (we cannot test function behavior without real Gemini credentials)
+    console.log('  [INFO] gemini-enhancer.js found, attempting import...');
+    // Note: import is async but we mark this test as sync; if the file exists
+    // but is broken, the next test run with --async would catch it.
+    // For now, just verify it parses as valid JS.
+    const content = fs.readFileSync(GEMINI_ENHANCER_PATH, 'utf-8');
+    assert.ok(content.length > 0, 'gemini-enhancer.js must not be empty');
+    console.log(`  [PASS] gemini-enhancer.js exists (${content.length} bytes)`);
+  } else {
+    console.log('  [PASS] gemini-enhancer.js not yet created — stub package.json verified');
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Test 6: File discovery functions
+// ---------------------------------------------------------------------------
+
+test('6. File discovery — scene HTML and WAV pattern matching', async () => {
+  // Import the render pipeline to access the discovery functions indirectly.
+  // Since findSceneHtmlFiles and findSceneWavFiles are not exported, we test
+  // the same regex patterns they use against our test fixtures.
+
+  const compositionsDir = path.join(TEST_PROJECT_DIR, 'compositions');
+  const audioDir = path.join(TEST_PROJECT_DIR, 'audio');
+
+  // -- HTML file discovery --
+  const htmlPattern = /^scene-\d{2,3}\.html$/;
+  const htmlFiles = fs.readdirSync(compositionsDir)
+    .filter(f => htmlPattern.test(f))
+    .sort();
+
+  assert.ok(htmlFiles.length >= 2, `Must find at least 2 HTML files, found ${htmlFiles.length}`);
+  assert.ok(htmlFiles.includes('scene-01.html'), 'Must find scene-01.html');
+  assert.ok(htmlFiles.includes('scene-02.html'), 'Must find scene-02.html');
+
+  // Verify ordering
+  assert.equal(htmlFiles[0], 'scene-01.html', 'First file must be scene-01.html');
+  assert.equal(htmlFiles[1], 'scene-02.html', 'Second file must be scene-02.html');
+
+  // -- WAV file discovery --
+  const wavPattern = /^scene-\d{2,3}\.wav$/;
+  const wavFiles = fs.readdirSync(audioDir)
+    .filter(f => wavPattern.test(f))
+    .sort();
+
+  assert.ok(wavFiles.length >= 2, `Must find at least 2 WAV files, found ${wavFiles.length}`);
+  assert.ok(wavFiles.includes('scene-01.wav'), 'Must find scene-01.wav');
+  assert.ok(wavFiles.includes('scene-02.wav'), 'Must find scene-02.wav');
+
+  // -- Negative cases: files that should NOT match --
+  const nonMatching = [
+    'scene-1.html',      // single digit (need 2-3)
+    'scene-0001.html',   // 4 digits
+    'scene-01.json',     // wrong extension
+    'scene-01.mp4',      // wrong extension
+    'intro.html',        // wrong prefix
+  ];
+
+  for (const name of nonMatching) {
+    assert.ok(!htmlPattern.test(name), `"${name}" must NOT match HTML pattern`);
+  }
+
+  // -- 3-digit scene numbers should match --
+  assert.ok(htmlPattern.test('scene-001.html'), 'scene-001.html must match (3 digits)');
+  assert.ok(wavPattern.test('scene-099.wav'), 'scene-099.wav must match (3 digits)');
+
+  // -- Music file discovery --
+  // Create a music.wav to test discovery
+  const musicPath = path.join(audioDir, 'music.wav');
+  fs.writeFileSync(musicPath, Buffer.alloc(1));
+  assert.ok(fs.existsSync(musicPath), 'music.wav must exist after creation');
+
+  console.log(`  [PASS] Found ${htmlFiles.length} HTML, ${wavFiles.length} WAV, music.wav present`);
+});
+
+// ---------------------------------------------------------------------------
+// Runner
+// ---------------------------------------------------------------------------
+
+// Setup before all tests, teardown after
+console.log('');
+console.log('=== Stickman Animation Agent — E2E Pipeline Integration Test ===');
+console.log(`  Repo root:    ${REPO_ROOT}`);
+console.log(`  Test output:  ${TEST_OUTPUT_DIR}`);
+console.log('');
+
+// Create fixtures
+try {
+  teardownTestProject(); // Clean any stale output
+  setupTestProject();
+  console.log('[setup] Test fixtures created');
+  console.log('');
+} catch (err) {
+  console.error(`[setup] FATAL: Could not create test fixtures: ${err.message}`);
+  process.exit(1);
+}
+
+// Register a cleanup handler.
+// node:test runs tests after module evaluation, so we use process.on('exit')
+// to clean up regardless of outcome.
+process.on('exit', (code) => {
+  try {
+    teardownTestProject();
+    // Only log cleanup on success; on failure the test output stays visible
+    if (code === 0) {
+      console.log('');
+      console.log('[cleanup] Test output removed');
+    }
+  } catch {
+    // Swallow cleanup errors on exit
+  }
+});

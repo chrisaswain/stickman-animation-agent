@@ -1,0 +1,7 @@
+{
+  "name": "@stickman/gemini-enhancer",
+  "version": "0.1.0",
+  "description": "Gemini Media MCP integration for music and thumbnail generation",
+  "type": "module",
+  "main": "gemini-enhancer.js"
+}
