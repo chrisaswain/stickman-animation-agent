@@ -277,7 +277,6 @@ function assembleCharacter(charSheet, scenePlacement, template) {
 
   // Load SVGs and parse attach points
   const loaded = {};
-  const attachPoints = {};
 
   // Head
   loaded.head = loadAndParse('head', 'heads', slots.head, tier);
@@ -287,14 +286,28 @@ function assembleCharacter(charSheet, scenePlacement, template) {
   if (slots.hair && slots.hair !== 'bald') {
     loaded.hair = loadAndParse('hair', 'hair', slots.hair, tier);
   }
-  // Arms
-  loaded.arm_right = loadAndParse('arm_right', 'arms', slots.arm_right, tier);
-  loaded.arm_left = loadAndParse('arm_left', 'arms', slots.arm_left, tier);
+
+  // Arms — detect composite vs individual arm SVGs.
+  // Composite arms (e.g., crossed) have shoulder-left + shoulder-right instead of shoulder.
+  // They contain both arms in one SVG and are rendered once as arm_composite.
+  const armProbe = loadAndParse('arm_right', 'arms', slots.arm_right, tier);
+  const isCompositeArm = armProbe &&
+    (armProbe.attachPoints['shoulder-left'] || armProbe.attachPoints['shoulder-right']) &&
+    !armProbe.attachPoints.shoulder;
+
+  if (isCompositeArm) {
+    loaded.arm_composite = armProbe;
+    // Composite arms have no wrist points — skip hands
+  } else {
+    loaded.arm_right = armProbe;
+    loaded.arm_left = loadAndParse('arm_left', 'arms', slots.arm_left, tier);
+    // Hands (only for individual arms that have wrist points)
+    loaded.hand_right = loadAndParse('hand_right', 'hands', slots.hand_right, tier);
+    loaded.hand_left = loadAndParse('hand_left', 'hands', slots.hand_left, tier);
+  }
+
   // Legs
   loaded.legs = loadAndParse('legs', 'legs', slots.legs, tier);
-  // Hands
-  loaded.hand_right = loadAndParse('hand_right', 'hands', slots.hand_right, tier);
-  loaded.hand_left = loadAndParse('hand_left', 'hands', slots.hand_left, tier);
   // Feet
   loaded.foot_right = loadAndParse('foot_right', 'feet', slots.foot_right, tier);
   loaded.foot_left = loadAndParse('foot_left', 'feet', slots.foot_left, tier);
@@ -312,23 +325,64 @@ function assembleCharacter(charSheet, scenePlacement, template) {
   const charY = scenePlacement.position?.y || 400;
   const charScale = scenePlacement.scale || 1.0;
 
-  // The character is assembled bottom-up for correct z-ordering:
-  // feet -> legs -> torso -> arms -> hands -> head -> hair -> expression -> accessories
-  const renderOrder = [
-    'foot_left', 'foot_right',
-    'legs',
-    'torso',
-    'arm_left', 'arm_right',
-    'hand_left', 'hand_right',
-    'head',
-    'hair',
-  ];
+  // Assemble bottom-up for correct z-ordering.
+  // Hands are nested INSIDE arm groups so GSAP rotations propagate.
+  // Feet are nested INSIDE the legs group for the same reason.
 
-  for (const partName of renderOrder) {
-    const comp = loaded[partName];
-    if (!comp) continue;
-    const pos = positions[partName] || { x: 0, y: 0 };
-    parts.push(wrapPart(partName, comp.content, pos.x, pos.y));
+  // Legs group (with feet nested inside)
+  if (loaded.legs) {
+    const legsPos = positions.legs || { x: 0, y: 0 };
+    const footLeftContent = loaded.foot_left
+      ? wrapChildPart('foot_left', loaded.foot_left.content, positions.foot_left, legsPos)
+      : '';
+    const footRightContent = loaded.foot_right
+      ? wrapChildPart('foot_right', loaded.foot_right.content, positions.foot_right, legsPos)
+      : '';
+    parts.push(wrapPartWithChildren('legs', loaded.legs.content, legsPos.x, legsPos.y,
+      footLeftContent + footRightContent));
+  }
+
+  // Torso
+  if (loaded.torso) {
+    const pos = positions.torso || { x: 0, y: 0 };
+    parts.push(wrapPart('torso', loaded.torso.content, pos.x, pos.y));
+  }
+
+  // Arms — composite or individual
+  if (loaded.arm_composite) {
+    // Composite arms (e.g., crossed) — single SVG for both arms, no hands
+    const pos = positions.arm_composite || { x: 0, y: 0 };
+    parts.push(wrapPart('arm_composite', loaded.arm_composite.content, pos.x, pos.y));
+  } else {
+    // Individual arms with hands nested inside
+    if (loaded.arm_left) {
+      const armPos = positions.arm_left || { x: 0, y: 0 };
+      const handContent = loaded.hand_left
+        ? wrapChildPart('hand_left', loaded.hand_left.content, positions.hand_left, armPos, true)
+        : '';
+      parts.push(wrapPartWithChildren('arm_left', loaded.arm_left.content, armPos.x, armPos.y,
+        handContent, ' scale(-1, 1)'));
+    }
+    if (loaded.arm_right) {
+      const armPos = positions.arm_right || { x: 0, y: 0 };
+      const handContent = loaded.hand_right
+        ? wrapChildPart('hand_right', loaded.hand_right.content, positions.hand_right, armPos)
+        : '';
+      parts.push(wrapPartWithChildren('arm_right', loaded.arm_right.content, armPos.x, armPos.y,
+        handContent));
+    }
+  }
+
+  // Head
+  if (loaded.head) {
+    const pos = positions.head || { x: 0, y: 0 };
+    parts.push(wrapPart('head', loaded.head.content, pos.x, pos.y));
+  }
+
+  // Hair
+  if (loaded.hair) {
+    const pos = positions.hair || { x: 0, y: 0 };
+    parts.push(wrapPart('hair', loaded.hair.content, pos.x, pos.y));
   }
 
   // Expressions — embed all, show only the active one
@@ -419,24 +473,33 @@ function computePositions(loaded, proportions) {
   }
 
   // Arms: connect to torso shoulder points
-  if (loaded.torso && loaded.arm_right) {
-    const shoulderR = loaded.torso.attachPoints['right-shoulder'] || { x: 37, y: 7 };
-    const armShoulder = loaded.arm_right.attachPoints.shoulder || { x: 0, y: 0 };
-    positions.arm_right = {
-      x: (positions.torso?.x || 0) + shoulderR.x - armShoulder.x,
-      y: (positions.torso?.y || 0) + shoulderR.y - armShoulder.y,
+  if (loaded.torso && loaded.arm_composite) {
+    // Composite arms (e.g., crossed) — position at shoulder midpoint
+    const shoulderL = loaded.torso.attachPoints['left-shoulder'] || { x: -34, y: 10 };
+    const shoulderR = loaded.torso.attachPoints['right-shoulder'] || { x: 34, y: 10 };
+    const midX = (shoulderL.x + shoulderR.x) / 2;
+    const midY = (shoulderL.y + shoulderR.y) / 2;
+    positions.arm_composite = {
+      x: (positions.torso?.x || 0) + midX,
+      y: (positions.torso?.y || 0) + midY,
     };
-  }
-  if (loaded.torso && loaded.arm_left) {
-    const shoulderL = loaded.torso.attachPoints['left-shoulder'] || { x: -37, y: 7 };
-    const armShoulder = loaded.arm_left.attachPoints.shoulder ||
-                        loaded.arm_left.attachPoints['shoulder-left'] || { x: 0, y: 0 };
-    positions.arm_left = {
-      x: (positions.torso?.x || 0) + shoulderL.x - armShoulder.x,
-      y: (positions.torso?.y || 0) + shoulderL.y - armShoulder.y,
-    };
-    // Mirror the left arm
-    positions.arm_left.mirror = true;
+  } else {
+    if (loaded.torso && loaded.arm_right) {
+      const shoulderR = loaded.torso.attachPoints['right-shoulder'] || { x: 37, y: 7 };
+      const armShoulder = loaded.arm_right.attachPoints.shoulder || { x: 0, y: 0 };
+      positions.arm_right = {
+        x: (positions.torso?.x || 0) + shoulderR.x - armShoulder.x,
+        y: (positions.torso?.y || 0) + shoulderR.y - armShoulder.y,
+      };
+    }
+    if (loaded.torso && loaded.arm_left) {
+      const shoulderL = loaded.torso.attachPoints['left-shoulder'] || { x: -37, y: 7 };
+      const armShoulder = loaded.arm_left.attachPoints.shoulder || { x: 0, y: 0 };
+      positions.arm_left = {
+        x: (positions.torso?.x || 0) + shoulderL.x - armShoulder.x,
+        y: (positions.torso?.y || 0) + shoulderL.y - armShoulder.y,
+      };
+    }
   }
 
   // Legs: connect to torso hip point (use center between left and right hip)
@@ -492,8 +555,9 @@ function computePositions(loaded, proportions) {
   if (loaded.arm_left && loaded.hand_left) {
     const wrist = loaded.arm_left.attachPoints.wrist || { x: 24, y: 58 };
     const handWrist = loaded.hand_left.attachPoints.wrist || { x: 0, y: 0 };
+    // The left arm is mirrored (scale(-1,1)), so its wrist.x is negated in visual space
     positions.hand_left = {
-      x: (positions.arm_left?.x || 0) + wrist.x - handWrist.x,
+      x: (positions.arm_left?.x || 0) - wrist.x + handWrist.x,
       y: (positions.arm_left?.y || 0) + wrist.y - handWrist.y,
     };
     positions.hand_left.mirror = true;
@@ -526,10 +590,38 @@ function computePositions(loaded, proportions) {
  */
 function wrapPart(partName, svgRaw, x, y, extraAttrs = '') {
   const content = extractSVGContent(svgRaw);
-  const mirrorTransform = partName.endsWith('_left') ? ' scale(-1, 1)' : '';
   return (
-    `  <g data-part="${partName}" transform="translate(${x}, ${y})${mirrorTransform}"${extraAttrs}>` +
+    `  <g data-part="${partName}" transform="translate(${x}, ${y})"${extraAttrs}>` +
     `\n    ${content}\n  </g>`
+  );
+}
+
+/**
+ * Wrap a part with optional children nested inside (e.g., arm with hand inside).
+ * The extraTransform is applied after translate (e.g., ' scale(-1, 1)' for mirroring).
+ */
+function wrapPartWithChildren(partName, svgRaw, x, y, childrenSVG, extraTransform = '') {
+  const content = extractSVGContent(svgRaw);
+  return (
+    `  <g data-part="${partName}" transform="translate(${x}, ${y})${extraTransform}">` +
+    `\n    ${content}` +
+    (childrenSVG ? `\n${childrenSVG}` : '') +
+    `\n  </g>`
+  );
+}
+
+/**
+ * Wrap a child part positioned relative to its parent group.
+ * @param {boolean} parentMirrored - if true, negate localX to compensate for parent's scale(-1,1)
+ */
+function wrapChildPart(partName, svgRaw, childAbsPos, parentAbsPos, parentMirrored = false) {
+  const content = extractSVGContent(svgRaw);
+  let localX = (childAbsPos?.x || 0) - (parentAbsPos?.x || 0);
+  const localY = (childAbsPos?.y || 0) - (parentAbsPos?.y || 0);
+  if (parentMirrored) localX = -localX;
+  return (
+    `    <g data-part="${partName}" transform="translate(${localX}, ${localY})">` +
+    `\n      ${content}\n    </g>`
   );
 }
 
@@ -599,12 +691,23 @@ function assembleSpeechBubbles(bubbles, sceneDef, template) {
     const fontSize = template.typography?.dialogueSize || 36;
     const fontFamily = template.typography?.dialogueFont || template.typography?.bodyFont || 'Caveat';
     const ink = template.palette?.ink || template.palette?.primary || '#1A1A1A';
+    const bg = template.palette?.background || '#E5DDD0';
+
+    // Size bubble dynamically based on text length
+    const charWidth = fontSize * 0.35;
+    const textWidth = Math.max(text.length * charWidth, 80);
+    const bw = textWidth + 30; // padding
+    const bh = fontSize + 24;
+    const r = 8; // corner radius
+    const tailX = Math.round(bw * 0.3);
+    const textX = Math.round(bw / 2);
+    const textY = Math.round(bh * 0.6);
 
     parts.push(
       `<g id="speech-${i}" transform="translate(${bx}, ${by})" opacity="0">`,
-      `  <path d="M10,2 C30,0 50,0 70,2 C76,3 78,6 78,12 L78,32 C78,38 76,40 70,40 L28,40 L16,56 L22,40 L10,40 C4,40 2,38 2,32 L2,12 C2,6 4,3 10,2"`,
-      `    stroke="${ink}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
-      `  <text class="bubble-text" x="40" y="26" text-anchor="middle" font-family="${fontFamily}" font-size="${fontSize * 0.6}" fill="${ink}" opacity="0">${text}</text>`,
+      `  <path d="M${r},2 L${bw - r},2 C${bw},2 ${bw},${r} ${bw},${r} L${bw},${bh - r} C${bw},${bh} ${bw - r},${bh} ${bw - r},${bh} L${tailX + 12},${bh} L${tailX},${bh + 16} L${tailX + 6},${bh} L${r},${bh} C0,${bh} 0,${bh - r} 0,${bh - r} L0,${r} C0,2 ${r},2 ${r},2 Z"`,
+      `    stroke="${ink}" stroke-width="2.5" fill="${bg}" stroke-linecap="round"/>`,
+      `  <text class="bubble-text" x="${textX}" y="${textY}" text-anchor="middle" font-family="${fontFamily}" font-size="${fontSize * 0.7}" fill="${ink}" opacity="0">${text}</text>`,
       `</g>`
     );
   }
@@ -640,6 +743,10 @@ function generateTimeline(sceneDef, template) {
   const lines = [];
 
   // --------------- Init block: calculate and set stroke-dashoffset for draw-in ---------------
+  // Build character IDs for targeted init
+  const charIds = (sceneDef.characters || []).map(c => c.id);
+  const charSelectors = charIds.map(id => `#char-${id}`).join(', ');
+
   lines.push(`
 // ============================================================
 // GSAP Timeline — Scene ${sceneDef.sceneId || '??'}
@@ -648,18 +755,41 @@ function generateTimeline(sceneDef, template) {
 
 gsap.registerPlugin();
 
-// Init: calculate stroke-dashoffset for every path (draw-in setup)
-document.querySelectorAll("svg path").forEach(function(path) {
+// Init: set stroke-dashoffset on character body paths (NOT hidden expressions)
+// Only target structural parts — expression paths are handled by expression-change events
+document.querySelectorAll("${charSelectors}").forEach(function(charEl) {
+  // Body structure paths (everything except hidden expression groups)
+  charEl.querySelectorAll('[data-part]:not([data-expression]) path').forEach(function(path) {
+    try {
+      var len = path.getTotalLength();
+      path.style.strokeDasharray = len;
+      path.style.strokeDashoffset = len;
+    } catch(e) {}
+  });
+  // Active expression paths only
+  charEl.querySelectorAll('[data-expression][style*="display: block"] path').forEach(function(path) {
+    try {
+      var len = path.getTotalLength();
+      path.style.strokeDasharray = len;
+      path.style.strokeDashoffset = len;
+    } catch(e) {}
+  });
+  // Hide circles in body structure + active expression
+  charEl.querySelectorAll('[data-part]:not([data-expression]) circle').forEach(function(c) {
+    c.style.opacity = "0";
+  });
+  charEl.querySelectorAll('[data-expression][style*="display: block"] circle').forEach(function(c) {
+    c.style.opacity = "0";
+  });
+});
+
+// Init: set stroke-dashoffset on speech bubble paths
+document.querySelectorAll("[id^='speech-'] path").forEach(function(path) {
   try {
     var len = path.getTotalLength();
     path.style.strokeDasharray = len;
     path.style.strokeDashoffset = len;
-  } catch(e) { /* not a renderable path */ }
-});
-
-// Init: hide circles (used for eyes etc.) — they fade in during draw-in
-document.querySelectorAll("svg circle").forEach(function(c) {
-  c.style.opacity = "0";
+  } catch(e) {}
 });
 
 var tl = gsap.timeline({ paused: true });
@@ -780,19 +910,35 @@ function generateSVGDefs(template, characters) {
   const defs = [];
   defs.push('<defs>');
 
+  // Hand-drawn wobble filter — subtle turbulence that makes SVG paths look ink-drawn
+  defs.push(`  <filter id="hand-drawn">`);
+  defs.push(`    <feTurbulence type="turbulence" baseFrequency="0.015" numOctaves="3" result="noise" seed="10"/>`);
+  defs.push(`    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>`);
+  defs.push(`  </filter>`);
+
   // Crosshatch pattern (used by t-shirt and other clothing)
   defs.push(`  <pattern id="crosshatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">`);
-  defs.push(`    <line x1="0" y1="0" x2="0" y2="8" stroke="${inkLight}" stroke-width="0.8" opacity="0.3"/>`);
+  defs.push(`    <path d="M0,4 L8,4" stroke="${ink}" stroke-width="1.5" stroke-linecap="round"/>`);
+  defs.push(`  </pattern>`);
+
+  // Crosshatch-dense pattern (used by hoodie and heavier clothing)
+  defs.push(`  <pattern id="crosshatch-dense" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">`);
+  defs.push(`    <path d="M0,2.5 L5,2.5" stroke="${ink}" stroke-width="1.5" stroke-linecap="round"/>`);
+  defs.push(`  </pattern>`);
+
+  // Crosshatch-light pattern (used by polo shirts and lighter clothing)
+  defs.push(`  <pattern id="crosshatch-light" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">`);
+  defs.push(`    <path d="M0,5 L10,5" stroke="${ink}" stroke-width="1" stroke-linecap="round" opacity="0.6"/>`);
   defs.push(`  </pattern>`);
 
   // Diagonal lines pattern variant
   defs.push(`  <pattern id="diagonal-lines" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">`);
-  defs.push(`    <line x1="0" y1="0" x2="0" y2="6" stroke="${inkLight}" stroke-width="0.6" opacity="0.25"/>`);
+  defs.push(`    <path d="M0,3 L6,3" stroke="${inkLight}" stroke-width="0.8" stroke-linecap="round" opacity="0.4"/>`);
   defs.push(`  </pattern>`);
 
   // Dots pattern
   defs.push(`  <pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse">`);
-  defs.push(`    <circle cx="5" cy="5" r="1" fill="${inkLight}" opacity="0.2"/>`);
+  defs.push(`    <circle cx="5" cy="5" r="1" fill="${inkLight}" opacity="0.3"/>`);
   defs.push(`  </pattern>`);
 
   // Per-character clothing patterns based on distinguishing features
@@ -884,7 +1030,7 @@ function buildHTML(sceneDef, template, characterSVGs, propSVGs, speechBubbleSVG,
     ${generateBackgroundDetails(sceneDef, template, width, height)}
 
     <!-- Camera wrapper — all scene content moves with this group -->
-    <g class="camera-wrapper" transform-origin="center center">
+    <g class="camera-wrapper" transform-origin="center center" filter="url(#hand-drawn)">
 
       <!-- Props (behind characters) -->
       ${propSVGs}

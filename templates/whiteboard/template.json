@@ -32,7 +32,7 @@
     "defaultEntrance": "drawIn",
     "easing": "power1.inOut",
     "duration": 1.2,
-    "staggerDelay": 0.3,
+    "staggerDelay": 0.04,
     "transitionType": "cut",
     "transitionDuration": 0,
     "fadeOutDuration": 0.15,
