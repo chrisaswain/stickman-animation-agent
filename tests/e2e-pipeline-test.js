@@ -537,10 +537,82 @@ test('8. Classic-stickman compositor — produces HTML with correct styling', ()
 });
 
 // ---------------------------------------------------------------------------
-// Test 9: Subtitle generation
+// Test 9: Comic-panel template loading
 // ---------------------------------------------------------------------------
 
-test('9. Subtitle generation — generateSubtitles produces SRT from timestamps', async () => {
+test('9. Comic-panel template — loads and merges with _base', () => {
+  const templatePath = path.join(REPO_ROOT, 'templates', 'comic-panel', 'template.json');
+  assert.ok(fs.existsSync(templatePath), `Template must exist: ${templatePath}`);
+
+  const template = JSON.parse(fs.readFileSync(templatePath, 'utf-8'));
+
+  assert.equal(template.name, 'comic-panel', 'Template name must be "comic-panel"');
+  assert.equal(template.extends, '_base', 'Must extend _base');
+  assert.equal(template.palette.background, '#FFFFFF', 'Background must be white');
+  assert.equal(template.palette.panelBorder, '#000000', 'Panel border must be black');
+  assert.equal(template.palette.accent, '#FF4444', 'Accent must be red');
+  assert.equal(template.animation.defaultEntrance, 'fade', 'Default entrance must be fade');
+  assert.equal(template.animation.handDrawnFilter, false, 'Hand-drawn filter must be disabled');
+  assert.equal(template.animation.backgroundStyle, 'panel-borders', 'Background style must be panel-borders');
+  assert.ok(template.typography.headingFont.includes('Comic Neue'), 'Must use Comic Neue font');
+
+  console.log('  [PASS] comic-panel template loaded and validated');
+});
+
+// ---------------------------------------------------------------------------
+// Test 10: Comic-panel compositor output
+// ---------------------------------------------------------------------------
+
+test('10. Comic-panel compositor — produces HTML with panel borders', () => {
+  // Use a dialogue scene to get the 2-panel layout
+  const dialogueScene = {
+    ...MINIMAL_SCENE,
+    type: 'dialogue',
+  };
+  const dialogueScenePath = path.join(TEST_PROJECT_DIR, 'compositions', 'scene-dialogue.json');
+  fs.writeFileSync(dialogueScenePath, JSON.stringify(dialogueScene, null, 2), 'utf-8');
+
+  const outputHtmlPath = path.join(TEST_OUTPUT_DIR, 'comic-panel-output.html');
+
+  const cmd = [
+    'node',
+    `"${COMPOSITOR_PATH}"`,
+    `--scene "${dialogueScenePath}"`,
+    `--project "${TEST_PROJECT_DIR}"`,
+    `--template comic-panel`,
+    `--output "${outputHtmlPath}"`,
+  ].join(' ');
+
+  let stdout;
+  try {
+    stdout = execSync(cmd, {
+      cwd: REPO_ROOT,
+      encoding: 'utf-8',
+      timeout: 30_000,
+    });
+  } catch (err) {
+    const stderr = err.stderr ? err.stderr.toString() : '';
+    assert.fail(`Comic-panel compositor failed: ${stderr}`);
+  }
+
+  assert.ok(fs.existsSync(outputHtmlPath), 'Must produce HTML output');
+
+  const html = fs.readFileSync(outputHtmlPath, 'utf-8');
+  assert.ok(html.includes('#FFFFFF'), 'Output must use white background');
+  assert.ok(html.includes('Comic Neue'), 'Output must reference Comic Neue font');
+  assert.ok(html.includes('stroke="#000000"'), 'Output must include panel border strokes');
+  // Dialogue scene should produce a 2-panel vertical split line at midpoint (960)
+  assert.ok(html.includes('x1="960"'), 'Dialogue scene must include vertical split line at x=960');
+  assert.ok(!html.includes('filter="url(#hand-drawn)"'), 'Output must NOT include hand-drawn filter');
+
+  console.log(`  [PASS] Comic-panel compositor produced ${html.length} bytes`);
+});
+
+// ---------------------------------------------------------------------------
+// Test 11: Subtitle generation
+// ---------------------------------------------------------------------------
+
+test('11. Subtitle generation — generateSubtitles produces SRT from timestamps', async () => {
   const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
 
   assert.ok(
@@ -580,10 +652,10 @@ test('9. Subtitle generation — generateSubtitles produces SRT from timestamps'
 });
 
 // ---------------------------------------------------------------------------
-// Test 10: Subtitle generation — graceful skip when no timestamps
+// Test 12: Subtitle generation — graceful skip when no timestamps
 // ---------------------------------------------------------------------------
 
-test('10. Subtitle generation — graceful skip when no timestamps dir', async () => {
+test('12. Subtitle generation — graceful skip when no timestamps dir', async () => {
   const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
 
   // Use a temp project dir with no timestamps
