@@ -77,11 +77,19 @@ export function enterDrawIn(event, defaults) {
   const sel = resolveSelector(event.target);
   const d = dur(event, defaults.drawInDuration || 1.5);
   const e = ease(event, defaults, 'power2.inOut');
-  const stagger = event.stagger || defaults.staggerDelay || 0.08;
+  const stagger = event.stagger || defaults.staggerDelay || 0.04;
+  // Target only structural body paths + active expression, skip hidden expression groups
+  // Use single quotes inside selectors to avoid breaking the outer double-quoted JS string
+  const bodyPaths = `${sel} [data-part]:not([data-expression]) path`;
+  const activeFacePaths = `${sel} [data-expression][style*='display: block'] path`;
+  const bodyCircles = `${sel} [data-part]:not([data-expression]) circle`;
+  const activeFaceCircles = `${sel} [data-expression][style*='display: block'] circle`;
   return [
     `tl.set("${sel}", { opacity: 1 }, ${pos(event)});`,
-    `tl.to("${sel} path", { strokeDashoffset: 0, duration: ${d}, ease: "${e}", stagger: ${stagger} }, ${pos(event)});`,
-    `tl.to("${sel} circle", { opacity: 1, duration: ${d * 0.4}, ease: "${e}" }, ${pos(event)} + ${d * 0.6});`
+    `tl.to("${bodyPaths}", { strokeDashoffset: 0, duration: ${d}, ease: "${e}", stagger: ${stagger} }, ${pos(event)});`,
+    `tl.to("${activeFacePaths}", { strokeDashoffset: 0, duration: ${d * 0.6}, ease: "${e}", stagger: ${stagger} }, ${pos(event)} + ${d * 0.3});`,
+    `tl.to("${bodyCircles}", { opacity: 1, duration: ${d * 0.4}, ease: "${e}" }, ${pos(event)} + ${d * 0.6});`,
+    `tl.to("${activeFaceCircles}", { opacity: 1, duration: ${d * 0.3}, ease: "${e}" }, ${pos(event)} + ${d * 0.6});`,
   ].join('\n');
 }
 
