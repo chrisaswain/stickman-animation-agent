@@ -306,7 +306,7 @@ test('3. Compositor execution — produces HTML output', () => {
   assert.ok(html.includes('<!DOCTYPE html>'), 'Output must be an HTML document');
   assert.ok(html.includes('Scene 01'), 'Output must reference the scene ID');
   assert.ok(html.includes('gsap'), 'Output must include GSAP reference');
-  assert.ok(html.includes('data-hyperframes-fps'), 'Output must include HyperFrames metadata');
+  assert.ok(html.includes('data-composition-id'), 'Output must include HyperFrames composition ID');
   assert.ok(html.includes('camera-wrapper'), 'Output must include camera wrapper group');
 
   // Check for character group (may be a warning comment if SVG parts are missing)

@@ -144,12 +144,13 @@ function renderScenes(sceneHtmlPaths, outputDir, dimensions, fps, suffix = '') {
 
     log('scenes', `[${i + 1}/${sceneHtmlPaths.length}] Rendering ${basename}...`);
 
+    const htmlDir = path.dirname(htmlPath);
+    const htmlFile = path.basename(htmlPath);
     const cmd = [
       'npx hyperframes render',
-      `--input "${htmlPath}"`,
-      `--output "${mp4Path}"`,
-      `--width ${dimensions.width}`,
-      `--height ${dimensions.height}`,
+      `"${htmlDir}"`,
+      `-c ${htmlFile}`,
+      `-o "${mp4Path}"`,
       `--fps ${fps}`,
     ].join(' ');
 

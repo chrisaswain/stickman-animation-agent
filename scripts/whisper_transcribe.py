@@ -1,0 +1,1 @@
+C:/Dev/ai/video-explainer-agent/scripts/whisper_transcribe.py
