@@ -2,7 +2,11 @@
   "name": "stickman-animation-agent",
   "version": "0.1.0",
   "description": "Automated stickman animation video pipeline using HyperFrames + SVG + GSAP",
+  "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "render": "npx hyperframes render",
     "preview": "npx hyperframes preview"

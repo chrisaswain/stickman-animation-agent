@@ -80,3 +80,7 @@ Each video project lives in `projects/{slug}/` with:
 ## Commands
 
 - `/stickman-animation` — start or resume a video project
+- `node src/compositor/index.js --scene <json> --project <dir> --template whiteboard --output <html>` — compose a scene
+- `node src/render/pipeline.js --project <dir> --template whiteboard` — render & assemble final MP4
+- `node src/enhance/gemini-enhancer.js --project <dir> --template whiteboard` — generate music/thumbnail prompts
+- `node tests/e2e-pipeline-test.js` — run E2E integration tests
