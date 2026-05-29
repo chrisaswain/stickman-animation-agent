@@ -472,10 +472,75 @@ test('6. File discovery — scene HTML and WAV pattern matching', async () => {
 });
 
 // ---------------------------------------------------------------------------
-// Test 7: Subtitle generation
+// Test 7: Classic-stickman template loading
 // ---------------------------------------------------------------------------
 
-test('7. Subtitle generation — generateSubtitles produces SRT from timestamps', async () => {
+test('7. Classic-stickman template — loads and merges with _base', () => {
+  const templatePath = path.join(REPO_ROOT, 'templates', 'classic-stickman', 'template.json');
+  assert.ok(fs.existsSync(templatePath), `Template must exist: ${templatePath}`);
+
+  const template = JSON.parse(fs.readFileSync(templatePath, 'utf-8'));
+
+  assert.equal(template.name, 'classic-stickman', 'Template name must be "classic-stickman"');
+  assert.equal(template.extends, '_base', 'Must extend _base');
+  assert.equal(template.palette.background, '#0A0A0A', 'Background must be dark');
+  assert.equal(template.palette.characterStroke, '#FFFFFF', 'Character stroke must be white');
+  assert.equal(template.palette.ink, '#FFFFFF', 'Ink must be white');
+  assert.equal(template.palette.accent, '#00D4FF', 'Accent must be cyan');
+  assert.equal(template.animation.handDrawnFilter, false, 'Hand-drawn filter must be disabled');
+  assert.equal(template.animation.drawSpeed, 0.8, 'Draw speed must be 0.8x (faster)');
+  assert.ok(template.typography.headingFont.includes('Space Mono'), 'Must use Space Mono font');
+
+  console.log('  [PASS] classic-stickman template loaded and validated');
+});
+
+// ---------------------------------------------------------------------------
+// Test 8: Classic-stickman compositor output
+// ---------------------------------------------------------------------------
+
+test('8. Classic-stickman compositor — produces HTML with correct styling', () => {
+  const sceneJsonPath = path.join(TEST_PROJECT_DIR, 'compositions', 'scene-01.json');
+  const outputHtmlPath = path.join(TEST_OUTPUT_DIR, 'classic-stickman-output.html');
+
+  const cmd = [
+    'node',
+    `"${COMPOSITOR_PATH}"`,
+    `--scene "${sceneJsonPath}"`,
+    `--project "${TEST_PROJECT_DIR}"`,
+    `--template classic-stickman`,
+    `--output "${outputHtmlPath}"`,
+  ].join(' ');
+
+  let stdout;
+  try {
+    stdout = execSync(cmd, {
+      cwd: REPO_ROOT,
+      encoding: 'utf-8',
+      timeout: 30_000,
+    });
+  } catch (err) {
+    const stderr = err.stderr ? err.stderr.toString() : '';
+    assert.fail(`Classic-stickman compositor failed: ${stderr}`);
+  }
+
+  assert.ok(fs.existsSync(outputHtmlPath), 'Must produce HTML output');
+
+  const html = fs.readFileSync(outputHtmlPath, 'utf-8');
+  assert.ok(html.includes('#0A0A0A'), 'Output must use dark background color');
+  assert.ok(html.includes('Space Mono'), 'Output must reference Space Mono font');
+  assert.ok(html.includes('g[id^="char-"]'), 'Output must include characterStroke CSS override');
+  assert.ok(html.includes('scanline-pattern'), 'Output must include scanline pattern');
+  assert.ok(html.includes('vignette-grad'), 'Output must include vignette gradient');
+  assert.ok(!html.includes('filter="url(#hand-drawn)"'), 'Output must NOT include hand-drawn filter');
+
+  console.log(`  [PASS] Classic-stickman compositor produced ${html.length} bytes`);
+});
+
+// ---------------------------------------------------------------------------
+// Test 9: Subtitle generation
+// ---------------------------------------------------------------------------
+
+test('9. Subtitle generation — generateSubtitles produces SRT from timestamps', async () => {
   const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
 
   assert.ok(
@@ -515,10 +580,10 @@ test('7. Subtitle generation — generateSubtitles produces SRT from timestamps'
 });
 
 // ---------------------------------------------------------------------------
-// Test 8: Subtitle generation — graceful skip when no timestamps
+// Test 10: Subtitle generation — graceful skip when no timestamps
 // ---------------------------------------------------------------------------
 
-test('8. Subtitle generation — graceful skip when no timestamps dir', async () => {
+test('10. Subtitle generation — graceful skip when no timestamps dir', async () => {
   const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
 
   // Use a temp project dir with no timestamps

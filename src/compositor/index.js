@@ -916,6 +916,18 @@ function generateSVGDefs(template, characters) {
   defs.push(`    <circle cx="5" cy="5" r="1" fill="${inkLight}" opacity="0.3"/>`);
   defs.push(`  </pattern>`);
 
+  // Scanline + vignette defs for scanline-vignette background style
+  if (template.animation?.backgroundStyle === 'scanline-vignette') {
+    const gridColor = template.palette?.inkLight || '#888888';
+    defs.push(`  <pattern id="scanline-pattern" width="1" height="4" patternUnits="userSpaceOnUse">`);
+    defs.push(`    <line x1="0" y1="0" x2="1" y2="0" stroke="${gridColor}" stroke-width="0.5" />`);
+    defs.push(`  </pattern>`);
+    defs.push(`  <radialGradient id="vignette-grad" cx="50%" cy="50%" r="70%">`);
+    defs.push(`    <stop offset="0%" stop-color="transparent" />`);
+    defs.push(`    <stop offset="100%" stop-color="#000000" />`);
+    defs.push(`  </radialGradient>`);
+  }
+
   // Per-character clothing patterns based on distinguishing features
   if (characters) {
     for (const char of characters) {
@@ -989,6 +1001,9 @@ function buildHTML(sceneDef, template, characterSVGs, propSVGs, speechBubbleSVG,
     .bubble-text {
       font-family: '${template.typography?.dialogueFont || template.typography?.bodyFont || 'Caveat'}', cursive, sans-serif;
     }
+${template.palette?.characterStroke ? `    g[id^="char-"] path, g[id^="char-"] line, g[id^="char-"] polyline, g[id^="char-"] circle {
+      stroke: ${template.palette.characterStroke};
+    }` : ''}
   </style>
 </head>
 <body data-composition-id="scene-${sceneDef.sceneId || '00'}" data-width="${width}" data-height="${height}" data-fps="${fps}" data-duration="${sceneDuration}" data-start="0">
@@ -1029,16 +1044,25 @@ function generateBackgroundDetails(sceneDef, template, width, height) {
   const bg = sceneDef.background || template.palette?.background || '#FFFFFF';
   const lines = [];
 
-  // For whiteboard template: add subtle parchment texture lines
-  if (template.name === 'whiteboard') {
+  // Ruled lines background (whiteboard template)
+  if (template.animation?.backgroundStyle === 'ruled-lines') {
     const inkLight = template.palette?.inkLight || '#4A4A4A';
-    // Subtle ruled lines
     for (let y = 200; y < height; y += 200) {
       lines.push(
         `    <line x1="80" y1="${y}" x2="${width - 80}" y2="${y}" ` +
         `stroke="${inkLight}" stroke-width="0.3" opacity="0.08" />`
       );
     }
+  }
+
+  // Scanline + vignette background (classic-stickman template)
+  if (template.animation?.backgroundStyle === 'scanline-vignette') {
+    lines.push(
+      `    <rect width="${width}" height="${height}" fill="url(#scanline-pattern)" opacity="0.03" />`
+    );
+    lines.push(
+      `    <rect width="${width}" height="${height}" fill="url(#vignette-grad)" opacity="0.4" />`
+    );
   }
 
   return lines.join('\n');

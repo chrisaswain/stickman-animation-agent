@@ -1,0 +1,107 @@
+{
+  "name": "classic-stickman",
+  "description": "High-contrast stickman animation — white stickmen on black background, clean lines, fast draw speed. Matches the 'That Guy' YouTube aesthetic. Optimized for comedy, satire, and fast-paced storytelling.",
+  "extends": "_base",
+  "palette": {
+    "primary": "#FFFFFF",
+    "secondary": "#888888",
+    "accent": "#00D4FF",
+    "text": "#FFFFFF",
+    "background": "#0A0A0A",
+    "ink": "#FFFFFF",
+    "inkLight": "#888888",
+    "characterStroke": "#FFFFFF"
+  },
+  "typography": {
+    "headingFont": "Space Mono",
+    "bodyFont": "Space Mono",
+    "dialogueFont": "Space Mono",
+    "headingSize": 64,
+    "bodySize": 36,
+    "captionSize": 28,
+    "dialogueSize": 32,
+    "lineHeight": 1.5,
+    "headingWeight": 700,
+    "bodyWeight": 400,
+    "googleFontsImport": "https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap"
+  },
+  "animation": {
+    "defaultEntrance": "drawIn",
+    "easing": "power1.inOut",
+    "duration": 1.0,
+    "staggerDelay": 0.03,
+    "transitionType": "cut",
+    "transitionDuration": 0,
+    "fadeOutDuration": 0.12,
+    "gsapCdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+    "drawSpeed": 0.8,
+    "drawEasing": "power1.inOut",
+    "handDrawnFilter": false,
+    "backgroundStyle": "scanline-vignette"
+  },
+  "layout": {
+    "landscape": {
+      "width": 1920,
+      "height": 1080,
+      "padding": 100,
+      "aspectRatio": "16:9",
+      "platform": "YouTube"
+    },
+    "vertical": {
+      "width": 1080,
+      "height": 1920,
+      "padding": "80px 60px",
+      "aspectRatio": "9:16",
+      "platform": "Instagram Reels / TikTok"
+    },
+    "sceneTypes": [
+      "title-card",
+      "establishing",
+      "action",
+      "dialogue",
+      "reaction",
+      "montage",
+      "closeup",
+      "transition",
+      "teaching",
+      "list",
+      "closing"
+    ]
+  },
+  "voice": {
+    "defaultVoice": "af_heart",
+    "engine": "kokoro",
+    "wpm": 155,
+    "pauseBetweenScenes": 0.5
+  },
+  "rendering": {
+    "fps": 30,
+    "dataStart": "0",
+    "durationBuffer": 0.5,
+    "ffmpegAudioCodec": "aac",
+    "ffmpegAudioBitrate": "192k",
+    "noShortestFlag": true,
+    "renderPerScene": true,
+    "tempDirPattern": "temp-render"
+  },
+  "scriptStyle": {
+    "narrator": "fast-talking, punchy narrator — like an edgy YouTube explainer with comedic timing",
+    "register": "casual, blunt, slightly sarcastic, meme-literate",
+    "patterns": [
+      "rapid-fire delivery with comedic pauses for visual gags",
+      "direct address to the viewer ('Look, we all know that...')",
+      "hard cuts between setups and punchlines (no slow transitions)",
+      "deadpan narration over absurd visuals",
+      "callbacks that land 3 scenes later",
+      "short. punchy. sentences."
+    ],
+    "antiPatterns": [
+      "flowery or poetic language",
+      "slow build-ups that kill momentum",
+      "over-explaining the joke",
+      "monotone energy",
+      "AI filler phrases",
+      "being overly nice or hedging"
+    ]
+  }
+}
