@@ -1,1 +1,0 @@
-C:/Dev/ai/video-explainer-agent/scripts/generate_subtitles.py

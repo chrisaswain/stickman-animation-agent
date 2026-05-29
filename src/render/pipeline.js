@@ -149,7 +149,7 @@ function renderScenes(sceneHtmlPaths, outputDir, dimensions, fps, suffix = '') {
     const cmd = [
       'npx hyperframes render',
       `"${htmlDir}"`,
-      `-c ${htmlFile}`,
+      `-c "${htmlFile}"`,
       `-o "${mp4Path}"`,
       `--fps ${fps}`,
     ].join(' ');
