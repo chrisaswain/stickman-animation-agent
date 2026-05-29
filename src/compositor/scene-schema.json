@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stickman-animation-agent/scene-definition.schema.json",
+  "title": "Scene Definition",
+  "description": "Structured scene definition for the deterministic compositor. LLM generates this JSON; the compositor translates it into HTML/SVG/GSAP.",
+  "type": "object",
+  "required": ["sceneId", "type", "duration", "background", "characters", "timeline"],
+  "additionalProperties": false,
+  "properties": {
+    "sceneId": {
+      "type": "string",
+      "description": "Zero-padded scene number (e.g. '01', '12')",
+      "pattern": "^[0-9]{2,3}$"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["action", "dialogue", "reaction", "establishing", "montage", "closeup", "title-card", "transition"],
+      "description": "Scene archetype — drives compositor defaults for camera, pacing, and layout"
+    },
+    "duration": {
+      "type": "number",
+      "minimum": 0.5,
+      "maximum": 120,
+      "description": "Total scene duration in seconds"
+    },
+    "background": {
+      "type": "string",
+      "description": "Template/variant identifier (e.g. 'whiteboard/parchment', 'classic-stickman/dark')"
+    },
+    "camera": {
+      "type": "object",
+      "description": "Camera initial state and moves for this scene",
+      "required": ["initial"],
+      "additionalProperties": false,
+      "properties": {
+        "initial": {
+          "$ref": "#/$defs/cameraPosition"
+        },
+        "moves": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cameraMove"
+          },
+          "default": []
+        }
+      }
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/characterPlacement"
+      },
+      "description": "Characters present in this scene (max 3 on screen simultaneously)"
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/propPlacement"
+      },
+      "default": [],
+      "description": "Props and objects in the scene"
+    },
+    "timeline": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/timelineEvent"
+      },
+      "description": "Ordered list of animation events. Each event triggers a compositor action at a specific time."
+    },
+    "speechBubbles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/speechBubble"
+      },
+      "default": [],
+      "description": "Speech/dialogue bubbles overlaid on the scene"
+    },
+    "textOverlays": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/textOverlay"
+      },
+      "default": [],
+      "description": "Static or animated text overlays (headings, captions, annotations)"
+    }
+  },
+  "$defs": {
+    "position": {
+      "type": "object",
+      "required": ["x", "y"],
+      "additionalProperties": false,
+      "properties": {
+        "x": { "type": "number", "description": "Horizontal position in canvas units (0 = left edge)" },
+        "y": { "type": "number", "description": "Vertical position in canvas units (0 = top edge)" }
+      }
+    },
+    "cameraPosition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x": { "type": "number", "default": 0, "description": "Camera X offset" },
+        "y": { "type": "number", "default": 0, "description": "Camera Y offset" },
+        "scale": { "type": "number", "default": 1.0, "minimum": 0.1, "maximum": 5.0, "description": "Camera zoom level" }
+      }
+    },
+    "cameraMove": {
+      "type": "object",
+      "required": ["time", "action", "duration"],
+      "additionalProperties": false,
+      "properties": {
+        "time": { "type": "number", "minimum": 0, "description": "Trigger time in seconds from scene start" },
+        "action": {
+          "type": "string",
+          "enum": ["zoom", "pan", "shake", "reset"],
+          "description": "Camera action type"
+        },
+        "target": { "type": "string", "description": "Target element to focus on (e.g. 'bob.head')" },
+        "scale": { "type": "number", "minimum": 0.1, "maximum": 5.0, "description": "Target zoom scale (for zoom action)" },
+        "x": { "type": "number", "description": "Target X position (for pan action)" },
+        "y": { "type": "number", "description": "Target Y position (for pan action)" },
+        "duration": { "type": "number", "minimum": 0.05, "description": "Duration of the camera move in seconds" }
+      }
+    },
+    "enterAnimation": {
+      "type": "object",
+      "required": ["time", "method", "duration"],
+      "additionalProperties": false,
+      "properties": {
+        "time": { "type": "number", "minimum": 0, "description": "When the element enters (seconds from scene start)" },
+        "method": {
+          "type": "string",
+          "enum": ["draw-in", "fade"],
+          "description": "Entrance animation style"
+        },
+        "duration": { "type": "number", "minimum": 0.1, "description": "Entrance animation duration in seconds" }
+      }
+    },
+    "characterPlacement": {
+      "type": "object",
+      "required": ["id", "pose", "position"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "description": "Character ID matching a character sheet in characters/{id}.json" },
+        "pose": { "type": "string", "description": "Named pose from the character sheet's poses map" },
+        "position": { "$ref": "#/$defs/position" },
+        "expression": { "type": "string", "description": "Initial facial expression (overrides pose default)" },
+        "facing": {
+          "type": "string",
+          "enum": ["left", "right", "front"],
+          "default": "front",
+          "description": "Character facing direction"
+        },
+        "enter": {
+          "$ref": "#/$defs/enterAnimation",
+          "description": "Entrance animation. Omit if character is already on screen."
+        }
+      }
+    },
+    "propPlacement": {
+      "type": "object",
+      "required": ["id", "position"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "description": "Prop ID matching a prop SVG in components/props/{id}.svg" },
+        "position": { "$ref": "#/$defs/position" },
+        "scale": { "type": "number", "minimum": 0.1, "maximum": 10.0, "default": 1.0, "description": "Prop scale multiplier" },
+        "enter": {
+          "$ref": "#/$defs/enterAnimation",
+          "description": "Entrance animation. Omit if prop is already on screen."
+        }
+      }
+    },
+    "timelineEvent": {
+      "type": "object",
+      "required": ["time", "target", "action"],
+      "additionalProperties": false,
+      "properties": {
+        "time": { "type": "number", "minimum": 0, "description": "Trigger time in seconds from scene start" },
+        "target": { "type": "string", "description": "Target element (e.g. 'bob', 'bob.arm_right', 'bob.expression', 'laptop')" },
+        "action": {
+          "type": "string",
+          "description": "Animation function name from the animation-principles library (e.g. 'enter-draw-in', 'expression-change', 'walk-cycle', 'point-gesture')"
+        },
+        "duration": { "type": "number", "minimum": 0, "description": "Action duration in seconds (some actions are instant)" },
+        "to": { "type": "string", "description": "Target state value (e.g. expression name, pose name)" },
+        "scale": { "type": "number", "description": "Scale value for zoom/resize actions" }
+      }
+    },
+    "speechBubble": {
+      "type": "object",
+      "required": ["speaker", "text", "time", "duration"],
+      "additionalProperties": false,
+      "properties": {
+        "speaker": { "type": "string", "description": "Character ID who is speaking" },
+        "text": { "type": "string", "maxLength": 200, "description": "Speech text (keep short for readability)" },
+        "time": { "type": "number", "minimum": 0, "description": "When the speech bubble appears (seconds)" },
+        "duration": { "type": "number", "minimum": 0.5, "description": "How long the bubble stays visible (seconds)" },
+        "position": {
+          "type": "string",
+          "enum": ["auto", "above", "left", "right"],
+          "default": "auto",
+          "description": "Bubble placement relative to speaker. 'auto' uses the compositor's layout algorithm."
+        }
+      }
+    },
+    "textOverlay": {
+      "type": "object",
+      "required": ["text", "position", "time", "duration", "style"],
+      "additionalProperties": false,
+      "properties": {
+        "text": { "type": "string", "description": "Overlay text content" },
+        "position": { "$ref": "#/$defs/position" },
+        "time": { "type": "number", "minimum": 0, "description": "When the overlay appears (seconds)" },
+        "duration": { "type": "number", "minimum": 0.1, "description": "How long the overlay stays visible (seconds)" },
+        "style": {
+          "type": "string",
+          "enum": ["heading", "body", "caption"],
+          "description": "Text style preset (controls font size, weight, and template-specific styling)"
+        }
+      }
+    }
+  }
+}

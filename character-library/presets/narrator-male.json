@@ -1,0 +1,24 @@
+{
+  "id": "narrator-male",
+  "name": "Narrator",
+  "tier": 1,
+  "proportions": { "totalHeight": 220, "headDiameter": 80, "torsoWidth": 38 },
+  "components": {
+    "head": "front",
+    "torso": "tshirt",
+    "hair": "short-tufts",
+    "defaultExpression": "neutral",
+    "defaultArms": "relaxed",
+    "defaultLegs": "standing",
+    "defaultHands": "mitten-open",
+    "defaultFeet": "standing-shoe"
+  },
+  "distinguishing": { "accessory": "glasses", "clothingPattern": null },
+  "poses": {
+    "standing": { "legs": "standing", "arms": "relaxed" },
+    "pointing": { "legs": "standing", "arms": "pointing" },
+    "walking": { "legs": "walking", "arms": "trailing" },
+    "presenting": { "legs": "standing", "arms": "raised" },
+    "thinking": { "legs": "standing", "arms": "forward-holding", "expression": "thinking" }
+  }
+}
