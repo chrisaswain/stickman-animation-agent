@@ -79,7 +79,7 @@ Or run both in sequence:
 node src/pipeline/orchestrator.js --project projects/{slug}/ --from voice
 ```
 
-The orchestrator will stop at `compose` since compose Phase A hasn't been done yet.
+The orchestrator will fail prerequisite validation at `compose` if Phase A hasn't been completed, so it effectively stops after `timestamps`.
 
 **If voice step fails:** Check that `.venv` exists and kokoro is installed. Run `bootstrap.ps1` if needed.
 

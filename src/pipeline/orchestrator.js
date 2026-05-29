@@ -326,7 +326,7 @@ export function runCompose(projectDir) {
         `"${compositorPath}"`,
         `--scene "${jsonPath}"`,
         `--project "${projectDir}"`,
-        `--template ${template}`,
+        `--template "${template}"`,
         `--output "${htmlPath}"`,
       ].join(' ');
 
@@ -354,6 +354,8 @@ export async function runEnhance(projectDir) {
   if (!prereq.valid) {
     return { success: false, error: prereq.error, hint: prereq.hint };
   }
+
+  updateStepStatus(projectDir, stepName, 'in-progress');
 
   try {
     const { enhance } = await import(
@@ -383,6 +385,8 @@ export async function runRender(projectDir) {
     return { success: false, error: prereq.error, hint: prereq.hint };
   }
 
+  updateStepStatus(projectDir, stepName, 'in-progress');
+
   try {
     const { renderPipeline } = await import(
       `file:///${path.join(REPO_ROOT, 'src', 'render', 'pipeline.js').replace(/\\/g, '/')}`
@@ -392,12 +396,18 @@ export async function runRender(projectDir) {
     const project = readJSON(projectJsonPath);
     const template = project.config?.template || 'whiteboard';
 
+    // renderPipeline manages its own status updates internally,
+    // so we don't duplicate the complete/error status here
     const result = await renderPipeline({ projectDir, templateName: template });
 
     log(stepName, `=== Render complete: ${result.landscapePath} ===`);
     return { success: true, output: `Rendered ${result.sceneCount} scenes → ${result.landscapePath}` };
   } catch (err) {
-    updateStepStatus(projectDir, stepName, 'error', { error: err.message });
+    // Only set error if renderPipeline hasn't already set it
+    const currentStatus = getStepStatus(projectDir, stepName);
+    if (currentStatus !== 'error') {
+      updateStepStatus(projectDir, stepName, 'error', { error: err.message });
+    }
     return { success: false, error: err.message };
   }
 }
@@ -597,6 +607,9 @@ Deterministic steps (in order):
   publish       Generate SRT subtitles + YouTube metadata template
 
 Default (no --step or --from): resume mode — runs all incomplete steps.
+Note: hybrid steps (compose, enhance) require their LLM-driven phase to
+complete first via the SKILL.md. Resume mode will stop at prerequisite
+validation if the LLM phase hasn't run yet.
 `);
     process.exit(values.help ? 0 : 1);
   }
