@@ -916,6 +916,14 @@ function generateSVGDefs(template, characters) {
   defs.push(`    <circle cx="5" cy="5" r="1" fill="${inkLight}" opacity="0.3"/>`);
   defs.push(`  </pattern>`);
 
+  // Vignette gradient for classic-stickman template
+  if (template.name === 'classic-stickman') {
+    defs.push(`  <radialGradient id="vignette-grad" cx="50%" cy="50%" r="70%">`);
+    defs.push(`    <stop offset="0%" stop-color="transparent" />`);
+    defs.push(`    <stop offset="100%" stop-color="#000000" />`);
+    defs.push(`  </radialGradient>`);
+  }
+
   // Per-character clothing patterns based on distinguishing features
   if (characters) {
     for (const char of characters) {
@@ -989,6 +997,9 @@ function buildHTML(sceneDef, template, characterSVGs, propSVGs, speechBubbleSVG,
     .bubble-text {
       font-family: '${template.typography?.dialogueFont || template.typography?.bodyFont || 'Caveat'}', cursive, sans-serif;
     }
+${template.palette?.characterStroke ? `    g[id^="char-"] path, g[id^="char-"] line, g[id^="char-"] polyline, g[id^="char-"] circle {
+      stroke: ${template.palette.characterStroke};
+    }` : ''}
   </style>
 </head>
 <body data-composition-id="scene-${sceneDef.sceneId || '00'}" data-width="${width}" data-height="${height}" data-fps="${fps}" data-duration="${sceneDuration}" data-start="0">
@@ -1039,6 +1050,22 @@ function generateBackgroundDetails(sceneDef, template, width, height) {
         `stroke="${inkLight}" stroke-width="0.3" opacity="0.08" />`
       );
     }
+  }
+
+  // For classic-stickman template: subtle grid/scanline pattern
+  if (template.name === 'classic-stickman') {
+    const gridColor = template.palette?.inkLight || '#888888';
+    // Horizontal scanlines
+    for (let y = 0; y < height; y += 4) {
+      lines.push(
+        `    <line x1="0" y1="${y}" x2="${width}" y2="${y}" ` +
+        `stroke="${gridColor}" stroke-width="0.5" opacity="0.03" />`
+      );
+    }
+    // Corner vignette
+    lines.push(
+      `    <rect width="${width}" height="${height}" fill="url(#vignette-grad)" opacity="0.4" />`
+    );
   }
 
   return lines.join('\n');
