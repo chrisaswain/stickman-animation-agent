@@ -601,6 +601,8 @@ test('10. Comic-panel compositor — produces HTML with panel borders', () => {
   assert.ok(html.includes('#FFFFFF'), 'Output must use white background');
   assert.ok(html.includes('Comic Neue'), 'Output must reference Comic Neue font');
   assert.ok(html.includes('stroke="#000000"'), 'Output must include panel border strokes');
+  // Dialogue scene should produce a 2-panel vertical split line at midpoint (960)
+  assert.ok(html.includes('x1="960"'), 'Dialogue scene must include vertical split line at x=960');
   assert.ok(!html.includes('filter="url(#hand-drawn)"'), 'Output must NOT include hand-drawn filter');
 
   console.log(`  [PASS] Comic-panel compositor produced ${html.length} bytes`);

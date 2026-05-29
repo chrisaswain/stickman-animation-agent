@@ -1072,21 +1072,19 @@ function generateBackgroundDetails(sceneDef, template, width, height) {
     const margin = 40;
     const sceneType = sceneDef.type || 'establishing';
 
+    // Outer border (all scene types)
+    lines.push(`    <rect x="${margin}" y="${margin}" width="${width - margin * 2}" height="${height - margin * 2}" fill="none" stroke="${borderColor}" stroke-width="${borderWidth}" rx="4" />`);
+
     if (sceneType === 'dialogue' || sceneType === 'reaction') {
       // 2-panel vertical split
       const midX = width / 2;
-      lines.push(`    <rect x="${margin}" y="${margin}" width="${width - margin * 2}" height="${height - margin * 2}" fill="none" stroke="${borderColor}" stroke-width="${borderWidth}" rx="4" />`);
       lines.push(`    <line x1="${midX}" y1="${margin}" x2="${midX}" y2="${height - margin}" stroke="${borderColor}" stroke-width="${borderWidth}" />`);
     } else if (sceneType === 'montage' || sceneType === 'list') {
       // 4-panel grid
       const midX = width / 2;
       const midY = height / 2;
-      lines.push(`    <rect x="${margin}" y="${margin}" width="${width - margin * 2}" height="${height - margin * 2}" fill="none" stroke="${borderColor}" stroke-width="${borderWidth}" rx="4" />`);
       lines.push(`    <line x1="${midX}" y1="${margin}" x2="${midX}" y2="${height - margin}" stroke="${borderColor}" stroke-width="${borderWidth}" />`);
       lines.push(`    <line x1="${margin}" y1="${midY}" x2="${width - margin}" y2="${midY}" stroke="${borderColor}" stroke-width="${borderWidth}" />`);
-    } else {
-      // Single panel border for all other scene types
-      lines.push(`    <rect x="${margin}" y="${margin}" width="${width - margin * 2}" height="${height - margin * 2}" fill="none" stroke="${borderColor}" stroke-width="${borderWidth}" rx="4" />`);
     }
   }
 
