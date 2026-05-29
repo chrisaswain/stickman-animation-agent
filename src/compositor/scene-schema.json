@@ -173,7 +173,6 @@
     "timelineEvent": {
       "type": "object",
       "required": ["time", "target", "action"],
-      "additionalProperties": false,
       "properties": {
         "time": { "type": "number", "minimum": 0, "description": "Trigger time in seconds from scene start" },
         "target": { "type": "string", "description": "Target element (e.g. 'bob', 'bob.arm_right', 'bob.expression', 'laptop')" },
@@ -183,8 +182,14 @@
         },
         "duration": { "type": "number", "minimum": 0, "description": "Action duration in seconds (some actions are instant)" },
         "to": { "type": "string", "description": "Target state value (e.g. expression name, pose name)" },
-        "scale": { "type": "number", "description": "Scale value for zoom/resize actions" }
-      }
+        "scale": { "type": "number", "description": "Scale value for zoom/resize actions" },
+        "distance": { "type": "number", "description": "Distance for walk/move actions in canvas units" },
+        "intensity": { "type": "number", "minimum": 0, "maximum": 1, "description": "Effect intensity (e.g. shake strength)" },
+        "direction": { "type": "string", "enum": ["left", "right", "up", "down"], "description": "Direction for directional actions" },
+        "repeat": { "type": "integer", "minimum": -1, "description": "Repeat count (-1 for infinite)" },
+        "ease": { "type": "string", "description": "GSAP ease override (e.g. 'power2.inOut', 'bounce.out')" }
+      },
+      "description": "Animation event. Additional action-specific properties are allowed beyond the core fields."
     },
     "speechBubble": {
       "type": "object",

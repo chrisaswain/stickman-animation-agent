@@ -583,13 +583,16 @@ function assembleSpeechBubbles(bubbles, sceneDef, template) {
     const bubble = bubbles[i];
     const speakerPlacement = sceneDef.characters?.find(c => c.id === bubble.speaker);
 
-    // Position bubble above the speaker, offset up and to the right
-    let bx = (speakerPlacement?.position?.x || 400) + 40;
-    let by = (speakerPlacement?.position?.y || 400) - 140;
-
-    if (bubble.position) {
-      bx = bubble.position.x;
-      by = bubble.position.y;
+    // Position bubble relative to speaker based on string enum
+    const sx = speakerPlacement?.position?.x || 400;
+    const sy = speakerPlacement?.position?.y || 400;
+    let bx, by;
+    switch (bubble.position) {
+      case 'above':  bx = sx - 10; by = sy - 160; break;
+      case 'left':   bx = sx - 120; by = sy - 80; break;
+      case 'right':  bx = sx + 60; by = sy - 80; break;
+      case 'auto':
+      default:       bx = sx + 40; by = sy - 140; break;
     }
 
     const text = escapeXml(bubble.text || '');

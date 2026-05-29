@@ -20,6 +20,6 @@
     "walking": { "legs": "walking", "arms": "trailing" },
     "presenting": { "legs": "standing", "arms": "raised" },
     "thinking": { "legs": "standing", "arms": "forward-holding", "expression": "thinking" },
-    "shrugging": { "legs": "standing", "arms": "shrug", "expression": "confused" }
+    "shrugging": { "legs": "standing", "arms": "raised", "expression": "thinking" }
   }
 }

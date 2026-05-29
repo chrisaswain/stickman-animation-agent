@@ -7,20 +7,20 @@
     "head": "front",
     "torso": "suit",
     "hair": "short-neat",
-    "defaultExpression": "stern",
+    "defaultExpression": "angry",
     "defaultArms": "relaxed",
     "defaultLegs": "standing",
     "defaultHands": "mitten-closed",
     "defaultFeet": "standing-shoe"
   },
-  "distinguishing": { "accessory": null, "clothingPattern": "pinstripe" },
+  "distinguishing": { "accessory": null, "clothingPattern": "crosshatch" },
   "poses": {
     "standing": { "legs": "standing", "arms": "relaxed" },
     "pointing": { "legs": "standing", "arms": "pointing", "expression": "angry" },
     "walking": { "legs": "walking", "arms": "trailing" },
     "presenting": { "legs": "standing", "arms": "raised" },
     "thinking": { "legs": "standing", "arms": "forward-holding", "expression": "thinking" },
-    "menacing": { "legs": "standing", "arms": "crossed", "expression": "stern" },
+    "menacing": { "legs": "standing", "arms": "crossed", "expression": "angry" },
     "laughing": { "legs": "standing", "arms": "raised", "expression": "smirk" }
   }
 }
