@@ -428,6 +428,73 @@ function muxFinal(videoPath, audioPath, outputPath) {
 }
 
 // ---------------------------------------------------------------------------
+// Step 6: Subtitle Generation — SRT from timestamp JSONs
+// ---------------------------------------------------------------------------
+
+/**
+ * Generate SRT subtitles from per-scene timestamp JSON files.
+ * Non-fatal: if no timestamp files exist, logs a warning and skips.
+ *
+ * @param {string} projectDir  - Absolute path to the project directory
+ * @param {string} slug        - Project slug for output filename
+ * @returns {string|null}      Path to the generated SRT file, or null if skipped
+ */
+function generateSubtitles(projectDir, slug) {
+  const timestampsDir = path.join(projectDir, 'timestamps');
+
+  if (!fs.existsSync(timestampsDir)) {
+    log('subtitles', 'No timestamps directory found — skipping subtitle generation');
+    return null;
+  }
+
+  const tsFiles = fs.readdirSync(timestampsDir)
+    .filter(f => /^scene-\d{2,3}\.json$/.test(f));
+
+  if (tsFiles.length === 0) {
+    log('subtitles', 'No scene timestamp files found — skipping subtitle generation');
+    return null;
+  }
+
+  log('subtitles', `Found ${tsFiles.length} timestamp file(s) — generating SRT`);
+
+  const outputPath = path.join(projectDir, 'output', `${slug}.srt`);
+  const pythonExe = path.join(REPO_ROOT, '.venv', 'Scripts', 'python.exe');
+  const scriptPath = path.join(REPO_ROOT, 'scripts', 'generate_subtitles.py');
+
+  if (!fs.existsSync(scriptPath)) {
+    log('subtitles', `Subtitle script not found at ${scriptPath} — skipping`);
+    return null;
+  }
+
+  const usePython = fs.existsSync(pythonExe) ? `"${pythonExe}"` : 'python';
+
+  const cmd = [
+    usePython,
+    `"${scriptPath}"`,
+    `--timestamps-dir "${timestampsDir}"`,
+    `--output "${outputPath}"`,
+    `--pause ${INTER_SCENE_SILENCE_SEC}`,
+  ].join(' ');
+
+  try {
+    const result = run(cmd, { step: 'subtitles' });
+    log('subtitles', result);
+  } catch (err) {
+    log('subtitles', `Subtitle generation failed (non-fatal): ${err.message}`);
+    return null;
+  }
+
+  if (!fs.existsSync(outputPath)) {
+    log('subtitles', 'SRT file not produced — skipping');
+    return null;
+  }
+
+  const sizeKB = Math.round(fs.statSync(outputPath).size / 1024);
+  log('subtitles', `Subtitles generated: ${path.basename(outputPath)} (${sizeKB} KB)`);
+  return outputPath;
+}
+
+// ---------------------------------------------------------------------------
 // Cleanup
 // ---------------------------------------------------------------------------
 
@@ -624,6 +691,9 @@ export async function renderPipeline(options) {
 
     log('pipeline', `=== Landscape render complete: ${landscapePath} ===`);
 
+    // ---- SUBTITLE GENERATION ----
+    const srtPath = generateSubtitles(resolvedProjectDir, slug);
+
     // ---- VERTICAL RENDER (if aspect ratio is "both") ----
     let verticalPath = null;
 
@@ -654,6 +724,7 @@ export async function renderPipeline(options) {
     const result = {
       landscapePath,
       verticalPath,
+      srtPath,
       sceneCount: sceneHtmlFiles.length,
     };
 
@@ -661,6 +732,7 @@ export async function renderPipeline(options) {
       output: {
         landscape: landscapePath,
         vertical: verticalPath,
+        subtitles: srtPath,
       },
       sceneCount: sceneHtmlFiles.length,
     });
@@ -669,6 +741,9 @@ export async function renderPipeline(options) {
     log('pipeline', `  Landscape: ${landscapePath}`);
     if (verticalPath) {
       log('pipeline', `  Vertical:  ${verticalPath}`);
+    }
+    if (srtPath) {
+      log('pipeline', `  Subtitles: ${srtPath}`);
     }
     log('pipeline', `  Scenes:    ${sceneHtmlFiles.length}`);
 
@@ -717,7 +792,8 @@ Pipeline steps:
   3. Mix music        Duck background music to ${MUSIC_DUCK_DB}dB under narration
   4. Concat video     Combine scene MP4 segments into single video
   5. Final mux        Combine video + audio (AAC ${AAC_BITRATE})
-  6. Vertical render  If aspect ratio is "both", re-render at 1080x1920
+  6. Subtitles        Generate SRT from timestamp JSONs (non-fatal)
+  7. Vertical render  If aspect ratio is "both", re-render at 1080x1920
 
 Reads video-project.json for config (slug, aspectRatio, fps).
 Updates step status in video-project.json on completion or error.
@@ -754,4 +830,5 @@ if (import.meta.url === `file:///${_argv1.replace(/\\/g, '/')}` ||
   main();
 }
 
+export { generateSubtitles };
 export default renderPipeline;

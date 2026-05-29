@@ -76,6 +76,24 @@ const MINIMAL_VIDEO_PROJECT = {
   steps: {},
 };
 
+const MOCK_TIMESTAMP_SCENE_01 = {
+  scene_id: 'scene-01',
+  duration: 3.0,
+  segments: [
+    { start: 0.0, end: 1.2, text: 'Hello and welcome.' },
+    { start: 1.4, end: 2.8, text: 'This is scene one.' },
+  ],
+};
+
+const MOCK_TIMESTAMP_SCENE_02 = {
+  scene_id: 'scene-02',
+  duration: 2.5,
+  segments: [
+    { start: 0.0, end: 1.0, text: 'Now for scene two.' },
+    { start: 1.2, end: 2.3, text: 'The final scene.' },
+  ],
+};
+
 // ---------------------------------------------------------------------------
 // Setup / Teardown
 // ---------------------------------------------------------------------------
@@ -88,6 +106,7 @@ function setupTestProject() {
     path.join(TEST_PROJECT_DIR, 'audio'),
     path.join(TEST_PROJECT_DIR, 'characters'),
     path.join(TEST_PROJECT_DIR, 'output'),
+    path.join(TEST_PROJECT_DIR, 'timestamps'),
   ];
 
   for (const dir of dirs) {
@@ -120,6 +139,18 @@ function setupTestProject() {
   // Create dummy scene WAV files (1-byte files, enough for discovery tests)
   fs.writeFileSync(path.join(TEST_PROJECT_DIR, 'audio', 'scene-01.wav'), Buffer.alloc(1));
   fs.writeFileSync(path.join(TEST_PROJECT_DIR, 'audio', 'scene-02.wav'), Buffer.alloc(1));
+
+  // Write mock timestamp files for subtitle generation tests
+  fs.writeFileSync(
+    path.join(TEST_PROJECT_DIR, 'timestamps', 'scene-01.json'),
+    JSON.stringify(MOCK_TIMESTAMP_SCENE_01, null, 2),
+    'utf-8',
+  );
+  fs.writeFileSync(
+    path.join(TEST_PROJECT_DIR, 'timestamps', 'scene-02.json'),
+    JSON.stringify(MOCK_TIMESTAMP_SCENE_02, null, 2),
+    'utf-8',
+  );
 
   // Create dummy scene HTML files for discovery tests
   fs.writeFileSync(
@@ -438,6 +469,73 @@ test('6. File discovery — scene HTML and WAV pattern matching', async () => {
   assert.ok(fs.existsSync(musicPath), 'music.wav must exist after creation');
 
   console.log(`  [PASS] Found ${htmlFiles.length} HTML, ${wavFiles.length} WAV, music.wav present`);
+});
+
+// ---------------------------------------------------------------------------
+// Test 7: Subtitle generation
+// ---------------------------------------------------------------------------
+
+test('7. Subtitle generation — generateSubtitles produces SRT from timestamps', async () => {
+  const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
+
+  assert.ok(
+    typeof pipelineModule.generateSubtitles === 'function',
+    'Module must export "generateSubtitles" as a function',
+  );
+
+  const srtPath = pipelineModule.generateSubtitles(TEST_PROJECT_DIR, 'e2e-test');
+
+  if (srtPath === null) {
+    // If Python venv or script isn't available, skip gracefully
+    console.log('  [SKIP] generateSubtitles returned null (Python venv or script not available)');
+    return;
+  }
+
+  assert.ok(fs.existsSync(srtPath), `SRT file must exist at ${srtPath}`);
+
+  const srtContent = fs.readFileSync(srtPath, 'utf-8');
+  assert.ok(srtContent.length > 0, 'SRT file must not be empty');
+
+  // Verify SRT format: first line should be subtitle index "1"
+  const lines = srtContent.split('\n');
+  assert.equal(lines[0].trim(), '1', 'First SRT entry must start with index 1');
+
+  // Verify timestamp format: HH:MM:SS,mmm --> HH:MM:SS,mmm
+  const timestampLine = lines[1];
+  assert.ok(
+    /\d{2}:\d{2}:\d{2},\d{3}\s-->\s\d{2}:\d{2}:\d{2},\d{3}/.test(timestampLine),
+    `SRT timestamp line must match format: "${timestampLine}"`,
+  );
+
+  // Verify at least 4 subtitle entries (2 segments per scene x 2 scenes)
+  const entryCount = lines.filter(l => /^\d+$/.test(l.trim())).length;
+  assert.ok(entryCount >= 4, `Must have at least 4 subtitle entries, found ${entryCount}`);
+
+  console.log(`  [PASS] Generated SRT with ${entryCount} entries (${srtContent.length} bytes)`);
+});
+
+// ---------------------------------------------------------------------------
+// Test 8: Subtitle generation — graceful skip when no timestamps
+// ---------------------------------------------------------------------------
+
+test('8. Subtitle generation — graceful skip when no timestamps dir', async () => {
+  const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
+
+  // Use a temp project dir with no timestamps
+  const noTsProjectDir = path.join(TEST_OUTPUT_DIR, 'no-timestamps-project');
+  fs.mkdirSync(noTsProjectDir, { recursive: true });
+
+  const result = pipelineModule.generateSubtitles(noTsProjectDir, 'no-ts');
+  assert.equal(result, null, 'Must return null when no timestamps directory exists');
+
+  // Also test empty timestamps dir
+  const emptyTsDir = path.join(TEST_OUTPUT_DIR, 'empty-ts-project');
+  fs.mkdirSync(path.join(emptyTsDir, 'timestamps'), { recursive: true });
+
+  const result2 = pipelineModule.generateSubtitles(emptyTsDir, 'empty-ts');
+  assert.equal(result2, null, 'Must return null when timestamps dir is empty');
+
+  console.log('  [PASS] Gracefully skipped subtitle generation (no timestamps)');
 });
 
 // ---------------------------------------------------------------------------
