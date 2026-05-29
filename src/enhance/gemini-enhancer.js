@@ -303,6 +303,8 @@ export async function enhance(options) {
  * @param {string} options.status      - 'pending' | 'in-progress' | 'complete' | 'skipped' | 'error'
  * @param {string} [options.error]     - Error message if status is 'error'
  */
+const VALID_PLAN_STATUSES = ['pending', 'in-progress', 'complete', 'skipped', 'error'];
+
 export function updatePlanStatus(options) {
   const { projectDir, item, status, error } = options;
   const resolvedDir = path.resolve(projectDir);
@@ -310,6 +312,11 @@ export function updatePlanStatus(options) {
 
   if (!fs.existsSync(planPath)) {
     log('status', `Enhance plan not found: ${planPath}`);
+    return;
+  }
+
+  if (!VALID_PLAN_STATUSES.includes(status)) {
+    log('status', `Invalid status "${status}" — must be one of: ${VALID_PLAN_STATUSES.join(', ')}`);
     return;
   }
 
