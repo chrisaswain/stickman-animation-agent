@@ -863,10 +863,12 @@ var tl = gsap.timeline({ paused: true });
     lines.push(code);
   }
 
-  // --------------- Playback control ---------------
+  // --------------- HyperFrames timeline registration ---------------
+  const compositionId = `scene-${sceneDef.sceneId || '00'}`;
   lines.push('');
-  lines.push('// Start playback');
-  lines.push('tl.play();');
+  lines.push('// Register timeline for HyperFrames render control');
+  lines.push('window.__timelines = window.__timelines || {};');
+  lines.push(`window.__timelines["${compositionId}"] = tl;`);
 
   return lines.join('\n');
 }
@@ -991,9 +993,7 @@ function buildHTML(sceneDef, template, characterSVGs, propSVGs, speechBubbleSVG,
     }
   </style>
 </head>
-<body>
-  <!-- HyperFrames metadata -->
-  <div data-hyperframes-fps="${fps}" data-hyperframes-duration="${sceneDuration}" data-hyperframes-start="0" style="display:none"></div>
+<body data-composition-id="scene-${sceneDef.sceneId || '00'}" data-width="${width}" data-height="${height}" data-fps="${fps}" data-duration="${sceneDuration}" data-start="0">
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
     ${svgDefs}

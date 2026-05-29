@@ -10,7 +10,7 @@ Write-Host "=== Stickman Animation Agent Bootstrap ===" -ForegroundColor Cyan
 $venvPath = Join-Path $ProjectRoot ".venv"
 if (-not (Test-Path $venvPath)) {
     Write-Host "Creating Python 3.12 venv..." -ForegroundColor Yellow
-    python -m venv $venvPath
+    py -3.12 -m venv $venvPath
 } else {
     Write-Host "Venv already exists at $venvPath" -ForegroundColor Green
 }
