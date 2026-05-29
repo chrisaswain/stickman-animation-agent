@@ -1,0 +1,52 @@
+{
+  "name": "_base",
+  "description": "Base template defaults — extended by all other templates",
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "palette": {
+    "background": "#FFFFFF",
+    "primary": "#1A1A1A",
+    "accent": "#C0392B",
+    "text": "#1A1A1A"
+  },
+  "typography": {
+    "heading": { "family": "sans-serif", "weight": 700, "size": 48 },
+    "body": { "family": "sans-serif", "weight": 400, "size": 24 },
+    "caption": { "family": "sans-serif", "weight": 400, "size": 18 }
+  },
+  "animation": {
+    "drawInDuration": 1.5,
+    "drawInEase": "power2.inOut",
+    "cameraMoveEase": "power2.inOut",
+    "cameraMoveDefault": 0.8,
+    "expressionChangeDuration": 0.2,
+    "speechBubbleInDuration": 0.3,
+    "interSceneSilence": 0.5
+  },
+  "voice": {
+    "defaultEngine": "kokoro",
+    "defaultVoice": "af_heart",
+    "sampleRate": 24000
+  },
+  "rendering": {
+    "format": "mp4",
+    "videoCodec": "libx264",
+    "audioCodec": "aac",
+    "audioBitrate": "192k",
+    "musicDuckLevel": -18,
+    "musicPauseLevel": -6
+  },
+  "sceneTypes": [
+    "action",
+    "dialogue",
+    "reaction",
+    "establishing",
+    "montage",
+    "closeup",
+    "title-card",
+    "transition"
+  ]
+}
