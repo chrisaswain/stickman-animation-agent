@@ -1,0 +1,224 @@
+{
+  "name": "whiteboard",
+  "description": "Hand-drawn whiteboard stickman animation — bean-body characters, ink illustrations, and draw-in animations on warm parchment. Optimized for entertainment, comedy, storytelling, and educational content.",
+  "extends": "_base",
+  "palette": {
+    "primary": "#1A1A1A",
+    "secondary": "#4A4A4A",
+    "accent": "#C0392B",
+    "text": "#1A1A1A",
+    "background": "#E5DDD0",
+    "cardBackground": "#DED6C8",
+    "highlight": "#C0392B",
+    "ink": "#1A1A1A",
+    "inkLight": "#4A4A4A",
+    "parchment": "#E5DDD0",
+    "parchmentDark": "#D4C9B8"
+  },
+  "typography": {
+    "headingFont": "Caveat",
+    "bodyFont": "Caveat",
+    "dialogueFont": "Caveat",
+    "headingSize": 72,
+    "bodySize": 40,
+    "captionSize": 32,
+    "dialogueSize": 36,
+    "lineHeight": 1.4,
+    "headingWeight": 700,
+    "bodyWeight": 400,
+    "googleFontsImport": "https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap"
+  },
+  "animation": {
+    "defaultEntrance": "drawIn",
+    "easing": "power1.inOut",
+    "duration": 1.2,
+    "staggerDelay": 0.3,
+    "transitionType": "cut",
+    "transitionDuration": 0,
+    "fadeOutDuration": 0.15,
+    "gsapCdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+    "drawSpeed": 1.0,
+    "drawEasing": "power1.inOut"
+  },
+  "layout": {
+    "landscape": {
+      "width": 1920,
+      "height": 1080,
+      "padding": 100,
+      "aspectRatio": "16:9",
+      "platform": "YouTube"
+    },
+    "vertical": {
+      "width": 1080,
+      "height": 1920,
+      "padding": "80px 60px",
+      "aspectRatio": "9:16",
+      "platform": "Instagram Reels / TikTok"
+    },
+    "sceneTypes": [
+      "title-card",
+      "establishing",
+      "action",
+      "dialogue",
+      "reaction",
+      "montage",
+      "closeup",
+      "transition",
+      "teaching",
+      "list",
+      "closing"
+    ]
+  },
+  "sceneTypeDescriptions": {
+    "title-card": "Opening title or episode title — large hand-lettered text, minimal illustration, sets the tone. Static camera.",
+    "establishing": "Wide shot that sets the scene — shows location, time of day, and characters in context. Environment-heavy, character(s) small. Static camera.",
+    "action": "Dynamic scene with movement — running, jumping, chasing, fighting, falling. Exaggerated poses, motion lines, speed streaks. Camera pans to follow action.",
+    "dialogue": "Two or more characters talking — speech bubbles, expressive faces, gestures. Focus on upper bodies and faces. Camera may zoom to speaker.",
+    "reaction": "Close-up on a character's emotional response — the comedy/drama beat. Oversized head, exaggerated expression, minimal background. Camera zooms to face.",
+    "montage": "Multiple mini-scenes in one frame — time passing, a sequence of events, before/after. Laid out as 2-4 vignettes with divider lines or time arrows.",
+    "closeup": "Tight framing on a specific object, prop, or detail — a phone screen, a letter, a clock showing the time. Starts zoomed, minimal movement.",
+    "transition": "Bridge between scenes — a visual gag, a wipe, a character walking off-screen. Camera move IS the transition (zoom out, pan away, fade).",
+    "teaching": "Educational/explainer moment — character at a whiteboard, diagram, or pointing to a concept. Draw-in animation reveals the concept as narrator explains.",
+    "list": "Numbered or bulleted points appearing one by one — each item draws in sequentially. Static camera, item reveals provide motion.",
+    "closing": "Final scene — summary, call to action, or emotional landing. May echo the opening. Optional slow pull-back camera."
+  },
+  "voice": {
+    "defaultVoice": "af_heart",
+    "engine": "kokoro",
+    "wpm": 145,
+    "pauseBetweenScenes": 0.5,
+    "punctuationEffects": {
+      "comma": "brief breath pause",
+      "emDash": "dramatic pause for reveal or punchline",
+      "ellipsis": "long reflective or comedic-timing pause",
+      "period": "full stop, let illustration settle",
+      "allCaps": "vocal emphasis",
+      "exclamation": "energetic delivery",
+      "questionMark": "rising intonation"
+    }
+  },
+  "rendering": {
+    "fps": 30,
+    "dataStart": "0",
+    "durationBuffer": 0.5,
+    "ffmpegAudioCodec": "aac",
+    "ffmpegAudioBitrate": "192k",
+    "noShortestFlag": true,
+    "renderPerScene": true,
+    "tempDirPattern": "temp-render"
+  },
+  "intakeQuestions": [
+    {
+      "id": "concept",
+      "question": "What is the video about? Describe the story, scenario, or concept. (e.g., 'A programmer's typical Monday morning', 'Two friends argue about pineapple on pizza', 'How to survive a boring meeting')",
+      "type": "text"
+    },
+    {
+      "id": "characters",
+      "question": "Who are the characters? List names and brief descriptions (e.g., 'Dave — tired office worker, always has coffee; Karen — overly enthusiastic manager'). Or type 'auto' to let the script writer decide:",
+      "type": "text",
+      "default": "auto"
+    },
+    {
+      "id": "tone",
+      "question": "What is the tone?",
+      "type": "select",
+      "options": [
+        "comedy — funny, exaggerated, slapstick-friendly",
+        "storytelling — narrative arc, emotional beats, character-driven",
+        "educational — teach a concept with humor and visual metaphors",
+        "satire — social commentary with wit and irony"
+      ]
+    },
+    {
+      "id": "keyScenes",
+      "question": "List 3-6 key scenes or beats (comma-separated, or 'auto' to let the script writer decide):",
+      "type": "text",
+      "default": "auto"
+    },
+    {
+      "id": "duration",
+      "question": "How long should the video be?",
+      "type": "select",
+      "options": [
+        "short — 30-90 seconds (social media clip)",
+        "medium — 2-4 minutes (standard YouTube short-form)",
+        "long — 5-10 minutes (full episode / deep explainer)"
+      ]
+    },
+    {
+      "id": "aspectRatio",
+      "question": "Which formats do you need?",
+      "type": "select",
+      "options": [
+        "landscape — 16:9 for YouTube (default)",
+        "vertical — 9:16 for Instagram Reels / TikTok",
+        "both — Generate landscape + vertical versions"
+      ],
+      "default": "both"
+    }
+  ],
+  "contentFields": {
+    "concept": "string",
+    "characters": "string[] | 'auto'",
+    "tone": "comedy | storytelling | educational | satire",
+    "keyScenes": "string[] | 'auto'",
+    "duration": "short | medium | long",
+    "aspectRatio": "landscape | vertical | both"
+  },
+  "compositions": {
+    "landscape": {
+      "title-card": "compositions/title-card.html",
+      "establishing": "compositions/establishing.html",
+      "action": "compositions/action.html",
+      "dialogue": "compositions/dialogue.html",
+      "reaction": "compositions/reaction.html",
+      "montage": "compositions/montage.html",
+      "closeup": "compositions/closeup.html",
+      "transition": "compositions/transition.html",
+      "teaching": "compositions/teaching.html",
+      "list": "compositions/list.html",
+      "closing": "compositions/closing.html"
+    },
+    "vertical": {
+      "title-card": "compositions/vertical/title-card.html",
+      "establishing": "compositions/vertical/establishing.html",
+      "action": "compositions/vertical/action.html",
+      "dialogue": "compositions/vertical/dialogue.html",
+      "reaction": "compositions/vertical/reaction.html",
+      "montage": "compositions/vertical/montage.html",
+      "closeup": "compositions/vertical/closeup.html",
+      "transition": "compositions/vertical/transition.html",
+      "teaching": "compositions/vertical/teaching.html",
+      "list": "compositions/vertical/list.html",
+      "closing": "compositions/vertical/closing.html"
+    }
+  },
+  "branding": {
+    "name": "",
+    "url": "",
+    "footerText": "",
+    "footerStyle": "handwritten, 20px, rgba(26,26,26,0.3)"
+  },
+  "scriptStyle": {
+    "narrator": "witty conversational storyteller, confident and expressive, like a friend acting out a story",
+    "register": "casual, slightly irreverent, personality-driven warmth with comedic timing",
+    "patterns": [
+      "comedic beats with pauses for visual punchlines ('And then... yep. That happened.')",
+      "character voice shifts for dialogue (slightly different cadence per character)",
+      "setup-punchline rhythm (describe the situation, then land the joke with the illustration)",
+      "rhetorical questions that set up visual gags ('You know what happens next, right?')",
+      "callbacks to earlier scenes ('Remember that coffee? Yeah, it's cold now.')",
+      "short declarative sentences for emphasis and timing"
+    ],
+    "antiPatterns": [
+      "academic or formal language",
+      "long complex sentences that kill comedic timing",
+      "explaining the joke (let the illustration land it)",
+      "monotone energy — every scene needs distinct vocal energy",
+      "AI filler phrases",
+      "narrating exactly what the viewer can already see"
+    ]
+  },
+  "svgStyleGuide": "../references/svg-style-guide.md"
+}
