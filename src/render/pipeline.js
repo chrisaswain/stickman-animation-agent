@@ -11,7 +11,8 @@
  *   3. Mix background music under narration (if music exists)
  *   4. Concatenate scene MP4 segments into combined video
  *   5. Mux final video + audio into output MP4
- *   6. (Optional) Re-render at 1080x1920 for vertical version
+ *   6. Generate SRT subtitles from timestamp JSONs (non-fatal)
+ *   7. (Optional) Re-render at 1080x1920 for vertical version
  *
  * Usage:
  *   node src/render/pipeline.js --project projects/my-video/ --template whiteboard
@@ -811,6 +812,9 @@ Updates step status in video-project.json on completion or error.
     console.log(`  Output: ${result.landscapePath}`);
     if (result.verticalPath) {
       console.log(`  Vertical: ${result.verticalPath}`);
+    }
+    if (result.srtPath) {
+      console.log(`  Subtitles: ${result.srtPath}`);
     }
     process.exit(0);
   } catch (err) {
