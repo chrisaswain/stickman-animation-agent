@@ -4,22 +4,42 @@ Automates stickman animation video production from topic to final MP4. Uses dete
 
 ## Trigger
 
-`/stickman-animation` or when user mentions: stickman animation, stickman video, animated stickman, stick figure video
+`/stickman-animation [topic]` or when user mentions: stickman animation, stickman video, animated stickman, stick figure video
+
+## Architecture
+
+**Hybrid orchestrator:** creative steps are LLM-driven (via SKILL.md), deterministic steps run through a coded Node.js orchestrator. This separation ensures reliable execution of fixed-I/O operations while preserving creative flexibility for content generation.
+
+- **Skill:** `.claude/skills/stickman-animation/SKILL.md` — full workflow instructions
+- **Orchestrator:** `src/pipeline/orchestrator.js` — deterministic step runner
 
 ## Pipeline
 
-Execute skills in order. Each skill reads `video-project.json` for config and updates step status on completion. Resume from last successful step on interruption.
+| # | Step | Mode | Description |
+|---|---|---|---|
+| 1 | intake | LLM | Gather topic, config, create video-project.json |
+| 2 | script | LLM | Generate narration-script.json |
+| 3 | characters | LLM | Create character sheet JSONs |
+| 4 | voice | Orchestrator | Kokoro TTS → per-scene WAVs |
+| 5 | timestamps | Orchestrator | faster-whisper → word-level JSONs |
+| 6 | storyboard | LLM | Generate visual plan markdown |
+| 7 | compose | Hybrid | LLM generates scene JSONs → orchestrator runs compositor |
+| 8 | enhance | Hybrid | Orchestrator generates prompts → LLM calls Gemini MCP |
+| 9 | render | Orchestrator | HyperFrames + FFmpeg → final MP4 |
+| 10 | publish | Orchestrator | SRT subtitles + YouTube metadata |
 
-1. **intake** — gather topic, template, voice engine, tone, duration, automation level, brand
-2. **script-writer** — generate narration script with scene blocks and character directions
-3. **character-designer** — create character sheet JSON for each character in the script
-4. **voice-generator** — generate per-scene WAV files via selected TTS engine
-5. **transcriber** — extract word-level timestamps from each scene WAV
-6. **storyboard** — generate human-readable scene-by-scene visual plan
-7. **scene-compositor** — LLM generates Scene Definition JSON → deterministic compositor renders HTML
-8. **gemini-enhancer** — generate background music and thumbnail
-9. **renderer** — HyperFrames render + FFmpeg assembly into final MP4
-10. **publisher** — generate SRT subtitles, YouTube metadata, apply brand watermark
+## Orchestrator CLI
+
+```bash
+# Resume from last incomplete step
+node src/pipeline/orchestrator.js --project projects/{slug}/
+
+# Run a single step
+node src/pipeline/orchestrator.js --project projects/{slug}/ --step voice
+
+# Run from a specific step onwards
+node src/pipeline/orchestrator.js --project projects/{slug}/ --from timestamps
+```
 
 ## Checkpoints
 
@@ -36,11 +56,13 @@ All output goes to `projects/{slug}/`. The `video-project.json` file tracks pipe
 
 Use the project's dedicated `.venv` for all Python scripts:
 ```
-C:\Dev\ai\stickman-animation-agent\.venv\Scripts\python
+C:\Dev\ai\stickman-animation-agent\.venv\Scripts\python.exe
 ```
+
+If missing, run `bootstrap.ps1` to set up the venv.
 
 ## External Tools
 
 - **HyperFrames:** `npx hyperframes render` / `npx hyperframes preview`
 - **FFmpeg:** audio mixing, video concatenation, muxing
-- **Gemini Media MCP:** `generate_music`, `generate_image`
+- **Gemini Media MCP:** `generate_music`, `generate_image`, `generate_audio`
