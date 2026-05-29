@@ -4,7 +4,35 @@ Create and manage persistent brand profiles for YouTube channels.
 
 ## V1 Scope
 
-Simple watermark: brand logo path specified in `video-project.json`, applied by FFmpeg during render.
+Watermark overlay applied by FFmpeg after final mux. To enable:
+
+1. Create a brand directory: `brands/{brand-name}/`
+2. Add `brand.json` with watermark config:
+```json
+{
+  "name": "My Channel",
+  "watermark": {
+    "logo": "logo.png",
+    "position": "bottom-right",
+    "margin": 30,
+    "scale": 0.08,
+    "opacity": 0.7
+  }
+}
+```
+3. Drop your `logo.png` (transparent PNG recommended) in the brand directory
+4. Set `"brand": "{brand-name}"` in `video-project.json`
+
+### Watermark Options
+| Field | Default | Description |
+|---|---|---|
+| `logo` | (required) | Logo filename relative to brand directory |
+| `position` | `bottom-right` | `top-left`, `top-right`, `bottom-left`, `bottom-right`, `center` |
+| `margin` | `30` | Pixels from edge |
+| `scale` | `0.08` | Scale factor relative to logo's native size |
+| `opacity` | `0.7` | 0.0 (invisible) to 1.0 (fully opaque) |
+
+Non-fatal: if brand config, logo, or FFmpeg fails, the pipeline continues without watermark.
 
 ## V1.5 Scope (Deferred)
 

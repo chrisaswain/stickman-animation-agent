@@ -609,10 +609,53 @@ test('10. Comic-panel compositor — produces HTML with panel borders', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Test 11: Subtitle generation
+// Test 11: Brand config loading
 // ---------------------------------------------------------------------------
 
-test('11. Subtitle generation — generateSubtitles produces SRT from timestamps', async () => {
+test('11. Brand config loading — _example brand.json validates', () => {
+  const brandPath = path.join(REPO_ROOT, 'brands', '_example', 'brand.json');
+  assert.ok(fs.existsSync(brandPath), `Example brand must exist: ${brandPath}`);
+
+  const brand = JSON.parse(fs.readFileSync(brandPath, 'utf-8'));
+  assert.ok(brand.name, 'Brand must have a name');
+  assert.ok(brand.watermark, 'Brand must have watermark config');
+  assert.ok(brand.watermark.logo, 'Watermark must have logo field');
+  assert.ok(brand.watermark.position, 'Watermark must have position field');
+  assert.ok(typeof brand.watermark.scale === 'number', 'Watermark scale must be a number');
+  assert.ok(typeof brand.watermark.opacity === 'number', 'Watermark opacity must be a number');
+  assert.ok(brand.watermark.opacity > 0 && brand.watermark.opacity <= 1, 'Opacity must be 0-1');
+
+  console.log('  [PASS] Example brand config loaded and validated');
+});
+
+// ---------------------------------------------------------------------------
+// Test 12: Watermark — graceful skip when no brand set
+// ---------------------------------------------------------------------------
+
+test('12. Watermark — graceful skip when no brand in video-project.json', async () => {
+  const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
+
+  assert.ok(
+    typeof pipelineModule.applyWatermark === 'function',
+    'Module must export "applyWatermark" as a function',
+  );
+
+  // Test project has no "brand" field in video-project.json
+  const result = pipelineModule.applyWatermark(
+    'nonexistent.mp4',
+    TEST_PROJECT_DIR,
+    path.join(TEST_OUTPUT_DIR, 'watermarked.mp4'),
+  );
+  assert.equal(result, null, 'Must return null when no brand field set');
+
+  console.log('  [PASS] Watermark gracefully skipped (no brand configured)');
+});
+
+// ---------------------------------------------------------------------------
+// Test 13: Subtitle generation
+// ---------------------------------------------------------------------------
+
+test('13. Subtitle generation — generateSubtitles produces SRT from timestamps', async () => {
   const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
 
   assert.ok(
@@ -652,10 +695,10 @@ test('11. Subtitle generation — generateSubtitles produces SRT from timestamps
 });
 
 // ---------------------------------------------------------------------------
-// Test 12: Subtitle generation — graceful skip when no timestamps
+// Test 14: Subtitle generation — graceful skip when no timestamps
 // ---------------------------------------------------------------------------
 
-test('12. Subtitle generation — graceful skip when no timestamps dir', async () => {
+test('14. Subtitle generation — graceful skip when no timestamps dir', async () => {
   const pipelineModule = await import(`file:///${RENDER_PIPELINE_PATH.replace(/\\/g, '/')}`);
 
   // Use a temp project dir with no timestamps

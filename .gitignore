@@ -3,7 +3,8 @@ node_modules/
 __pycache__/
 *.pyc
 projects/
-brands/
+brands/*/
+!brands/_example/
 *.egg-info/
 dist/
 build/
