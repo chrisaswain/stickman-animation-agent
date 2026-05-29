@@ -1,0 +1,107 @@
+{
+  "name": "comic-panel",
+  "description": "Comic book panel layout — white background, thick black borders, Comic Neue font, speech-bubble-heavy. Optimized for dialogue-driven stories, character interactions, and slice-of-life content.",
+  "extends": "_base",
+  "palette": {
+    "primary": "#1A1A1A",
+    "secondary": "#555555",
+    "accent": "#FF4444",
+    "text": "#1A1A1A",
+    "background": "#FFFFFF",
+    "ink": "#1A1A1A",
+    "inkLight": "#555555",
+    "panelBorder": "#000000"
+  },
+  "typography": {
+    "headingFont": "Comic Neue",
+    "bodyFont": "Comic Neue",
+    "dialogueFont": "Comic Neue",
+    "headingSize": 68,
+    "bodySize": 38,
+    "captionSize": 30,
+    "dialogueSize": 34,
+    "lineHeight": 1.4,
+    "headingWeight": 700,
+    "bodyWeight": 400,
+    "googleFontsImport": "https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
+  },
+  "animation": {
+    "defaultEntrance": "fade",
+    "easing": "power1.out",
+    "duration": 1.0,
+    "staggerDelay": 0.04,
+    "transitionType": "cut",
+    "transitionDuration": 0,
+    "fadeOutDuration": 0.15,
+    "gsapCdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+    "drawSpeed": 1.0,
+    "drawEasing": "power1.out",
+    "handDrawnFilter": false,
+    "backgroundStyle": "panel-borders"
+  },
+  "layout": {
+    "landscape": {
+      "width": 1920,
+      "height": 1080,
+      "padding": 100,
+      "aspectRatio": "16:9",
+      "platform": "YouTube"
+    },
+    "vertical": {
+      "width": 1080,
+      "height": 1920,
+      "padding": "80px 60px",
+      "aspectRatio": "9:16",
+      "platform": "Instagram Reels / TikTok"
+    },
+    "sceneTypes": [
+      "title-card",
+      "establishing",
+      "action",
+      "dialogue",
+      "reaction",
+      "montage",
+      "closeup",
+      "transition",
+      "teaching",
+      "list",
+      "closing"
+    ]
+  },
+  "voice": {
+    "defaultVoice": "af_heart",
+    "engine": "kokoro",
+    "wpm": 145,
+    "pauseBetweenScenes": 0.5
+  },
+  "rendering": {
+    "fps": 30,
+    "dataStart": "0",
+    "durationBuffer": 0.5,
+    "ffmpegAudioCodec": "aac",
+    "ffmpegAudioBitrate": "192k",
+    "noShortestFlag": true,
+    "renderPerScene": true,
+    "tempDirPattern": "temp-render"
+  },
+  "scriptStyle": {
+    "narrator": "warm conversational storyteller with light humor — like a friend recapping a wild day",
+    "register": "natural, character-driven, dialogue-heavy with room for visual gags",
+    "patterns": [
+      "heavy use of dialogue — let characters talk to each other, not just narration",
+      "panel-transition pacing — each scene beat maps to a visual panel",
+      "reaction shots as punchlines — show the face, let silence do the work",
+      "inner monologue moments ('Meanwhile, Dave was having an existential crisis')",
+      "sound effects in narration ('And then — CRASH — the whole thing fell apart')",
+      "alternating close and wide shots for rhythm"
+    ],
+    "antiPatterns": [
+      "wall-of-text narration without dialogue",
+      "action scenes without reaction beats",
+      "monotone pacing — mix fast dialogue with slow reaction shots",
+      "AI filler phrases",
+      "telling when you could show with a panel",
+      "too many characters in one scene (2-3 max for clarity)"
+    ]
+  }
+}
