@@ -1,0 +1,13 @@
+{
+  "name": "@stickman/compositor",
+  "version": "0.1.0",
+  "description": "Deterministic scene compositor — transforms Scene Definition JSON into HTML/SVG/GSAP compositions",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "compose": "node index.js"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
