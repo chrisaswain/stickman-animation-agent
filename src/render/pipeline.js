@@ -134,6 +134,9 @@ function renderScenes(sceneHtmlPaths, outputDir, dimensions, fps, suffix = '') {
   log('scenes', `Rendering ${sceneHtmlPaths.length} scene(s) at ${dimensions.width}x${dimensions.height} @ ${fps}fps`);
   ensureDir(outputDir);
 
+  const tempRenderRoot = path.join(outputDir, '.render-temp', 'scenes');
+  ensureDir(tempRenderRoot);
+
   const renderedPaths = [];
 
   for (let i = 0; i < sceneHtmlPaths.length; i++) {
@@ -144,12 +147,14 @@ function renderScenes(sceneHtmlPaths, outputDir, dimensions, fps, suffix = '') {
 
     log('scenes', `[${i + 1}/${sceneHtmlPaths.length}] Rendering ${basename}...`);
 
-    const htmlDir = path.dirname(htmlPath);
-    const htmlFile = path.basename(htmlPath);
+    // HyperFrames expects a project directory with index.html
+    const sceneTempDir = path.join(tempRenderRoot, `${basename}${suffix}`);
+    ensureDir(sceneTempDir);
+    fs.copyFileSync(htmlPath, path.join(sceneTempDir, 'index.html'));
+
     const cmd = [
       'npx hyperframes render',
-      `"${htmlDir}"`,
-      `-c "${htmlFile}"`,
+      `"${sceneTempDir}"`,
       `-o "${mp4Path}"`,
       `--fps ${fps}`,
     ].join(' ');
@@ -523,8 +528,9 @@ function updateStepStatus(projectJsonPath, stepName, status, extras = {}) {
     project.steps = {};
   }
 
+  const prev = project.steps[stepName];
   project.steps[stepName] = {
-    ...(project.steps[stepName] || {}),
+    ...(typeof prev === 'object' && prev !== null ? prev : {}),
     status,
     updatedAt: new Date().toISOString(),
     ...extras,

@@ -88,8 +88,8 @@ export function enterDrawIn(event, defaults) {
     `tl.set("${sel}", { opacity: 1 }, ${pos(event)});`,
     `tl.to("${bodyPaths}", { strokeDashoffset: 0, duration: ${d}, ease: "${e}", stagger: ${stagger} }, ${pos(event)});`,
     `tl.to("${activeFacePaths}", { strokeDashoffset: 0, duration: ${d * 0.6}, ease: "${e}", stagger: ${stagger} }, ${pos(event)} + ${d * 0.3});`,
-    `tl.to("${bodyCircles}", { opacity: 1, duration: ${d * 0.4}, ease: "${e}" }, ${pos(event)} + ${d * 0.6});`,
-    `tl.to("${activeFaceCircles}", { opacity: 1, duration: ${d * 0.3}, ease: "${e}" }, ${pos(event)} + ${d * 0.6});`,
+    `if (document.querySelector("${bodyCircles}")) tl.to("${bodyCircles}", { opacity: 1, duration: ${d * 0.4}, ease: "${e}" }, ${pos(event)} + ${d * 0.6});`,
+    `if (document.querySelector("${activeFaceCircles}")) tl.to("${activeFaceCircles}", { opacity: 1, duration: ${d * 0.3}, ease: "${e}" }, ${pos(event)} + ${d * 0.6});`,
   ].join('\n');
 }
 
@@ -122,7 +122,7 @@ export function exitDrawOut(event, defaults) {
   const e = ease(event, defaults, 'power2.inOut');
   const stagger = event.stagger || defaults.staggerDelay || 0.08;
   return [
-    `tl.to("${sel} circle", { opacity: 0, duration: ${d * 0.3}, ease: "${e}" }, ${pos(event)});`,
+    `if (document.querySelector("${sel} circle")) tl.to("${sel} circle", { opacity: 0, duration: ${d * 0.3}, ease: "${e}" }, ${pos(event)});`,
     `tl.to("${sel} path", { strokeDashoffset: function(i, el) { return el.getTotalLength(); }, duration: ${d}, ease: "${e}", stagger: ${stagger} }, ${pos(event)});`,
     `tl.set("${sel}", { opacity: 0 }, ${pos(event)} + ${d});`
   ].join('\n');
