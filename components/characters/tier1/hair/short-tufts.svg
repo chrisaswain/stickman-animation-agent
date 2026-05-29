@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -14 30 16">
+  <!-- Component: short tufts hair | Tier: 1 | Origin: head top center at (0,0) -->
+  <g data-component="hair-short-tufts" data-tier="1" data-attach-head-top="0,0">
+    <path d="M-13,0 C-15,-7 -18,-11 -22,-8" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M-3,-3 C-4,-10 -1,-14 -5,-11" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M7,-1 C7,-8 10,-11 6,-9" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

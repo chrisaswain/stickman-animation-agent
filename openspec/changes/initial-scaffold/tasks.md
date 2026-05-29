@@ -11,11 +11,11 @@
 - [x] Create AGENT.md (agent definition)
 - [x] Create bootstrap.ps1 (venv + deps + symlinks)
 - [x] Create README.md
-- [ ] Port SVG style guide from video-explainer (in progress — agent)
+- [x] Port SVG style guide from video-explainer
 - [x] Create animation-principles.md reference
 - [x] npm install hyperframes
 - [x] Create base template config (_base/template.json)
-- [ ] Create whiteboard template config (in progress — agent)
+- [x] Create whiteboard template config (whiteboard/template.json)
 - [x] Create GitHub repo (chrisaswain/stickman-animation-agent)
-- [ ] Push initial commit
+- [x] Push initial commit + SVG style guide commit
 - [x] Create stub SKILL.md files for all 11 skills

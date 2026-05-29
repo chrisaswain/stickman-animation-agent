@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-28 -6 56 55">
+  <!-- Component: long straight hair | Tier: 1 | Origin: head top center at (0,0) -->
+  <g data-component="hair-long-straight" data-tier="1" data-attach-head-top="0,0">
+    <!-- Left side -->
+    <path d="M-18,0 C-22,12 -25,28 -24,45" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M-14,2 C-18,14 -20,30 -19,45" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- Right side -->
+    <path d="M18,0 C22,12 25,28 24,45" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M14,2 C18,14 20,30 19,45" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- Center part -->
+    <path d="M0,-4 C0,2 0,8 0,12" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -16 48 20">
+  <!-- Component: short neat hair | Tier: 2 | Origin: head top center at (0,0) -->
+  <g data-component="hair-short-neat" data-tier="2" data-attach-head-top="0,0">
+    <!-- Main hairline -->
+    <path d="M-23,-9 C-18,-19 -8,-23 0,-23 C8,-23 18,-19 24,-9"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Part lines -->
+    <path d="M-18,-13 C-13,-21 -6,-24 0,-24" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M0,-24 C6,-24 14,-21 20,-13" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M-13,-16 C-8,-21 -3,-23 2,-23" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+    <path d="M2,-23 C7,-23 12,-21 17,-16" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+  </g>
+</svg>

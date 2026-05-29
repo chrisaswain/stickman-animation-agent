@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -32 28 38">
+  <!-- Component: tall boots | Tier: 2 | Origin: ankle at (0,0) -->
+  <g data-component="foot-boots" data-tier="2" data-attach-ankle="0,0">
+    <!-- Boot shaft -->
+    <path d="M0,0 C-2,-15 -4,-25 -2,-30" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Boot cuff fold -->
+    <path d="M-2,-30 C3,-32 13,-32 16,-30" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Inner shaft -->
+    <path d="M16,-30 C15,-20 14,-10 12,0" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Boot sole -->
+    <path d="M0,0 C-7,3 -14,7 -16,5 C-18,1 -10,-3 -4,-1"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

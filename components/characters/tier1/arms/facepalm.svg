@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -58 32 62">
+  <!-- Component: facepalm arm (right hand covering face) | Tier: 1 | Origin: shoulder at (0,0) -->
+  <g data-component="arm-facepalm" data-tier="1" data-attach-shoulder="0,0" data-attach-wrist="18,-48">
+    <!-- Upper arm — angling upward toward face -->
+    <path d="M0,0 C6,-8 10,-16 14,-26" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Forearm — bending sharply to reach face -->
+    <path d="M14,-26 C16,-34 17,-42 18,-48" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Hand spread across face — fingers slightly splayed -->
+    <path d="M14,-48 C12,-54 10,-56 8,-55" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M16,-49 C16,-56 15,-58 13,-56" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M19,-49 C20,-55 20,-57 18,-56" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M22,-48 C24,-53 24,-55 22,-55" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Palm base -->
+    <path d="M14,-48 C16,-47 20,-47 22,-48" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -14 48 36">
+  <!-- Component: thinking expression | Tier: 1 | Origin: face center at (0,0) -->
+  <g data-component="expression-thinking" data-tier="1" data-attach-face-center="0,0">
+    <!-- Eyes -->
+    <circle cx="-15" cy="0" r="3.5" fill="#1A1A1A"/>
+    <circle cx="13" cy="0" r="3.5" fill="#1A1A1A"/>
+    <!-- Eyebrows — one raised, one neutral -->
+    <path d="M-23,-8 C-17,-11 -9,-11 -5,-9" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M5,-12 C9,-15 17,-15 23,-11" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Mouth — slightly pursed to one side -->
+    <path d="M-5,21 C0,20 8,21 12,23" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 0 40 86">
+  <!-- Component: standing legs | Tier: 1 | Origin: hip center at (0,0) -->
+  <g data-component="legs-standing" data-tier="1" data-attach-hip="0,0" data-attach-left-ankle="-18,84" data-attach-right-ankle="18,84">
+    <!-- Left leg -->
+    <path d="M-15,0 C-18,26 -20,54 -18,84" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Right leg -->
+    <path d="M15,0 C18,26 20,54 18,84" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 -12 42 18">
+  <!-- Component: medium wavy hair with side-swept fringe | Tier: 1 | Origin: head top center at (0,0) -->
+  <g data-component="hair-medium-wavy" data-tier="1" data-attach-head-top="0,0">
+    <path d="M-20,0 C-25,-4 -27,0 -23,6" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M-10,-3 C-13,-9 -16,-6 -12,2" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M1,-5 C-1,-10 2,-13 3,-6" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M11,-2 C12,-8 15,-10 13,-3" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -4 24 16">
+  <!-- Component: sandals with straps | Tier: 2 | Origin: ankle at (0,0) -->
+  <g data-component="foot-sandals-strapped" data-tier="2" data-attach-ankle="0,0">
+    <!-- Sandal sole -->
+    <path d="M-4,0 C-11,3 -18,6 -16,10 C-14,14 -1,12 4,8 L9,0"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Cross straps -->
+    <path d="M-8,4 C-4,2 2,3 6,4" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M-4,8 C0,6 5,7 9,8" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

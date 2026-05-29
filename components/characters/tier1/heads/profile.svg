@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 -80 45 82">
+  <!-- Component: profile head (facing right) | Tier: 1 | Origin: neck attachment at (0,0) -->
+  <g data-component="head-profile" data-tier="1" data-attach-neck="0,0" data-attach-hair-top="-5,-78">
+    <path d="M-18,-35 C-20,-58 -12,-78 0,-79 C12,-78 22,-60 22,-38 C22,-18 18,-5 10,0 C5,3 -2,2 -8,-2 C-15,-10 -17,-22 -18,-35 Z"
+      stroke="#1A1A1A" stroke-width="4" fill="#E5DDD0" stroke-linecap="round"/>
+  </g>
+</svg>

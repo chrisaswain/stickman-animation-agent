@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -14 48 36">
+  <!-- Component: smirk expression (half-smile, one brow raised) | Tier: 1 | Origin: face center at (0,0) -->
+  <g data-component="expression-smirk" data-tier="1" data-attach-face-center="0,0">
+    <!-- Left eye — normal, slightly narrowed -->
+    <circle cx="-15" cy="1" r="3" fill="#1A1A1A"/>
+    <!-- Right eye — slightly narrowed (knowing look) -->
+    <path d="M10,0 C12,3 16,3 18,0" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Left eyebrow — neutral position -->
+    <path d="M-22,-7 C-18,-10 -12,-10 -7,-8" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Right eyebrow — raised (skeptical/knowing) -->
+    <path d="M7,-10 C11,-14 17,-14 22,-10" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Mouth — asymmetric half-smile, right side curled up -->
+    <path d="M-12,18 C-6,19 2,20 8,18 C12,16 14,14 16,12" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

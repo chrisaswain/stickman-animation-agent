@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -14 48 36">
+  <!-- Component: happy expression | Tier: 1 | Origin: face center at (0,0) -->
+  <g data-component="expression-happy" data-tier="1" data-attach-face-center="0,0">
+    <!-- Eyes — slightly squinted from smiling -->
+    <path d="M-18,-1 C-16,2 -12,2 -10,-1" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M10,-1 C12,2 16,2 18,-1" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Eyebrows — raised outer ends -->
+    <path d="M-22,-8 C-17,-12 -9,-12 -5,-10" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M5,-10 C9,-12 17,-12 22,-8" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Mouth — wide smile -->
+    <path d="M-15,18 C-8,26 8,26 15,18" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 0 28 60">
+  <!-- Component: relaxed arm (right side) | Tier: 1 | Origin: shoulder at (0,0) -->
+  <g data-component="arm-relaxed" data-tier="1" data-attach-shoulder="0,0" data-attach-wrist="24,58">
+    <!-- Upper arm -->
+    <path d="M0,0 C10,5 18,15 22,25" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Forearm -->
+    <path d="M22,25 C24,36 25,48 24,58" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Sleeve cuff hint -->
+    <path d="M24,23 C20,27 18,26 22,25" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+  </g>
+</svg>

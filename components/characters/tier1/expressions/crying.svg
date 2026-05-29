@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -14 48 40">
+  <!-- Component: crying expression (sad eyes with teardrops) | Tier: 1 | Origin: face center at (0,0) -->
+  <g data-component="expression-crying" data-tier="1" data-attach-face-center="0,0">
+    <!-- Left eye — tightly shut, curved downward -->
+    <path d="M-20,0 C-17,4 -13,4 -10,0" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M-20,0 C-17,-2 -13,-2 -10,0" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Right eye — tightly shut, curved downward -->
+    <path d="M10,0 C13,4 17,4 20,0" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M10,0 C13,-2 17,-2 20,0" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Eyebrows — inner ends raised high (anguish) -->
+    <path d="M-22,-4 C-19,-6 -13,-10 -8,-12" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M8,-12 C13,-10 19,-6 22,-4" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Left teardrop -->
+    <path d="M-14,6 C-15,10 -16,14 -14,16 C-12,18 -11,14 -12,10" stroke="#1A1A1A" stroke-width="1.5" fill="#1A1A1A" stroke-linecap="round" opacity="0.7"/>
+    <!-- Right teardrop -->
+    <path d="M16,6 C17,10 18,14 16,16 C14,18 13,14 14,10" stroke="#1A1A1A" stroke-width="1.5" fill="#1A1A1A" stroke-linecap="round" opacity="0.7"/>
+    <!-- Mouth — open wail, downturned -->
+    <path d="M-10,20 C-6,26 6,26 10,20" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M-10,20 C-6,18 6,18 10,20" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

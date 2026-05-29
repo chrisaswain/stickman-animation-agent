@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 90 188">
+  <!-- Component: lab coat torso | Tier: 2 | Origin: neck top center at (0,0) -->
+  <!-- Requires crosshatch pattern in parent <defs> -->
+  <g data-component="torso-lab-coat" data-tier="2" data-attach-neck="0,0" data-attach-left-shoulder="-36,11" data-attach-right-shoulder="37,11" data-attach-left-hip="-10,96" data-attach-right-hip="20,96" data-attach-hem="0,185">
+    <!-- Inner shirt -->
+    <path d="M-20,11 C-23,14 -24,21 -22,31 L-20,96 C-13,101 14,101 20,96 L22,31 C24,21 23,14 20,11 Z"
+      stroke="#1A1A1A" stroke-width="2" fill="url(#crosshatch)" stroke-linecap="round"/>
+    <!-- Lab coat left side -->
+    <path d="M-36,11 C-40,51 -43,96 -46,186 L-30,188 C-28,136 -26,91 -23,46"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Lab coat right side -->
+    <path d="M37,11 C40,51 42,96 44,186 L30,188 C28,136 26,91 24,46"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Shoulders -->
+    <path d="M-36,11 C-28,4 -10,0 0,0 C10,0 28,4 37,11"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Left lapel -->
+    <path d="M-23,11 C-21,26 -19,46 -18,61" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Right lapel -->
+    <path d="M24,11 C22,26 20,46 19,61" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Coat fold lines -->
+    <path d="M-38,56 C-40,96 -42,141 -43,176" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.35" stroke-linecap="round"/>
+    <path d="M38,56 C40,96 41,141 42,176" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.35" stroke-linecap="round"/>
+    <!-- Pocket with pen -->
+    <path d="M24,41 C27,41 34,41 37,41 L37,64 C34,64 27,64 24,64 Z"
+      stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M30,36 C30,44 30,46 30,51" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

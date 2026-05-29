@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-30 0 80 135">
+  <!-- Component: armor tunic torso | Tier: 2 | Origin: neck top center at (0,0) -->
+  <!-- Requires crosshatch-dense and crosshatch patterns in parent <defs> -->
+  <g data-component="torso-armor-tunic" data-tier="2" data-attach-neck="0,0" data-attach-left-shoulder="-28,7" data-attach-right-shoulder="28,7" data-attach-left-hip="-10,72" data-attach-right-hip="28,72" data-attach-hem="0,125">
+    <!-- Shoulder guards -->
+    <path d="M-40,4 C-43,0 -38,-4 -30,0 L-26,7"
+      stroke="#1A1A1A" stroke-width="2.5" fill="url(#crosshatch)" stroke-linecap="round"/>
+    <path d="M40,4 C42,0 38,-4 30,0 L26,7"
+      stroke="#1A1A1A" stroke-width="2.5" fill="url(#crosshatch)" stroke-linecap="round"/>
+    <!-- Armor body -->
+    <path d="M-28,7 C-33,10 -34,17 -32,27 L-28,122 C-20,128 20,128 28,122 L32,27 C34,17 33,10 28,7 Z"
+      stroke="#1A1A1A" stroke-width="3" fill="url(#crosshatch-dense)" stroke-linecap="round"/>
+    <!-- Belt with buckle -->
+    <path d="M-30,72 C-16,69 16,69 30,72"
+      stroke="#1A1A1A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <!-- Buckle -->
+    <path d="M-4,67 L-4,78 L6,78 L6,67 Z"
+      stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M1,67 L1,78" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Cape from right shoulder -->
+    <path d="M28,4 C40,10 47,32 50,67 C54,112 52,162 47,212"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M28,4 C32,7 34,12 37,27"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Cape folds -->
+    <path d="M37,32 C40,72 42,122 40,182" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <path d="M44,52 C46,92 47,142 45,202" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.3" stroke-linecap="round"/>
+  </g>
+</svg>

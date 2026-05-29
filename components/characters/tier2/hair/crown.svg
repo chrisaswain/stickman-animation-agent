@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -24 40 26">
+  <!-- Component: crown | Tier: 2 | Origin: head top center at (0,0) -->
+  <g data-component="hair-crown" data-tier="2" data-attach-head-top="0,0">
+    <!-- Crown band -->
+    <path d="M-18,0 L-18,-8 L-12,-4 L-6,-14 L0,-6 L6,-14 L12,-4 L18,-8 L18,0 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Jewel dots on points -->
+    <circle cx="-6" cy="-14" r="2" stroke="#1A1A1A" stroke-width="1.5" fill="none"/>
+    <circle cx="0" cy="-6" r="1.5" stroke="#1A1A1A" stroke-width="1" fill="none"/>
+    <circle cx="6" cy="-14" r="2" stroke="#1A1A1A" stroke-width="1.5" fill="none"/>
+    <!-- Band detail -->
+    <path d="M-18,-2 L18,-2" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+  </g>
+</svg>

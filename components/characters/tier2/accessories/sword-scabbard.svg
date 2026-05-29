@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 20 138">
+  <!-- Component: sword scabbard + hilt | Tier: 2 | Origin: belt attachment at (0,0) -->
+  <g data-component="sword-scabbard" data-tier="2" data-attach-belt="0,0">
+    <!-- Scabbard body -->
+    <path d="M-5,0 C-10,32 -15,82 -12,132" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M5,0 C0,32 -5,82 -2,132" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Crossguard -->
+    <path d="M-10,0 C-6,-3 6,-3 10,0" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Hilt extending up -->
+    <path d="M0,0 C2,-13 0,-25 2,-32" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Pommel -->
+    <circle cx="2" cy="-34" r="4" stroke="#1A1A1A" stroke-width="2" fill="none"/>
+  </g>
+</svg>

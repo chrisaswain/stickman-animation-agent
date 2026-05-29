@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-30 -8 62 60">
+  <!-- Component: flowing hair + beard | Tier: 2 | Origin: head top center at (0,0) -->
+  <!-- Requires crosshatch-light pattern in parent <defs> -->
+  <g data-component="hair-flowing-beard" data-tier="2" data-attach-head-top="0,0">
+    <!-- Left hair -->
+    <path d="M-26,4 C-32,24 -36,49 -33,79 C-28,84 -22,74 -18,59"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Right hair -->
+    <path d="M27,4 C32,24 37,49 34,79 C30,84 24,74 20,59"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Center part -->
+    <path d="M0,-3 C0,7 0,17 0,24"
+      stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Strand lines -->
+    <path d="M-22,9 C-28,29 -30,51 -28,69" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+    <path d="M24,9 C30,29 32,51 30,69" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+    <path d="M-12,7 C-16,24 -18,44 -16,61" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.35" stroke-linecap="round"/>
+    <path d="M14,7 C18,24 20,44 18,61" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.35" stroke-linecap="round"/>
+    <!-- Beard -->
+    <path d="M-16,41 C-18,57 -10,74 0,79 C10,74 18,57 17,41"
+      stroke="#1A1A1A" stroke-width="2.5" fill="url(#crosshatch-light)" stroke-linecap="round"/>
+    <!-- Beard texture -->
+    <path d="M-8,49 C-9,59 -6,67 -2,72" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <path d="M8,49 C9,59 6,67 2,72" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.4" stroke-linecap="round"/>
+  </g>
+</svg>

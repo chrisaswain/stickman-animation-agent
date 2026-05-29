@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -14 58 36">
+  <!-- Component: sleeping expression (closed eyes, gentle smile, Z's) | Tier: 1 | Origin: face center at (0,0) -->
+  <g data-component="expression-sleeping" data-tier="1" data-attach-face-center="0,0">
+    <!-- Left eye — closed, gentle curve -->
+    <path d="M-20,0 C-17,3 -13,3 -10,0" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Right eye — closed, gentle curve -->
+    <path d="M10,0 C13,3 17,3 20,0" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Eyelash hints (peaceful) -->
+    <path d="M-18,1 C-17,3 -16,4 -15,3" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+    <path d="M18,1 C17,3 16,4 15,3" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+    <!-- Mouth — slight peaceful smile -->
+    <path d="M-8,18 C-4,22 4,22 8,18" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Z's floating away — small Z -->
+    <path d="M24,-8 L28,-8 L24,-4 L28,-4" stroke="#1A1A1A" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <!-- Z's floating away — medium Z -->
+    <path d="M28,-14 L33,-14 L28,-9 L33,-9" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.45"/>
+  </g>
+</svg>

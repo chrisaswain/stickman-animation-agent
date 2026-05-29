@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -4 22 8">
+  <!-- Component: walking shoe (pointing right) | Tier: 1 | Origin: ankle at (0,0) -->
+  <g data-component="foot-walking-shoe" data-tier="1" data-attach-ankle="0,0">
+    <path d="M0,0 C5,2 13,4 18,2 C20,-1 16,-3 10,-2 C5,-1 2,-1 0,0"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

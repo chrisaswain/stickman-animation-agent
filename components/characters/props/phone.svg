@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 40">
+  <!-- Component: smartphone | Tier: prop | Origin: top-left corner at (0,0) -->
+  <g data-component="prop-phone" data-tier="prop" data-attach-grip="11,20">
+    <!-- Phone body — rounded rectangle -->
+    <rect x="1" y="1" width="20" height="38" rx="3" ry="3"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Screen area -->
+    <rect x="3" y="5" width="16" height="28" rx="1" ry="1"
+      stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <!-- Screen glow line — content hint -->
+    <path d="M6,14 C8,13 14,13 16,14" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+    <path d="M6,18 C9,17 12,17 14,18" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+    <!-- Speaker notch at top -->
+    <path d="M8,3 L14,3" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- Home button hint at bottom -->
+    <circle cx="11" cy="36" r="2" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.4"/>
+  </g>
+</svg>

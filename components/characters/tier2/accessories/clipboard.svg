@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -8 36 70">
+  <!-- Component: clipboard | Tier: 2 | Origin: top center at (0,0) -->
+  <g data-component="clipboard" data-tier="2" data-attach-top="0,0">
+    <!-- Board -->
+    <path d="M-15,0 C-17,-2 -15,-5 -13,-5 L15,-5 C17,-5 19,-2 17,0 L17,55 C17,57 15,60 13,60 L-13,60 C-15,60 -17,57 -15,55 Z"
+      stroke="#1A1A1A" stroke-width="2" fill="#E5DDD0" stroke-linecap="round"/>
+    <!-- Clip at top -->
+    <path d="M-5,-7 C-3,-11 3,-11 5,-7" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Text lines -->
+    <path d="M-10,7 C-3,6 7,8 12,7" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.5" stroke-linecap="round"/>
+    <path d="M-10,17 C-3,16 7,18 12,17" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.5" stroke-linecap="round"/>
+    <path d="M-10,27 C-3,26 3,28 7,27" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.5" stroke-linecap="round"/>
+    <path d="M-10,37 C-3,36 0,38 5,37" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.4" stroke-linecap="round"/>
+  </g>
+</svg>

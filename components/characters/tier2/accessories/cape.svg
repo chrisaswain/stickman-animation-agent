@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 0 30 215">
+  <!-- Component: cape draping from shoulder | Tier: 2 | Origin: shoulder attachment at (0,0) -->
+  <g data-component="cape" data-tier="2" data-attach-shoulder="0,0">
+    <!-- Outer edge -->
+    <path d="M0,0 C12,6 19,28 22,63 C26,108 24,158 19,208"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Inner drape -->
+    <path d="M0,0 C4,3 6,8 9,23"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Fold lines -->
+    <path d="M9,28 C12,68 14,118 12,178" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <path d="M16,48 C18,88 19,138 17,198" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.3" stroke-linecap="round"/>
+  </g>
+</svg>

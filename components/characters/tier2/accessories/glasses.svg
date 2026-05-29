@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -12 56 16">
+  <!-- Component: glasses | Tier: 2 | Origin: face center (bridge of nose) at (0,0) -->
+  <g data-component="glasses" data-tier="2" data-attach-face-center="0,0">
+    <!-- Left lens -->
+    <path d="M-16,-2 C-16,-8 -10,-12 -4,-12 C2,-12 8,-8 8,-2 C8,4 2,8 -4,8 C-10,8 -16,4 -16,-2 Z"
+      stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Bridge -->
+    <path d="M8,-2 C10,-3 12,-3 14,-2" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Right lens -->
+    <path d="M14,-2 C14,-8 20,-12 26,-12 C32,-12 38,-8 38,-2 C38,4 32,8 26,8 C20,8 14,4 14,-2 Z"
+      stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Arms -->
+    <path d="M-16,-2 C-22,-4 -26,-6 -28,-8" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M38,-2 C44,-4 48,-6 50,-8" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

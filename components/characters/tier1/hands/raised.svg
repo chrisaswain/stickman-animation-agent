@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 -14 16 16">
+  <!-- Component: raised open hand (palm forward) | Tier: 1 | Origin: wrist at (0,0) -->
+  <g data-component="hand-raised" data-tier="1" data-attach-wrist="0,0">
+    <path d="M-2,0 C-6,-1 -8,-4 -7,-8 C-6,-12 -2,-14 2,-13 C6,-12 8,-8 7,-4 C6,-1 3,0 -2,0 Z"
+      stroke="#1A1A1A" stroke-width="2" fill="#E5DDD0" stroke-linecap="round"/>
+  </g>
+</svg>

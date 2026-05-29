@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -16 22 20">
+  <!-- Component: beckoning hand (palm up, fingers curled) | Tier: 2 | Origin: wrist at (0,0) -->
+  <g data-component="hand-beckoning" data-tier="2" data-attach-wrist="0,0">
+    <!-- Palm base facing up -->
+    <path d="M0,0 C-2,-4 0,-8 4,-8 L14,-8 C18,-8 18,-4 16,0 Z"
+      stroke="#1A1A1A" stroke-width="2" fill="#E5DDD0" stroke-linecap="round"/>
+    <!-- Fingers curling inward -->
+    <path d="M4,-8 C3,-12 5,-15 8,-14" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M8,-8 C7,-13 9,-16 12,-14" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M12,-8 C11,-12 13,-14 15,-12" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Thumb -->
+    <path d="M0,-2 C-2,-6 0,-10 3,-8" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 0 14 50">
+  <!-- Component: forward-holding arm (right side) | Tier: 1 | Origin: shoulder at (0,0) -->
+  <g data-component="arm-forward-holding" data-tier="1" data-attach-shoulder="0,0" data-attach-wrist="7,48">
+    <!-- Upper arm — forward -->
+    <path d="M0,0 C6,8 8,18 7,30" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Forearm — slight bend to hold -->
+    <path d="M7,30 C6,38 5,44 7,48" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

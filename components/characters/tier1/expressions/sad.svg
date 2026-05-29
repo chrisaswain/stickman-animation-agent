@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -14 48 36">
+  <!-- Component: sad/worried expression | Tier: 1 | Origin: face center at (0,0) -->
+  <g data-component="expression-sad" data-tier="1" data-attach-face-center="0,0">
+    <!-- Eyes -->
+    <circle cx="-15" cy="2" r="3.5" fill="#1A1A1A"/>
+    <circle cx="13" cy="2" r="3.5" fill="#1A1A1A"/>
+    <!-- Eyebrows — inner ends raised (worry) -->
+    <path d="M-23,-4 C-19,-8 -11,-9 -5,-10" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M5,-10 C11,-9 19,-8 23,-4" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Mouth — slight frown -->
+    <path d="M-13,24 C-7,20 7,20 13,24" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 55">
+  <!-- Component: open laptop | Tier: prop | Origin: top-left corner at (0,0) -->
+  <g data-component="prop-laptop" data-tier="prop" data-attach-center="40,28">
+    <!-- Screen — slightly irregular rectangle, angled back -->
+    <path d="M12,2 L68,2 L70,32 L10,32 Z" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Screen bezel inner -->
+    <path d="M16,5 L64,5 L66,29 L14,29 Z" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- Screen content hints -->
+    <path d="M20,12 C28,11 42,11 50,12" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+    <path d="M20,17 C30,16 38,16 44,17" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.25"/>
+    <path d="M20,22 C32,21 46,21 52,22" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.2"/>
+    <!-- Hinge line -->
+    <path d="M8,33 L72,33" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Keyboard base — tapered perspective -->
+    <path d="M6,34 L74,34 L78,52 L2,52 Z" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Keyboard key rows hint -->
+    <path d="M14,39 L66,39" stroke="#1A1A1A" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.3"/>
+    <path d="M12,44 L68,44" stroke="#1A1A1A" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.3"/>
+    <!-- Trackpad -->
+    <rect x="30" y="46" width="20" height="4" rx="1" ry="1"
+      stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+  </g>
+</svg>

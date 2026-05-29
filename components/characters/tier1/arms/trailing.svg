@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 0 12 58">
+  <!-- Component: trailing arm (left side, walking) | Tier: 1 | Origin: shoulder at (0,0) -->
+  <g data-component="arm-trailing" data-tier="1" data-attach-shoulder="0,0" data-attach-wrist="-5,56">
+    <!-- Upper arm — swinging behind -->
+    <path d="M0,0 C-6,8 -8,20 -7,32" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+    <!-- Forearm -->
+    <path d="M-7,32 C-6,42 -5,50 -5,56" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+  </g>
+</svg>

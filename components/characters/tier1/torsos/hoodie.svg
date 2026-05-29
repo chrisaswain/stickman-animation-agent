@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-46 0 92 68">
+  <!-- Component: hoodie torso | Tier: 1 | Origin: neck top center at (0,0) -->
+  <!-- Requires crosshatch-dense pattern in parent <defs> -->
+  <g data-component="torso-hoodie" data-tier="1" data-attach-neck="0,0" data-attach-left-shoulder="-41,7" data-attach-right-shoulder="41,7" data-attach-left-hip="-15,65" data-attach-right-hip="15,65">
+    <!-- Bean body — looser fit -->
+    <path d="M-41,5 C-45,7 -46,10 -44,15 C-41,27 -37,37 -32,47 C-28,55 -23,60 -15,63 C-7,65 7,65 15,63 C23,60 28,55 32,47 C37,37 41,27 44,15 C46,10 45,7 41,5 C34,2 15,0 0,0 C-15,0 -34,2 -41,5 Z"
+      stroke="#1A1A1A" stroke-width="3" fill="url(#crosshatch-dense)" stroke-linecap="round"/>
+    <!-- Hood collar -->
+    <path d="M-22,1 C-17,7 -10,9 0,9 C10,9 17,7 22,1"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Drawstrings -->
+    <path d="M-7,9 C-8,15 -9,22 -9,27" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M7,9 C8,15 9,22 9,27" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <!-- Front pocket -->
+    <path d="M-23,35 C-15,37 15,37 23,35" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M-23,35 C-23,42 -23,47 -23,52" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <path d="M23,35 C23,42 23,47 23,52" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+  </g>
+</svg>

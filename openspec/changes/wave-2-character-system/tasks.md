@@ -1,0 +1,23 @@
+# Tasks: Wave 2 — Character & Template System
+
+- [ ] Copy 57 SVG components from video-explainer whiteboard-sketch
+- [ ] Create tier1/legs/running.svg
+- [ ] Create tier1/legs/jumping.svg
+- [ ] Create tier1/arms/crossed.svg
+- [ ] Create tier1/arms/facepalm.svg
+- [ ] Create tier1/arms/celebrating.svg
+- [ ] Create tier1/expressions/smirk.svg
+- [ ] Create tier1/expressions/crying.svg
+- [ ] Create tier1/expressions/sleeping.svg
+- [ ] Create tier1/feet/running-shoe.svg
+- [ ] Create props/phone.svg
+- [ ] Create props/laptop.svg
+- [ ] Create props/clock.svg
+- [ ] Create props/bed.svg
+- [ ] Create props/desk.svg
+- [ ] Create props/coffee.svg
+- [ ] Create props/thought-bubble.svg
+- [ ] Create props/speech-bubble.svg
+- [ ] Remove .gitkeep files from populated directories
+- [ ] Verify total SVG count = 74
+- [ ] PR → review → iterate → merge
