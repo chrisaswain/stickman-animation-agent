@@ -467,16 +467,21 @@ function applyWatermark(videoPath, projectDir, outputPath) {
     return null;
   }
 
-  const logoPath = path.join(brandDir, watermark.logo);
+  const logoPath = path.resolve(brandDir, watermark.logo);
+  // Prevent path traversal outside the brand directory
+  if (!logoPath.startsWith(path.resolve(brandDir))) {
+    log('watermark', `Logo path escapes brand directory — skipping watermark`);
+    return null;
+  }
   if (!fs.existsSync(logoPath)) {
     log('watermark', `Logo file not found: ${logoPath} — skipping watermark`);
     return null;
   }
 
-  const position = watermark.position || 'bottom-right';
-  const margin = watermark.margin || 30;
-  const scale = watermark.scale || 0.08;
-  const opacity = watermark.opacity || 0.7;
+  const position = watermark.position ?? 'bottom-right';
+  const margin = Number(watermark.margin ?? 30);
+  const scale = Number(watermark.scale ?? 0.08);
+  const opacity = Math.max(0, Math.min(1, Number(watermark.opacity ?? 0.7)));
 
   log('watermark', `Applying watermark: ${watermark.logo} (${position}, ${Math.round(opacity * 100)}% opacity)`);
 
@@ -819,6 +824,7 @@ export async function renderPipeline(options) {
       verticalPath = path.join(outputDir, `${slug}-vertical.mp4`);
       muxFinal(combinedVerticalPath, mixedAudioPath, verticalPath);
 
+      // TODO V1.5: apply watermark to vertical video too
       log('pipeline', `=== Vertical render complete: ${verticalPath} ===`);
     }
 
