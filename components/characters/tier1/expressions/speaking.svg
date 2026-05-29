@@ -7,7 +7,7 @@
     <!-- Eyebrows — neutral/engaged -->
     <path d="M-23,-8 C-17,-11 -9,-11 -5,-9" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
     <path d="M5,-9 C9,-11 17,-11 23,-8" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <!-- Mouth — open oval -->
-    <ellipse cx="0" cy="21" rx="8" ry="4" stroke="#1A1A1A" stroke-width="2.5" fill="none"/>
+    <!-- Mouth — open oval as path -->
+    <path d="M-8,21 C-8,17 8,17 8,21 C8,25 -8,25 -8,21" stroke="#1A1A1A" stroke-width="2.5" fill="none"/>
   </g>
 </svg>
