@@ -11,8 +11,9 @@
  *   3. Mix background music under narration (if music exists)
  *   4. Concatenate scene MP4 segments into combined video
  *   5. Mux final video + audio into output MP4
- *   6. Generate SRT subtitles from timestamp JSONs (non-fatal)
- *   7. (Optional) Re-render at 1080x1920 for vertical version
+ *   6. Apply brand watermark overlay (non-fatal, if brand set)
+ *   7. Generate SRT subtitles from timestamp JSONs (non-fatal)
+ *   8. (Optional) Re-render at 1080x1920 for vertical version
  *
  * Usage:
  *   node src/render/pipeline.js --project projects/my-video/ --template whiteboard
@@ -429,7 +430,102 @@ function muxFinal(videoPath, audioPath, outputPath) {
 }
 
 // ---------------------------------------------------------------------------
-// Step 6: Subtitle Generation — SRT from timestamp JSONs
+// Step 6: Watermark Overlay — brand logo on final video
+// ---------------------------------------------------------------------------
+
+/**
+ * Apply a watermark logo overlay to a video using FFmpeg.
+ * Non-fatal: if brand config or logo is missing, skips gracefully.
+ *
+ * @param {string} videoPath    - Path to the input video
+ * @param {string} projectDir   - Project directory (reads video-project.json for brand field)
+ * @param {string} outputPath   - Where to write the watermarked video
+ * @returns {string|null}       Path to watermarked video, or null if skipped
+ */
+function applyWatermark(videoPath, projectDir, outputPath) {
+  const projectJsonPath = path.join(projectDir, 'video-project.json');
+  const project = readJSON(projectJsonPath);
+
+  if (!project.brand) {
+    log('watermark', 'No brand field in video-project.json — skipping watermark');
+    return null;
+  }
+
+  const brandDir = path.resolve(REPO_ROOT, 'brands', project.brand);
+  const brandJsonPath = path.join(brandDir, 'brand.json');
+
+  if (!fs.existsSync(brandJsonPath)) {
+    log('watermark', `Brand config not found: ${brandJsonPath} — skipping watermark`);
+    return null;
+  }
+
+  const brand = readJSON(brandJsonPath);
+  const watermark = brand.watermark;
+
+  if (!watermark || !watermark.logo) {
+    log('watermark', 'No watermark config in brand.json — skipping');
+    return null;
+  }
+
+  const logoPath = path.resolve(brandDir, watermark.logo);
+  // Prevent path traversal outside the brand directory
+  if (!logoPath.startsWith(path.resolve(brandDir))) {
+    log('watermark', `Logo path escapes brand directory — skipping watermark`);
+    return null;
+  }
+  if (!fs.existsSync(logoPath)) {
+    log('watermark', `Logo file not found: ${logoPath} — skipping watermark`);
+    return null;
+  }
+
+  const position = watermark.position ?? 'bottom-right';
+  const margin = Number(watermark.margin ?? 30);
+  const scale = Number(watermark.scale ?? 0.08);
+  const opacity = Math.max(0, Math.min(1, Number(watermark.opacity ?? 0.7)));
+
+  log('watermark', `Applying watermark: ${watermark.logo} (${position}, ${Math.round(opacity * 100)}% opacity)`);
+
+  const positionMap = {
+    'top-left': `x=${margin}:y=${margin}`,
+    'top-right': `x=main_w-overlay_w-${margin}:y=${margin}`,
+    'bottom-left': `x=${margin}:y=main_h-overlay_h-${margin}`,
+    'bottom-right': `x=main_w-overlay_w-${margin}:y=main_h-overlay_h-${margin}`,
+    'center': `x=(main_w-overlay_w)/2:y=(main_h-overlay_h)/2`,
+  };
+
+  const overlayPos = positionMap[position] || positionMap['bottom-right'];
+
+  ensureDir(path.dirname(outputPath));
+
+  const cmd = [
+    'ffmpeg -y',
+    `-i "${videoPath}"`,
+    `-i "${logoPath}"`,
+    `-filter_complex`,
+    `"[1:v]scale=iw*${scale}:ih*${scale},format=rgba,colorchannelmixer=aa=${opacity}[wm];[0:v][wm]overlay=${overlayPos}"`,
+    `-c:a copy`,
+    `"${outputPath}"`,
+  ].join(' ');
+
+  try {
+    run(cmd, { step: 'watermark' });
+  } catch (err) {
+    log('watermark', `Watermark application failed (non-fatal): ${err.message}`);
+    return null;
+  }
+
+  if (!fs.existsSync(outputPath)) {
+    log('watermark', 'Watermarked video not produced — skipping');
+    return null;
+  }
+
+  const sizeMB = (fs.statSync(outputPath).size / (1024 * 1024)).toFixed(1);
+  log('watermark', `Watermarked video: ${path.basename(outputPath)} (${sizeMB} MB)`);
+  return outputPath;
+}
+
+// ---------------------------------------------------------------------------
+// Step 7: Subtitle Generation — SRT from timestamp JSONs
 // ---------------------------------------------------------------------------
 
 /**
@@ -692,6 +788,16 @@ export async function renderPipeline(options) {
 
     log('pipeline', `=== Landscape render complete: ${landscapePath} ===`);
 
+    // ---- WATERMARK ----
+    const watermarkedPath = path.join(outputDir, `${slug}-watermarked.mp4`);
+    const wmResult = applyWatermark(landscapePath, resolvedProjectDir, watermarkedPath);
+    if (wmResult) {
+      // Replace the original with the watermarked version
+      fs.unlinkSync(landscapePath);
+      fs.renameSync(watermarkedPath, landscapePath);
+      log('watermark', 'Watermarked video replaced original');
+    }
+
     // ---- SUBTITLE GENERATION ----
     const srtPath = generateSubtitles(resolvedProjectDir, slug);
 
@@ -718,6 +824,7 @@ export async function renderPipeline(options) {
       verticalPath = path.join(outputDir, `${slug}-vertical.mp4`);
       muxFinal(combinedVerticalPath, mixedAudioPath, verticalPath);
 
+      // TODO V1.5: apply watermark to vertical video too
       log('pipeline', `=== Vertical render complete: ${verticalPath} ===`);
     }
 
@@ -793,8 +900,9 @@ Pipeline steps:
   3. Mix music        Duck background music to ${MUSIC_DUCK_DB}dB under narration
   4. Concat video     Combine scene MP4 segments into single video
   5. Final mux        Combine video + audio (AAC ${AAC_BITRATE})
-  6. Subtitles        Generate SRT from timestamp JSONs (non-fatal)
-  7. Vertical render  If aspect ratio is "both", re-render at 1080x1920
+  6. Watermark        Apply brand logo overlay (non-fatal, if brand set)
+  7. Subtitles        Generate SRT from timestamp JSONs (non-fatal)
+  8. Vertical render  If aspect ratio is "both", re-render at 1080x1920
 
 Reads video-project.json for config (slug, aspectRatio, fps).
 Updates step status in video-project.json on completion or error.
@@ -834,5 +942,5 @@ if (import.meta.url === `file:///${_argv1.replace(/\\/g, '/')}` ||
   main();
 }
 
-export { generateSubtitles };
+export { generateSubtitles, applyWatermark };
 export default renderPipeline;

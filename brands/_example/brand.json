@@ -1,0 +1,11 @@
+{
+  "name": "Example Channel",
+  "description": "An example brand profile for testing the watermark pipeline.",
+  "watermark": {
+    "logo": "logo.png",
+    "position": "bottom-right",
+    "margin": 30,
+    "scale": 0.08,
+    "opacity": 0.7
+  }
+}
