@@ -347,8 +347,7 @@ test('4. Render pipeline module loading — renderPipeline export', async () => 
 // Test 5: Gemini enhancer module loading
 // ---------------------------------------------------------------------------
 
-test('5. Gemini enhancer module loading — check for module or stub', () => {
-  // The enhance directory must exist with at least a package.json
+test('5. Gemini enhancer module loading — verify exports', async () => {
   assert.ok(
     fs.existsSync(ENHANCE_DIR),
     `Enhance directory must exist: ${ENHANCE_DIR}`,
@@ -364,21 +363,19 @@ test('5. Gemini enhancer module loading — check for module or stub', () => {
   assert.ok(pkg.name, 'Enhance package must have a name');
   assert.equal(pkg.type, 'module', 'Enhance package must be ESM ("type": "module")');
 
-  // The gemini-enhancer.js may not exist yet (it is on the roadmap).
-  // If it exists, verify it has exports. If not, just confirm the stub is ready.
-  if (fs.existsSync(GEMINI_ENHANCER_PATH)) {
-    // Dynamic import to verify it loads without syntax errors
-    // (we cannot test function behavior without real Gemini credentials)
-    console.log('  [INFO] gemini-enhancer.js found, attempting import...');
-    // Note: import is async but we mark this test as sync; if the file exists
-    // but is broken, the next test run with --async would catch it.
-    // For now, just verify it parses as valid JS.
-    const content = fs.readFileSync(GEMINI_ENHANCER_PATH, 'utf-8');
-    assert.ok(content.length > 0, 'gemini-enhancer.js must not be empty');
-    console.log(`  [PASS] gemini-enhancer.js exists (${content.length} bytes)`);
-  } else {
-    console.log('  [PASS] gemini-enhancer.js not yet created — stub package.json verified');
-  }
+  assert.ok(
+    fs.existsSync(GEMINI_ENHANCER_PATH),
+    `gemini-enhancer.js must exist: ${GEMINI_ENHANCER_PATH}`,
+  );
+
+  const mod = await import(`file:///${GEMINI_ENHANCER_PATH.replace(/\\/g, '/')}`);
+
+  assert.ok(typeof mod.generateMusic === 'function', 'Must export generateMusic function');
+  assert.ok(typeof mod.generateThumbnail === 'function', 'Must export generateThumbnail function');
+  assert.ok(typeof mod.enhance === 'function', 'Must export enhance function');
+  assert.ok(typeof mod.default === 'function', 'Must have default export (function)');
+
+  console.log('  [PASS] gemini-enhancer.js imports and exports verified');
 });
 
 // ---------------------------------------------------------------------------

@@ -22,8 +22,6 @@ import { parseArgs } from 'node:util';
 // Constants
 // ---------------------------------------------------------------------------
 
-const REPO_ROOT = path.resolve(import.meta.dirname, '..', '..');
-
 const TONE_GENRE_MAP = {
   humorous: 'upbeat quirky',
   educational: 'calm ambient',
