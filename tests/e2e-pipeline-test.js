@@ -14,6 +14,9 @@
  *   4. Render pipeline module loading
  *   5. Gemini enhancer module loading
  *   6. File discovery functions (scene HTML/WAV pattern matching)
+ *   7-8. Template loading + compositor output (classic-stickman, comic-panel)
+ *   9-12. Brand config + watermark + subtitle generation
+ *   13-18. Pipeline orchestrator (module loading, prerequisite validation, CLI, SKILL.md)
  *
  * Usage:
  *   node tests/e2e-pipeline-test.js
@@ -38,6 +41,7 @@ const PRESETS_DIR = path.join(REPO_ROOT, 'character-library', 'presets');
 const SCENE_SCHEMA_PATH = path.join(REPO_ROOT, 'src', 'compositor', 'scene-schema.json');
 const COMPOSITOR_PATH = path.join(REPO_ROOT, 'src', 'compositor', 'index.js');
 const RENDER_PIPELINE_PATH = path.join(REPO_ROOT, 'src', 'render', 'pipeline.js');
+const ORCHESTRATOR_PATH = path.join(REPO_ROOT, 'src', 'pipeline', 'orchestrator.js');
 const ENHANCE_DIR = path.join(REPO_ROOT, 'src', 'enhance');
 const GEMINI_ENHANCER_PATH = path.join(ENHANCE_DIR, 'gemini-enhancer.js');
 
@@ -718,6 +722,100 @@ test('14. Subtitle generation — graceful skip when no timestamps dir', async (
   assert.equal(result2, null, 'Must return null when timestamps dir is empty');
 
   console.log('  [PASS] Gracefully skipped subtitle generation (no timestamps)');
+});
+
+// ---------------------------------------------------------------------------
+// Test 15: Orchestrator module loading
+// ---------------------------------------------------------------------------
+
+test('15. Orchestrator module loading — verify exports', async () => {
+  assert.ok(
+    fs.existsSync(ORCHESTRATOR_PATH),
+    `Orchestrator must exist: ${ORCHESTRATOR_PATH}`,
+  );
+
+  const mod = await import(`file:///${ORCHESTRATOR_PATH.replace(/\\/g, '/')}`);
+
+  assert.ok(typeof mod.runVoice === 'function', 'Must export runVoice function');
+  assert.ok(typeof mod.runTimestamps === 'function', 'Must export runTimestamps function');
+  assert.ok(typeof mod.runCompose === 'function', 'Must export runCompose function');
+  assert.ok(typeof mod.runEnhance === 'function', 'Must export runEnhance function');
+  assert.ok(typeof mod.runRender === 'function', 'Must export runRender function');
+  assert.ok(typeof mod.runPublish === 'function', 'Must export runPublish function');
+  assert.ok(typeof mod.runSteps === 'function', 'Must export runSteps function');
+  assert.ok(typeof mod.resumePipeline === 'function', 'Must export resumePipeline function');
+  assert.ok(typeof mod.default === 'function', 'Must have default export (function)');
+
+  console.log('  [PASS] Orchestrator module imports and exports verified');
+});
+
+// ---------------------------------------------------------------------------
+// Test 16: Orchestrator prerequisite validation
+// ---------------------------------------------------------------------------
+
+test('16. Orchestrator prerequisite validation — voice step detects missing script', async () => {
+  const mod = await import(`file:///${ORCHESTRATOR_PATH.replace(/\\/g, '/')}`);
+
+  // Use a project dir with no narration-script.json
+  const noScriptDir = path.join(TEST_OUTPUT_DIR, 'no-script-project');
+  fs.mkdirSync(noScriptDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(noScriptDir, 'video-project.json'),
+    JSON.stringify({ title: 'test', slug: 'test', steps: {} }, null, 2),
+    'utf-8',
+  );
+
+  const result = mod.runVoice(noScriptDir);
+  assert.equal(result.success, false, 'Voice step must fail without narration-script.json');
+  assert.ok(result.error.includes('narration-script.json'), 'Error must mention missing file');
+  assert.ok(result.hint, 'Must provide a recovery hint');
+
+  console.log('  [PASS] Orchestrator correctly validates voice prerequisites');
+});
+
+// ---------------------------------------------------------------------------
+// Test 17: Orchestrator CLI help
+// ---------------------------------------------------------------------------
+
+test('17. Orchestrator CLI — help flag works', () => {
+  let stdout;
+  try {
+    stdout = execSync(`node "${ORCHESTRATOR_PATH}" --help`, {
+      cwd: REPO_ROOT,
+      encoding: 'utf-8',
+      timeout: 15_000,
+    });
+  } catch (err) {
+    stdout = err.stdout ? err.stdout.toString() : '';
+  }
+
+  assert.ok(stdout.includes('Pipeline Orchestrator'), 'Help must include title');
+  assert.ok(stdout.includes('--project'), 'Help must mention --project flag');
+  assert.ok(stdout.includes('--step'), 'Help must mention --step flag');
+  assert.ok(stdout.includes('--from'), 'Help must mention --from flag');
+  assert.ok(stdout.includes('voice'), 'Help must list voice step');
+  assert.ok(stdout.includes('render'), 'Help must list render step');
+
+  console.log('  [PASS] Orchestrator CLI help output verified');
+});
+
+// ---------------------------------------------------------------------------
+// Test 18: Skill file exists
+// ---------------------------------------------------------------------------
+
+test('18. Stickman animation skill — SKILL.md exists with required sections', () => {
+  const skillPath = path.join(REPO_ROOT, '.claude', 'skills', 'stickman-animation', 'SKILL.md');
+  assert.ok(fs.existsSync(skillPath), `Skill file must exist: ${skillPath}`);
+
+  const content = fs.readFileSync(skillPath, 'utf-8');
+  assert.ok(content.includes('# Stickman Animation'), 'Skill must have title');
+  assert.ok(content.includes('/stickman-animation'), 'Skill must reference trigger command');
+  assert.ok(content.includes('orchestrator.js'), 'Skill must reference the orchestrator');
+  assert.ok(content.includes('Resume'), 'Skill must document resume behavior');
+  assert.ok(content.includes('Checkpoint'), 'Skill must document checkpoint behavior');
+  assert.ok(content.includes('enhance-plan.json'), 'Skill must reference enhance plan');
+
+  console.log('  [PASS] Stickman animation SKILL.md exists and has required sections');
 });
 
 // ---------------------------------------------------------------------------

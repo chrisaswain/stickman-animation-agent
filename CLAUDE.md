@@ -4,10 +4,11 @@ Fully automated stickman animation video pipeline. Topic → script → characte
 
 ## Architecture
 
-HyperFrames-primary hybrid: deterministic SVG characters rendered via headless Chrome (pixel-perfect consistency) + Gemini Media MCP for music/thumbnails.
+**Hybrid orchestrator:** creative steps are LLM-driven (via `.claude/skills/stickman-animation/SKILL.md`), deterministic steps run through a coded Node.js orchestrator (`src/pipeline/orchestrator.js`). HyperFrames renders SVG compositions via headless Chrome for pixel-perfect consistency. Gemini Media MCP handles music/thumbnails.
 
 ```
 Intake → Script → Characters → Voice → Timestamps → Storyboard → Compose → Enhance → Render → Publish
+ LLM      LLM      LLM        ORCH      ORCH         LLM        Hybrid    Hybrid    ORCH     ORCH
 ```
 
 Each step has optional checkpoints. Projects track step status in `video-project.json` for resumability.
@@ -18,24 +19,24 @@ The LLM generates a **Scene Definition JSON** (structured data, not code). A det
 
 ## Pipeline
 
-| Step | Tool | Output |
-|---|---|---|
-| Intake | Interactive Q&A | `video-project.json` |
-| Script | Claude | `scripts/narration-script.json` |
-| Characters | Claude | `characters/{id}.json` |
-| Voice | Kokoro-82M / Coqui / ElevenLabs / Gemini | `audio/scene-*.wav` |
-| Timestamps | faster-whisper | `timestamps/scene-*.json` |
-| Storyboard | Claude | `output/storyboard.md` |
-| Compose | Claude (JSON) + compositor (HTML) | `compositions/scene-*.html` |
-| Enhance | Gemini Media MCP | `audio/music.wav`, `output/thumbnail.png` |
-| Render | HyperFrames + FFmpeg | `output/{slug}.mp4` |
-| Publish | Claude | `output/{slug}.srt`, `output/metadata.txt` |
+| Step | Mode | Tool | Output |
+|---|---|---|---|
+| Intake | LLM | Interactive Q&A | `video-project.json` |
+| Script | LLM | Claude | `scripts/narration-script.json` |
+| Characters | LLM | Claude | `characters/{id}.json` |
+| Voice | Orchestrator | Kokoro-82M / Gemini / ElevenLabs | `audio/scene-*.wav` |
+| Timestamps | Orchestrator | faster-whisper | `timestamps/scene-*.json` |
+| Storyboard | LLM | Claude | `output/storyboard.md` |
+| Compose | Hybrid | Claude (JSON) + compositor (HTML) | `compositions/scene-*.html` |
+| Enhance | Hybrid | gemini-enhancer.js + Gemini MCP | `audio/music.wav`, `output/thumbnail.png` |
+| Render | Orchestrator | HyperFrames + FFmpeg | `output/{slug}.mp4` |
+| Publish | Orchestrator | generate_subtitles.py + template | `output/{slug}.srt`, `output/metadata.txt` |
 
 ## Templates
 
 - `whiteboard` (primary) — parchment bg, dark ink, Caveat font, draw-in animation
-- `classic-stickman` (V1.5) — black bg, white stickmen, high contrast
-- `comic-panel` (V1.5) — white bg, panel borders, speech bubbles
+- `classic-stickman` — black bg, white stickmen, high contrast, Space Mono font
+- `comic-panel` — white bg, panel borders, Comic Neue font
 
 ## Character System
 
@@ -79,7 +80,10 @@ Each video project lives in `projects/{slug}/` with:
 
 ## Commands
 
-- `/stickman-animation` — start or resume a video project
+- `/stickman-animation [topic]` — start or resume a video project (full autonomous pipeline)
+- `node src/pipeline/orchestrator.js --project <dir>` — run all incomplete deterministic steps
+- `node src/pipeline/orchestrator.js --project <dir> --step <name>` — run a single step
+- `node src/pipeline/orchestrator.js --project <dir> --from <name>` — run from step onwards
 - `node src/compositor/index.js --scene <json> --project <dir> --template whiteboard --output <html>` — compose a scene
 - `node src/render/pipeline.js --project <dir> --template whiteboard` — render & assemble final MP4
 - `node src/enhance/gemini-enhancer.js --project <dir> --template whiteboard` — generate music/thumbnail prompts
