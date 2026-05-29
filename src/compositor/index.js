@@ -30,30 +30,6 @@ const REPO_ROOT = path.resolve(import.meta.dirname, '..', '..');
 const COMPONENTS_DIR = path.join(REPO_ROOT, 'components', 'characters');
 const TEMPLATES_DIR = path.join(REPO_ROOT, 'templates');
 
-// Component categories that map to character sheet fields
-const COMPONENT_CATEGORIES = {
-  head: { dir: 'heads', partName: 'head' },
-  torso: { dir: 'torsos', partName: 'torso' },
-  hair: { dir: 'hair', partName: 'hair' },
-  defaultExpression: { dir: 'expressions', partName: 'expression' },
-  defaultArms: { dir: 'arms', partName: 'arm_right' },
-  defaultLegs: { dir: 'legs', partName: 'legs' },
-};
-
-// Attachment point pairing — which parent point connects to which child point
-const ATTACHMENT_CHAIN = [
-  { parent: 'head', parentPoint: 'neck', child: 'torso', childPoint: 'neck' },
-  { parent: 'torso', parentPoint: 'right-shoulder', child: 'arm_right', childPoint: 'shoulder' },
-  { parent: 'torso', parentPoint: 'left-shoulder', child: 'arm_left', childPoint: 'shoulder' },
-  { parent: 'torso', parentPoint: 'right-hip', child: 'legs', childPoint: 'hip' },
-  { parent: 'head', parentPoint: 'hair-top', child: 'hair', childPoint: 'head-top' },
-  { parent: 'head', parentPoint: 'face-center', child: 'expression', childPoint: 'face-center' },
-  { parent: 'head', parentPoint: 'face-center', child: 'accessory_glasses', childPoint: 'face-center' },
-  { parent: 'arm_right', parentPoint: 'wrist', child: 'hand_right', childPoint: 'wrist' },
-  { parent: 'arm_left', parentPoint: 'wrist', child: 'hand_left', childPoint: 'wrist' },
-  { parent: 'legs', parentPoint: 'right-ankle', child: 'foot_right', childPoint: 'ankle' },
-  { parent: 'legs', parentPoint: 'left-ankle', child: 'foot_left', childPoint: 'ankle' },
-];
 
 // ---------------------------------------------------------------------------
 // File I/O helpers
@@ -254,7 +230,6 @@ function assembleCharacter(charSheet, scenePlacement, template) {
   const tier = charSheet.tier || 1;
   const components = charSheet.components;
   const proportions = charSheet.proportions || {};
-  const totalHeight = proportions.totalHeight || 220;
 
   // Determine the active pose
   const poseName = scenePlacement.pose || 'standing';
@@ -403,7 +378,6 @@ function assembleCharacter(charSheet, scenePlacement, template) {
     if (accPath) {
       const accSvg = readSVG(accPath);
       if (accSvg) {
-        const accPoints = parseAttachPoints(accSvg);
         const pos = positions.expression || positions.head || { x: 0, y: 0 };
         parts.push(
           `  <g data-part="accessory" transform="translate(${pos.x}, ${pos.y})">` +
@@ -560,7 +534,6 @@ function computePositions(loaded, proportions) {
       x: (positions.arm_left?.x || 0) - wrist.x + handWrist.x,
       y: (positions.arm_left?.y || 0) + wrist.y - handWrist.y,
     };
-    positions.hand_left.mirror = true;
   }
 
   // Feet: connect to legs ankle points
@@ -579,7 +552,6 @@ function computePositions(loaded, proportions) {
       x: (positions.legs?.x || 0) + ankle.x - footAnkle.x,
       y: (positions.legs?.y || 0) + ankle.y - footAnkle.y,
     };
-    positions.foot_left.mirror = true;
   }
 
   return positions;
@@ -910,11 +882,12 @@ function generateSVGDefs(template, characters) {
   const defs = [];
   defs.push('<defs>');
 
-  // Hand-drawn wobble filter — subtle turbulence that makes SVG paths look ink-drawn
-  defs.push(`  <filter id="hand-drawn">`);
-  defs.push(`    <feTurbulence type="turbulence" baseFrequency="0.015" numOctaves="3" result="noise" seed="10"/>`);
-  defs.push(`    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>`);
-  defs.push(`  </filter>`);
+  if (template.animation?.handDrawnFilter !== false) {
+    defs.push(`  <filter id="hand-drawn">`);
+    defs.push(`    <feTurbulence type="turbulence" baseFrequency="0.015" numOctaves="3" result="noise" seed="10"/>`);
+    defs.push(`    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>`);
+    defs.push(`  </filter>`);
+  }
 
   // Crosshatch pattern (used by t-shirt and other clothing)
   defs.push(`  <pattern id="crosshatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">`);
@@ -1030,7 +1003,7 @@ function buildHTML(sceneDef, template, characterSVGs, propSVGs, speechBubbleSVG,
     ${generateBackgroundDetails(sceneDef, template, width, height)}
 
     <!-- Camera wrapper — all scene content moves with this group -->
-    <g class="camera-wrapper" transform-origin="center center" filter="url(#hand-drawn)">
+    <g class="camera-wrapper" transform-origin="center center"${template.animation?.handDrawnFilter !== false ? ' filter="url(#hand-drawn)"' : ''}>
 
       <!-- Props (behind characters) -->
       ${propSVGs}

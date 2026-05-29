@@ -38,7 +38,8 @@
     "fadeOutDuration": 0.15,
     "gsapCdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
     "drawSpeed": 1.0,
-    "drawEasing": "power1.inOut"
+    "drawEasing": "power1.inOut",
+    "handDrawnFilter": true
   },
   "layout": {
     "landscape": {
