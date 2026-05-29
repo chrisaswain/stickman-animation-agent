@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 0 36 65">
+  <!-- Component: t-shirt torso (side view, facing right) | Tier: 1 | Origin: neck top center at (0,0) -->
+  <!-- USE WITH: profile head + walking legs -->
+  <g data-component="torso-tshirt-side" data-tier="1" data-attach-neck="0,0" data-attach-front-shoulder="12,8" data-attach-back-shoulder="-12,8" data-attach-hip="0,63">
+    <!-- Bean body — narrower profile view -->
+    <path d="M-15,5 C-17,7 -18,10 -17,15 C-15,28 -12,40 -9,50 C-7,56 -4,61 0,63 C4,61 7,56 9,50 C12,40 15,28 17,15 C18,10 17,7 15,5 C10,2 5,0 0,0 C-5,0 -10,2 -15,5 Z"
+      stroke="#1A1A1A" stroke-width="3" fill="url(#crosshatch)" stroke-linecap="round"/>
+    <!-- Collar (side view — asymmetric curve) -->
+    <path d="M-8,2 C-3,6 3,6 8,2" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Sleeve seam (front, facing viewer) -->
+    <path d="M12,8 C14,12 14,16 12,18" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- Side seam hint -->
+    <path d="M-14,20 C-12,35 -10,48 -7,55" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+  </g>
+</svg>

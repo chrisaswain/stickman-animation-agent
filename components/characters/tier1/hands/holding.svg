@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -6 14 10">
+  <!-- Component: holding hand (fingers curled over object) | Tier: 1 | Origin: wrist at (0,0) -->
+  <g data-component="hand-holding" data-tier="1" data-attach-wrist="0,0">
+    <path d="M0,-2 C3,-4 8,-5 10,-3 C11,-2 10,0 7,0 C4,0 1,-1 0,0"
+      stroke="#1A1A1A" stroke-width="2" fill="#E5DDD0" stroke-linecap="round"/>
+  </g>
+</svg>

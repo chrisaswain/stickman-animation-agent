@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 0 44 65">
+  <!-- Component: jumping legs (both off ground, slightly bent) | Tier: 1 | Origin: hip center at (0,0) -->
+  <g data-component="legs-jumping" data-tier="1" data-attach-hip="0,0" data-attach-left-ankle="-16,60" data-attach-right-ankle="16,60">
+    <!-- Left leg — slight outward bend at knee -->
+    <path d="M-10,0 C-16,14 -20,30 -18,42" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Left shin — curving back inward -->
+    <path d="M-18,42 C-17,50 -16,56 -16,60" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Right leg — slight outward bend at knee -->
+    <path d="M10,0 C16,14 20,30 18,42" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Right shin — curving back inward -->
+    <path d="M18,42 C17,50 16,56 16,60" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

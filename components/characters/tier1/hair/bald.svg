@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -4 30 6">
+  <!-- Component: bald (subtle highlight arc) | Tier: 1 | Origin: head top center at (0,0) -->
+  <g data-component="hair-bald" data-tier="1" data-attach-head-top="0,0">
+    <path d="M-12,0 C-6,-3 6,-3 12,0" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+  </g>
+</svg>

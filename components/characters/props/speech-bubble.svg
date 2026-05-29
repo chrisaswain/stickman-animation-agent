@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 58">
+  <!-- Component: speech bubble (rounded rectangle with pointer triangle) | Tier: prop | Origin: top-left at (0,0) -->
+  <g data-component="prop-speech-bubble" data-tier="prop" data-attach-tail="16,56" data-attach-content-center="40,20">
+    <!-- Bubble body — slightly irregular rounded rectangle -->
+    <path d="M10,2 C30,0 50,0 70,2 C76,3 78,6 78,12 L78,32 C78,38 76,40 70,40 L28,40 L16,56 L22,40 L10,40 C4,40 2,38 2,32 L2,12 C2,6 4,3 10,2"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Text line hints -->
+    <path d="M14,14 C24,13 44,13 58,14" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.25"/>
+    <path d="M14,22 C28,21 48,21 62,22" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.2"/>
+    <path d="M14,30 C22,29 36,29 46,30" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.15"/>
+  </g>
+</svg>

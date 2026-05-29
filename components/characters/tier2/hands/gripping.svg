@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -12 18 16">
+  <!-- Component: gripping hand (around cylindrical object) | Tier: 2 | Origin: wrist at (0,0) -->
+  <g data-component="hand-gripping" data-tier="2" data-attach-wrist="0,0">
+    <path d="M0,0 C-3,-4 -1,-8 2,-10 C5,-12 8,-10 8,-6 L9,-2 C12,-4 15,-2 13,2 L7,7 C3,10 -2,7 -3,2"
+      stroke="#1A1A1A" stroke-width="2" fill="#E5DDD0" stroke-linecap="round"/>
+  </g>
+</svg>

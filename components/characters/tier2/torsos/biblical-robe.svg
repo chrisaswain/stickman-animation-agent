@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 0 100 215">
+  <!-- Component: biblical robe torso | Tier: 2 | Origin: neck top center at (0,0) -->
+  <!-- Requires crosshatch-light pattern in parent <defs> -->
+  <g data-component="torso-biblical-robe" data-tier="2" data-attach-neck="0,0" data-attach-left-shoulder="-30,13" data-attach-right-shoulder="30,13" data-attach-left-hip="-22,68" data-attach-right-hip="22,68" data-attach-hem="0,210">
+    <!-- Inner tunic -->
+    <path d="M-12,6 C-15,53 -18,103 -22,208 L40,208 C37,103 34,53 30,6 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="url(#crosshatch-light)" stroke-linecap="round"/>
+    <!-- Outer mantle from left shoulder -->
+    <path d="M-18,8 C-28,43 -35,88 -38,168 C-38,178 -30,183 -22,178 L-15,118"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M-18,8 C-8,13 5,16 15,13"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Mantle fold lines -->
+    <path d="M-25,38 C-28,73 -32,118 -30,158" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.45" stroke-linecap="round"/>
+    <path d="M-20,33 C-22,68 -24,108 -22,153" stroke="#1A1A1A" stroke-width="1" fill="none" opacity="0.3" stroke-linecap="round"/>
+    <!-- Tunic draping fold lines -->
+    <path d="M-13,38 C-15,83 -16,138 -13,198" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <path d="M14,36 C16,83 17,138 14,198" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <!-- Belt/sash -->
+    <path d="M-14,63 C0,60 18,60 32,63"
+      stroke="#1A1A1A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <!-- Belt knot detail -->
+    <path d="M-2,63 C-4,70 -6,78 -3,83" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M2,63 C4,70 6,78 3,83" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Tunic hem detail -->
+    <path d="M-22,206 C-10,210 28,210 40,206" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+  </g>
+</svg>

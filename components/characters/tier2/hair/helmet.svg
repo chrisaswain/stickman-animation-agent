@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -20 55 32">
+  <!-- Component: pointed helmet with nose guard | Tier: 2 | Origin: head top center at (0,0) -->
+  <!-- Requires crosshatch-light pattern in parent <defs> -->
+  <g data-component="hair-helmet" data-tier="2" data-attach-head-top="0,0">
+    <!-- Helmet dome -->
+    <path d="M-15,6 C-10,-12 8,-22 18,-24 C28,-22 46,-12 50,6 L50,23 C48,26 45,28 42,26 L42,16"
+      stroke="#1A1A1A" stroke-width="3" fill="url(#crosshatch-light)" stroke-linecap="round"/>
+    <path d="M-8,16 C-10,26 -12,28 -15,26 L-15,23"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Helmet rim -->
+    <path d="M-15,23 C-5,28 42,28 50,23" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Nose guard -->
+    <path d="M18,-24 C18,-12 18,6 18,26" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Helmet crest -->
+    <path d="M18,-24 C18,-28 18,-30 18,-27" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

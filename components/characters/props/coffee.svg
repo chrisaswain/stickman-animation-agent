@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -18 38 48">
+  <!-- Component: coffee cup with steam | Tier: prop | Origin: cup center at (16,14) -->
+  <g data-component="prop-coffee" data-tier="prop" data-attach-grip="4,14" data-attach-center="16,14">
+    <!-- Cup body — slightly tapered -->
+    <path d="M4,4 L6,28 C6,30 8,30 10,30 L22,30 C24,30 26,30 26,28 L28,4"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Cup rim -->
+    <path d="M3,4 L29,4" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Handle — on right side -->
+    <path d="M28,10 C34,10 35,16 34,20 C33,24 30,24 28,22"
+      stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Coffee surface line -->
+    <path d="M7,8 C12,9 20,9 25,8" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+    <!-- Steam curl left -->
+    <path d="M10,-2 C8,-6 12,-8 10,-12 C8,-14 12,-16 10,-18"
+      stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.35"/>
+    <!-- Steam curl center -->
+    <path d="M16,-2 C14,-5 18,-8 16,-11 C14,-13 18,-15 16,-17"
+      stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+    <!-- Steam curl right -->
+    <path d="M22,-2 C20,-5 24,-7 22,-10 C20,-12 24,-14 22,-16"
+      stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.25"/>
+  </g>
+</svg>

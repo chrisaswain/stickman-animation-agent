@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -55 30 58">
+  <!-- Component: raised arm (right side, upward) | Tier: 1 | Origin: shoulder at (0,0) -->
+  <g data-component="arm-raised" data-tier="1" data-attach-shoulder="0,0" data-attach-wrist="20,-50">
+    <!-- Upper arm — upward -->
+    <path d="M0,0 C8,-8 14,-18 16,-28" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Forearm — continuing up -->
+    <path d="M16,-28 C18,-36 19,-44 20,-50" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

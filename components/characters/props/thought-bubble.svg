@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 65">
+  <!-- Component: thought bubble (cloud shape with trailing circles) | Tier: prop | Origin: top-left at (0,0) -->
+  <g data-component="prop-thought-bubble" data-tier="prop" data-attach-tail="18,62" data-attach-content-center="42,24">
+    <!-- Cloud body — overlapping bumpy arcs -->
+    <path d="M20,38 C8,38 4,30 8,22 C4,16 8,8 18,8 C20,2 30,-2 40,2 C48,-2 60,0 64,8 C74,8 78,16 74,24 C78,30 74,38 64,38 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Trailing circle — medium -->
+    <circle cx="22" cy="46" r="5" stroke="#1A1A1A" stroke-width="2" fill="none"/>
+    <!-- Trailing circle — small -->
+    <circle cx="18" cy="56" r="3" stroke="#1A1A1A" stroke-width="1.8" fill="none"/>
+    <!-- Trailing circle — tiny -->
+    <circle cx="18" cy="62" r="1.5" stroke="#1A1A1A" stroke-width="1.5" fill="none"/>
+  </g>
+</svg>

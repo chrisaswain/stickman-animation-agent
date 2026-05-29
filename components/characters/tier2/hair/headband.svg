@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 -6 48 14">
+  <!-- Component: headband | Tier: 2 | Origin: head top center at (0,0) -->
+  <g data-component="hair-headband" data-tier="2" data-attach-head-top="0,0">
+    <!-- Band wrapping around head -->
+    <path d="M-20,0 C-15,-4 -5,-6 5,-5 C15,-4 22,-2 24,2"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Knot/tail at side -->
+    <path d="M24,2 C26,0 28,2 26,5" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M24,2 C26,4 25,7 23,8" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-25 0 50 210">
+  <!-- Component: generic authority robe | Tier: 2 | Origin: neck top center at (0,0) -->
+  <!-- Requires crosshatch-light pattern in parent <defs> -->
+  <g data-component="torso-generic-authority" data-tier="2" data-attach-neck="0,0" data-attach-left-shoulder="-22,8" data-attach-right-shoulder="22,8" data-attach-left-hip="-16,65" data-attach-right-hip="16,65" data-attach-hem="0,205">
+    <!-- Long robe -->
+    <path d="M-22,8 C-24,55 -26,105 -24,205 L24,205 C26,105 24,55 22,8 Z"
+      stroke="#1A1A1A" stroke-width="3" fill="url(#crosshatch-light)" stroke-linecap="round"/>
+    <!-- Shoulders -->
+    <path d="M-22,8 C-14,2 -6,0 0,0 C6,0 14,2 22,8"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Collar -->
+    <path d="M-10,2 C-5,8 5,8 10,2" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Sash at waist -->
+    <path d="M-20,65 C-8,62 8,62 20,65"
+      stroke="#1A1A1A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <!-- Robe fold lines -->
+    <path d="M-8,35 C-10,85 -10,140 -8,195" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <path d="M8,35 C10,85 10,140 8,195" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <!-- Hem detail -->
+    <path d="M-24,203 C-12,207 12,207 24,203" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+  </g>
+</svg>

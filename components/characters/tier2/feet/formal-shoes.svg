@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -4 24 12">
+  <!-- Component: formal closed shoes | Tier: 2 | Origin: ankle at (0,0) -->
+  <g data-component="foot-formal-shoes" data-tier="2" data-attach-ankle="0,0">
+    <!-- Shoe -->
+    <path d="M0,0 C-7,2 -14,5 -16,3 C-18,0 -12,-4 -6,-3 L0,0"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Sole line -->
+    <path d="M-14,5 C-8,7 -2,6 2,4" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+  </g>
+</svg>

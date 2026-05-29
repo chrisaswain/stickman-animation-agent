@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-30 -60 60 64">
+  <!-- Component: celebrating arms (both raised triumphantly) | Tier: 1 | Origin: shoulder-center at (0,0) -->
+  <g data-component="arm-celebrating" data-tier="1" data-attach-shoulder-left="-18,0" data-attach-shoulder-right="18,0" data-attach-left-wrist="-26,-55" data-attach-right-wrist="26,-55">
+    <!-- Left upper arm — reaching skyward -->
+    <path d="M-18,0 C-22,-10 -24,-20 -25,-32" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Left forearm — extending up and slightly outward -->
+    <path d="M-25,-32 C-26,-40 -26,-48 -26,-55" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Right upper arm — reaching skyward -->
+    <path d="M18,0 C22,-10 24,-20 25,-32" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Right forearm — extending up and slightly outward -->
+    <path d="M25,-32 C26,-40 26,-48 26,-55" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Left sleeve cuff hint -->
+    <path d="M-24,-30 C-22,-34 -20,-33 -25,-32" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- Right sleeve cuff hint -->
+    <path d="M24,-30 C22,-34 20,-33 25,-32" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+  </g>
+</svg>

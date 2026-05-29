@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 -26 44 52">
+  <!-- Component: alarm clock | Tier: prop | Origin: clock face center at (0,0) -->
+  <g data-component="prop-clock" data-tier="prop" data-attach-center="0,0">
+    <!-- Clock face — slightly wobbly circle -->
+    <path d="M0,-19 C11,-19 20,-10 20,0 C20,10 11,20 0,20 C-11,20 -20,10 -20,0 C-20,-10 -11,-19 0,-19"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Hour markers (12, 3, 6, 9) -->
+    <path d="M0,-16 L0,-13" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M16,0 L13,0" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M0,16 L0,13" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M-16,0 L-13,0" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Hour hand (pointing roughly to 10) -->
+    <path d="M0,0 C-4,-3 -7,-6 -9,-8" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Minute hand (pointing roughly to 2) -->
+    <path d="M0,0 C4,-5 7,-9 9,-13" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Center dot -->
+    <circle cx="0" cy="0" r="1.5" fill="#1A1A1A"/>
+    <!-- Bell left -->
+    <path d="M-14,-18 C-18,-22 -16,-25 -12,-22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Bell right -->
+    <path d="M14,-18 C18,-22 16,-25 12,-22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Bell connector -->
+    <path d="M-6,-20 C-2,-24 2,-24 6,-20" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Feet -->
+    <path d="M-10,20 C-12,24 -10,25 -8,22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M10,20 C12,24 10,25 8,22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

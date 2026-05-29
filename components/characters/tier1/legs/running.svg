@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 0 65 82">
+  <!-- Component: running legs (mid-sprint, side view) | Tier: 1 | Origin: hip center at (0,0) -->
+  <!-- USE WITH: profile or three-quarter head — NOT front-facing -->
+  <g data-component="legs-running" data-tier="1" data-attach-hip="0,0" data-attach-front-ankle="40,60" data-attach-back-ankle="-15,72">
+    <!-- Front leg (driving forward, knee high and bent) -->
+    <path d="M5,0 C14,10 22,22 28,35" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Front shin (snapping forward from knee) -->
+    <path d="M28,35 C34,44 38,52 40,60" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Back leg (extended behind, pushing off) -->
+    <path d="M-3,0 C-8,18 -12,38 -14,55" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Back shin (trailing, nearly straight) -->
+    <path d="M-14,55 C-15,62 -15,68 -15,72" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

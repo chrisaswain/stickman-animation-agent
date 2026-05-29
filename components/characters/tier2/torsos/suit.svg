@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-36 0 72 185">
+  <!-- Component: suit jacket torso | Tier: 2 | Origin: neck top center at (0,0) -->
+  <!-- Requires crosshatch pattern in parent <defs> -->
+  <g data-component="torso-suit" data-tier="2" data-attach-neck="0,0" data-attach-left-shoulder="-34,10" data-attach-right-shoulder="34,10" data-attach-left-hip="-12,95" data-attach-right-hip="12,95" data-attach-hem="0,182">
+    <!-- Shirt/tie visible at V-opening -->
+    <path d="M-8,10 L0,50 L8,10" stroke="#1A1A1A" stroke-width="1.5" fill="url(#crosshatch)" stroke-linecap="round"/>
+    <!-- Tie -->
+    <path d="M0,12 L-3,28 L0,50 L3,28 Z" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Jacket body -->
+    <path d="M-34,10 C-28,4 -12,0 0,0 C12,0 28,4 34,10 L36,180 L-36,180 Z"
+      stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Left lapel -->
+    <path d="M-8,10 C-10,30 -12,55 -14,75" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Right lapel -->
+    <path d="M8,10 C10,30 12,55 14,75" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Buttons -->
+    <circle cx="0" cy="85" r="2.5" stroke="#1A1A1A" stroke-width="1.5" fill="none"/>
+    <circle cx="0" cy="105" r="2.5" stroke="#1A1A1A" stroke-width="1.5" fill="none"/>
+    <!-- Side seam fold lines -->
+    <path d="M-32,30 C-34,80 -35,130 -35,175" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.35" stroke-linecap="round"/>
+    <path d="M32,30 C34,80 35,130 35,175" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.35" stroke-linecap="round"/>
+  </g>
+</svg>

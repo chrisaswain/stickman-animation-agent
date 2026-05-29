@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -35 80 45">
+  <!-- Component: glory rays behind head | Tier: 2 | Origin: head center at (0,0) -->
+  <g data-component="glory-rays" data-tier="2" data-attach-head-center="0,0">
+    <path d="M-18,2 C-26,-2 -36,-8 -50,-15" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.35"/>
+    <path d="M-23,-20 C-30,-30 -40,-42 -53,-50" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.30"/>
+    <path d="M-18,-38 C-22,-48 -26,-60 -33,-75" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.25"/>
+    <path d="M0,-45 C0,-58 1,-70 2,-85" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.28"/>
+    <path d="M20,-38 C24,-48 30,-60 37,-75" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.25"/>
+    <path d="M24,-20 C32,-30 42,-42 54,-50" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.30"/>
+  </g>
+</svg>

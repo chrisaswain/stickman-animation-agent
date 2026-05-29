@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 0 55 82">
+  <!-- Component: walking legs (side-view stride facing right) | Tier: 1 | Origin: hip center at (0,0) -->
+  <!-- USE WITH: three-quarter-right or profile head — NOT front-facing -->
+  <g data-component="legs-walking" data-tier="1" data-attach-hip="0,0" data-attach-front-ankle="35,78" data-attach-back-ankle="-10,78">
+    <!-- Front leg (leading, extended forward-right) -->
+    <path d="M5,0 C12,18 22,40 35,78" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Back leg (trailing, angled slightly behind) -->
+    <path d="M-2,0 C-5,20 -8,50 -10,78" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

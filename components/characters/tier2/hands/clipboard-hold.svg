@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -2 14 18">
+  <!-- Component: hand holding flat object from side | Tier: 2 | Origin: wrist at (0,0) -->
+  <g data-component="hand-clipboard-hold" data-tier="2" data-attach-wrist="0,0">
+    <path d="M0,0 C-3,5 -5,11 -2,15 C1,19 7,17 9,12 C11,7 7,2 3,0"
+      stroke="#1A1A1A" stroke-width="2" fill="#E5DDD0" stroke-linecap="round"/>
+  </g>
+</svg>

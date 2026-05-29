@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 55">
+  <!-- Component: bed (side view with headboard, mattress, pillow) | Tier: prop | Origin: top-left at (0,0) -->
+  <g data-component="prop-bed" data-tier="prop" data-attach-center="50,28">
+    <!-- Headboard — tall panel on left side -->
+    <path d="M5,5 C4,4 3,3 3,5 L3,38 C3,39 4,40 5,40 L18,40 C19,40 20,39 20,38 L20,5 C20,3 19,4 18,5 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Headboard decorative curve -->
+    <path d="M7,8 C10,4 16,4 18,8" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+    <!-- Mattress — long horizontal body -->
+    <path d="M18,22 L92,22 C94,22 95,23 95,25 L95,38 C95,39 94,40 92,40 L18,40"
+      stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Pillow — rounded soft shape near headboard -->
+    <path d="M22,18 C24,14 36,14 38,18 C40,22 38,24 36,24 L24,24 C22,24 20,22 22,18"
+      stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Blanket fold line -->
+    <path d="M42,22 C42,26 44,28 46,28 L92,28" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- Blanket drape at foot -->
+    <path d="M92,22 C94,24 95,28 94,32" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+    <!-- Legs -->
+    <path d="M6,40 L6,50" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M92,40 L92,50" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

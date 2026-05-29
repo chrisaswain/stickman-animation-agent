@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-30 -80 65 82">
+  <!-- Component: 3/4 right head | Tier: 1 | Origin: neck attachment at (0,0) -->
+  <g data-component="head-three-quarter-right" data-tier="1" data-attach-neck="0,0" data-attach-hair-top="0,-78">
+    <path d="M-30,-39 C-31,-61 -18,-79 0,-78 C18,-77 32,-59 31,-37 C30,-15 16,1 -2,0 C-20,-1 -29,-17 -30,-39 Z"
+      stroke="#1A1A1A" stroke-width="4" fill="#E5DDD0" stroke-linecap="round"/>
+  </g>
+</svg>

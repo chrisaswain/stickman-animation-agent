@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-28 -5 56 40">
+  <!-- Component: crossed arms (folded across chest, skeptical) | Tier: 1 | Origin: shoulder-center at (0,0) -->
+  <g data-component="arm-crossed" data-tier="1" data-attach-shoulder-left="-22,0" data-attach-shoulder-right="22,0">
+    <!-- Left upper arm — angling across body -->
+    <path d="M-22,0 C-18,8 -12,16 -4,22" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Left forearm — crossing over to right side -->
+    <path d="M-4,22 C4,26 14,28 22,26" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Right upper arm — angling across body (behind left arm) -->
+    <path d="M22,0 C18,8 12,16 4,20" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Right forearm — crossing under to left side -->
+    <path d="M4,20 C-4,23 -14,26 -20,24" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Sleeve cuff hints -->
+    <path d="M-5,20 C-3,24 -1,23 -4,22" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <path d="M5,18 C3,22 1,21 4,20" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+  </g>
+</svg>

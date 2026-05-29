@@ -1,0 +1,25 @@
+# Tasks: Wave 2 — Character & Template System
+
+- [x] Copy 61 SVG components from video-explainer whiteboard-sketch
+- [x] Create tier1/legs/running.svg
+- [x] Create tier1/legs/jumping.svg
+- [x] Create tier1/arms/crossed.svg
+- [x] Create tier1/arms/facepalm.svg
+- [x] Create tier1/arms/celebrating.svg
+- [x] Create tier1/expressions/smirk.svg
+- [x] Create tier1/expressions/crying.svg
+- [x] Create tier1/expressions/sleeping.svg
+- [x] Create tier1/feet/running-shoe.svg
+- [x] Create props/phone.svg
+- [x] Create props/laptop.svg
+- [x] Create props/clock.svg
+- [x] Create props/bed.svg
+- [x] Create props/desk.svg
+- [x] Create props/coffee.svg
+- [x] Create props/thought-bubble.svg
+- [x] Create props/speech-bubble.svg
+- [x] Remove .gitkeep files from populated directories
+- [x] Verify total SVG count = 78
+- [x] Fix prohibited SVG primitives (rect/ellipse/circle → path) in phone, laptop, speaking, surprised
+- [x] Update OpenSpec tasks
+- [ ] PR → review → iterate → merge

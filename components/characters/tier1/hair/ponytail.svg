@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -10 40 50">
+  <!-- Component: ponytail hair | Tier: 1 | Origin: head top center at (0,0) -->
+  <g data-component="hair-ponytail" data-tier="1" data-attach-head-top="0,0">
+    <!-- Top tufts -->
+    <path d="M-10,-2 C-12,-8 -15,-10 -12,-5" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-4 C-1,-10 2,-12 1,-6" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Hair band -->
+    <circle cx="12" cy="8" r="3" stroke="#1A1A1A" stroke-width="2" fill="none"/>
+    <!-- Ponytail hanging down -->
+    <path d="M14,10 C18,18 20,28 18,38" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M10,10 C12,18 14,28 12,38" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5"/>
+  </g>
+</svg>
