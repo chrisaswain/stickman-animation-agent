@@ -955,7 +955,6 @@ function buildHTML(sceneDef, template, characterSVGs, propSVGs, speechBubbleSVG,
   const width = layout.width || 1920;
   const height = layout.height || 1080;
   const bg = template.palette?.background || template.palette?.parchment || '#FFFFFF';
-  const googleFonts = template.typography?.googleFontsImport || '';
   const gsapCdn = template.animation?.gsapCdn || 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
   const fps = template.rendering?.fps || template.canvas?.fps || 30;
   const sceneDuration = computeSceneDuration(sceneDef, template);
@@ -972,7 +971,6 @@ function buildHTML(sceneDef, template, characterSVGs, propSVGs, speechBubbleSVG,
   <meta charset="UTF-8">
   <meta name="viewport" content="width=${width}, height=${height}">
   <title>Scene ${sceneDef.sceneId || '??'}</title>
-  ${googleFonts ? `<link rel="stylesheet" href="${googleFonts}">` : ''}
   <script src="${gsapCdn}"><\/script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
