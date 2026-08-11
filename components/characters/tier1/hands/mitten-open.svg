@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 -2 16 16">
   <!-- Component: open mitten hand | Tier: 1 | Origin: wrist at (0,0) -->
   <g data-component="hand-mitten-open" data-tier="1" data-attach-wrist="0,0">
-    <path d="M-2,0 C-6,0 -8,4 -6,8 C-8,8 -8,12 -4,13 C0,14 4,12 4,8 C5,4 3,0 -2,0 Z"
-      stroke="#1A1A1A" stroke-width="2" fill="#E5DDD0" stroke-linecap="round"/>
+    <path d="M-3,0 C-7,1 -8,5 -6,9 C-5,11 -2,13 1,13 C4,12 6,9 5,5 C5,2 3,0 -3,0 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="#FFE4C4" stroke-linecap="round"/>
+    <!-- Thumb -->
+    <path d="M-5,4 C-7,3 -7,1 -5,1" stroke="#1A1A1A" stroke-width="1.5" fill="#FFE4C4" stroke-linecap="round"/>
   </g>
 </svg>

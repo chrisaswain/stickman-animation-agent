@@ -1,9 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -5 50 30">
   <!-- Component: pointing arm (right side, extended forward) | Tier: 1 | Origin: shoulder at (0,0) -->
   <g data-component="arm-pointing" data-tier="1" data-attach-shoulder="0,0" data-attach-wrist="45,12">
-    <!-- Upper arm — extended outward -->
-    <path d="M0,0 C12,-3 24,0 32,5" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <!-- Forearm -->
-    <path d="M32,5 C38,8 42,10 45,12" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Upper arm — filled with thickness -->
+    <path d="M-2,-3 C10,-6 22,-3 30,2 L32,8 C24,5 12,2 0,3 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="#FFE4C4" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Forearm — filled -->
+    <path d="M30,2 C36,5 40,7 43,9 L47,15 C44,13 38,11 32,8 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="#FFE4C4" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Elbow joint -->
+    <circle cx="31" cy="5" r="3" fill="#FFE4C4" stroke="#1A1A1A" stroke-width="1.5"/>
   </g>
 </svg>

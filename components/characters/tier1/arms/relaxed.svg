@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 0 28 60">
   <!-- Component: relaxed arm (right side) | Tier: 1 | Origin: shoulder at (0,0) -->
   <g data-component="arm-relaxed" data-tier="1" data-attach-shoulder="0,0" data-attach-wrist="24,58">
-    <!-- Upper arm -->
-    <path d="M0,0 C10,5 18,15 22,25" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <!-- Forearm -->
-    <path d="M22,25 C24,36 25,48 24,58" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <!-- Sleeve cuff hint -->
-    <path d="M24,23 C20,27 18,26 22,25" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <!-- Upper arm - filled with thickness -->
+    <path d="M-4,0 C2,4 10,12 14,24 L18,24 C12,12 6,4 4,0 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="#FFE4C4" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Forearm - filled with thickness -->
+    <path d="M14,24 C16,34 18,46 20,56 L28,56 C26,46 24,34 18,24 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="#FFE4C4" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Elbow joint hint -->
+    <circle cx="16" cy="24" r="3" fill="#FFE4C4" stroke="#1A1A1A" stroke-width="1.5"/>
+    <!-- Sleeve cuff -->
+    <path d="M-3,0 C0,1 3,1 5,0" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
   </g>
 </svg>

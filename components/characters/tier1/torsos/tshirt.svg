@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-42 0 84 65">
   <!-- Component: t-shirt torso | Tier: 1 | Origin: neck top center at (0,0) -->
-  <!-- Requires crosshatch pattern in parent <defs> -->
   <g data-component="torso-tshirt" data-tier="1" data-attach-neck="0,0" data-attach-left-shoulder="-37,7" data-attach-right-shoulder="37,7" data-attach-left-hip="-17,63" data-attach-right-hip="17,63">
-    <!-- Bean body -->
+    <!-- Filled body shape -->
     <path d="M-37,5 C-41,7 -42,9 -40,12 C-38,22 -32,32 -27,42 C-24,49 -21,55 -17,60 C-9,63 9,63 17,60 C21,55 24,49 27,42 C32,32 38,22 40,12 C42,9 41,7 37,5 C30,2 15,0 0,0 C-15,0 -30,2 -37,5 Z"
-      stroke="#1A1A1A" stroke-width="3" fill="url(#crosshatch)" stroke-linecap="round"/>
+      stroke="#1A1A1A" stroke-width="3.5" fill="#F5F5F5" stroke-linecap="round" stroke-linejoin="round"/>
     <!-- Collar -->
-    <path d="M-17,1 C-10,7 10,7 17,1" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M-14,1 C-7,6 7,6 14,1" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Sleeve seams -->
+    <path d="M-35,8 C-32,14 -30,18 -28,22" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <path d="M35,8 C32,14 30,18 28,22" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- Center line hint -->
+    <path d="M0,8 L0,55" stroke="#1A1A1A" stroke-width="0.8" fill="none" opacity="0.15"/>
   </g>
 </svg>

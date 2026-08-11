@@ -1,9 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 0 40 86">
   <!-- Component: standing legs | Tier: 1 | Origin: hip center at (0,0) -->
-  <g data-component="legs-standing" data-tier="1" data-attach-hip="0,0" data-attach-left-ankle="-18,84" data-attach-right-ankle="18,84">
-    <!-- Left leg -->
-    <path d="M-15,0 C-18,26 -20,54 -18,84" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <!-- Right leg -->
-    <path d="M15,0 C18,26 20,54 18,84" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <g data-component="legs-standing" data-tier="1" data-attach-hip="0,0" data-attach-left-ankle="-14,84" data-attach-right-ankle="14,84">
+    <!-- Left leg - filled with thickness -->
+    <path d="M-10,0 C-12,20 -14,50 -16,80 L-12,84 L-8,80 C-8,50 -6,20 -4,0 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="#3A3A5A" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Right leg - filled with thickness -->
+    <path d="M4,0 C6,20 8,50 12,80 L16,84 L20,80 C18,50 14,20 10,0 Z"
+      stroke="#1A1A1A" stroke-width="2.5" fill="#3A3A5A" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Waistband -->
+    <path d="M-12,0 L12,0" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
   </g>
 </svg>
